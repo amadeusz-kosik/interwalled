@@ -1,4 +1,7 @@
-package com.eternalsh.interwalled.algorithm;
+package com.eternalsh.interwalled.algorithm.ailist;
+
+import com.eternalsh.interwalled.algorithm.Interval;
+import com.eternalsh.interwalled.algorithm.IntervalHolderBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
