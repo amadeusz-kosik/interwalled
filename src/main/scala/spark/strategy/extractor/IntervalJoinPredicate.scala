@@ -13,7 +13,7 @@ import scala.collection.Seq
 case class IntervalSource(start: Expression, end: Expression, grouping: Expression, plan: LogicalPlan)
 
 
-object IntervalJoinPredicate extends Logging with PredicateHelper {
+object IntervalJoinPredicate extends Logging with PredicateHelper with Serializable {
   type ExtractedType = (IntervalSource, IntervalSource)
 
   def extract(left: LogicalPlan, right: LogicalPlan, queryJoinCondition: Expression): Option[ExtractedType] = {
@@ -82,7 +82,7 @@ object IntervalJoinPredicate extends Logging with PredicateHelper {
   }
 }
 
-object BroadcastIntervalJoinPredicatePattern extends SQLConfHelper {
+object BroadcastIntervalJoinPredicatePattern extends SQLConfHelper with Serializable {
   def unapply(plan: LogicalPlan): Option[IntervalJoinPredicate.ExtractedType] = plan match {
 
     case Join(left, right, Inner, Some(condition), _) if canBroadcast(left) =>
@@ -103,7 +103,7 @@ object BroadcastIntervalJoinPredicatePattern extends SQLConfHelper {
   }
 }
 
-object FullIntervalJoinPredicatePattern extends SQLConfHelper {
+object FullIntervalJoinPredicatePattern extends SQLConfHelper with Serializable {
   def unapply(plan: LogicalPlan): Option[IntervalJoinPredicate.ExtractedType] = plan match {
     case Join(left, right, Inner, Some(condition), _) =>
       IntervalJoinPredicate.extract(left, right, condition)

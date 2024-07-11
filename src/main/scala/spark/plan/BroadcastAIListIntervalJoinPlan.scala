@@ -61,8 +61,6 @@ case class BroadcastAIListIntervalJoinPlan(
     copy(broadcastRDD = broadcastRDD.copy(plan = left), partitionedRDD = partitionedRDD.copy(plan = right))
 
   override protected def doExecute(): RDD[InternalRow] = {
-    val joiner = GenerateUnsafeRowJoiner.create(left.schema, right.schema)
-
     val leftRDD = left
       .execute()
       .map(IntervalJoinPlanRDDMetadata.extractFromInternalRow(broadcastKeyGenerator))
@@ -74,6 +72,7 @@ case class BroadcastAIListIntervalJoinPlan(
     BroadcastAIListIntervalJoin
       .overlapJoin(sparkSession, leftRDD, rightRDD)
       .mapPartitions { partition => {
+        val joiner = GenerateUnsafeRowJoiner.create(left.schema, right.schema)
         partition.map { case (lRow, rRow) => joiner.join(lRow.asInstanceOf[UnsafeRow], rRow.asInstanceOf[UnsafeRow])}
       }}
   }
