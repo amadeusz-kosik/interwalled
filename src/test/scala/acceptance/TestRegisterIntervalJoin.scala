@@ -3,8 +3,9 @@ package acceptance
 
 import com.eternalsh.interwalled.spark.strategy.AIListIntervalJoinStrategy
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
-import org.apache.spark.sql.Row
+import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.execution.{ExplainMode, SimpleMode}
+import org.apache.spark.sql.functions.broadcast
 import org.apache.spark.sql.types.{DataType, LongType, StringType, StructField, StructType}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.BeforeAndAfter
@@ -14,59 +15,76 @@ import scala.util.Random
 
 class TestRegisterIntervalJoin extends AnyFunSuite with DataFrameSuiteBase with BeforeAndAfter {
 
-  val lhsSchema: StructType = StructType(Array(
+  lazy val lhsSchema: StructType = StructType(Array(
     StructField("chromosome", StringType),
     StructField("start",      LongType),
     StructField("end",        LongType)
   ))
 
-  val rhsSchema: StructType = StructType(Array(
+  lazy val rhsSchema: StructType = StructType(Array(
     StructField("chromosome", StringType),
     StructField("start",      LongType),
     StructField("end",        LongType)
   ))
 
-  def createTempView(range: Long, name: String, schema: StructType, mapping: Long => Row): Unit = {
+  def createDF(range: Long, schema: StructType, mapping: Long => Row): DataFrame = {
     val rdd = spark.sparkContext
       .parallelize(1L to range)
       .map(mapping)
 
-    val df = spark
-      .createDataFrame(rdd, schema)
-
-    df.createOrReplaceTempView(name)
+    spark.createDataFrame(rdd, schema)
   }
 
-  before {
-    createTempView(100L, "view_lhs", lhsSchema, i => Row("ch-01", i, i + 1))
-    createTempView(100L, "view_rhs", rhsSchema, i => Row("ch-01", i, i + 1))
-  }
+  lazy val lhsDF: DataFrame =
+    createDF(100L, lhsSchema, i => Row("ch-01", i, i + 1))
 
-  private val SQL_STRING_SIMPLE = """ |
-    | SELECT * FROM view_lhs lhs
-    |   INNER JOIN view_rhs rhs ON (
-    |     lhs.start <= rhs.end AND
-    |     rhs.start <= lhs.end AND
-    |     lhs.chromosome = rhs.chromosome
-    |   )""".stripMargin
+  lazy val rhsDF: DataFrame =
+    createDF(100L, lhsSchema, i => Row("ch-01", i, i + 1))
+
 
   test("Without registering IntervalJoinStrategy") {
     spark.experimental.extraStrategies = Nil
 
-    val plan = spark.sqlContext
-      .sql(SQL_STRING_SIMPLE)
-      .queryExecution.explainString(ExplainMode.fromString("simple"))
+    val job = lhsDF.join(
+      rhsDF,
+      (lhsDF("chromosome") === rhsDF("chromosome")) &&
+        (lhsDF("start") <= rhsDF("end")) &&
+        (rhsDF("start") <= lhsDF("end")),
+      "inner"
+    )
 
-    assertTrue(! plan.contains("BroadcastAIListIntervalJoinPlan"))
+    val plan: String = job.queryExecution.explainString(ExplainMode.fromString("simple"))
+    assert("Spark should not use Interwalled join plan.", false, plan.contains("AIListIntervalJoinPlan"))
   }
 
-  test("Register AIListIntervalJoinStrategy") {
+  test("Register AIListIntervalJoinStrategy, run broadcast version") {
     spark.experimental.extraStrategies = new AIListIntervalJoinStrategy(spark) :: Nil
 
-    val plan: String = spark.sqlContext
-      .sql(SQL_STRING_SIMPLE)
-      .queryExecution.explainString(ExplainMode.fromString("simple"))
+    val job = lhsDF.join(
+      broadcast(rhsDF),
+        (lhsDF("chromosome") === rhsDF("chromosome")) &&
+        (lhsDF("start") <= rhsDF("end")) &&
+        (rhsDF("start") <= lhsDF("end")),
+      "inner"
+    )
 
+    val plan: String = job.queryExecution.explainString(ExplainMode.fromString("simple"))
     assertTrue(plan.contains("BroadcastAIListIntervalJoinPlan"))
+  }
+
+  ignore("Register AIListIntervalJoinStrategy, run full version") {
+    spark.experimental.extraStrategies = new AIListIntervalJoinStrategy(spark) :: Nil
+
+    val job = lhsDF.join(
+      rhsDF,
+      (lhsDF("chromosome") === rhsDF("chromosome")) &&
+        (lhsDF("start") <= rhsDF("end")) &&
+        (rhsDF("start") <= lhsDF("end")),
+      "inner"
+    )
+
+    val plan: String = job.queryExecution.explainString(ExplainMode.fromString("simple"))
+    assert("Spark should use Interwalled join plan.",       true,   plan.contains("AIListIntervalJoinPlan"))
+    assert("Spark should not use broadcast for the join.",  false,  plan.contains("BroadcastAIListIntervalJoinPlan"))
   }
 }
