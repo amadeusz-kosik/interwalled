@@ -16,7 +16,7 @@ class AIListIntervalJoinStrategy(spark: SparkSession) extends Strategy with Seri
 
     case BroadcastIntervalJoinPredicatePattern(broadcast, partitioned) =>
       log.info(
-        s"""Running fully partitioned interval join with following parameters:
+        s"""Running broadcast interval join with following parameters:
            |  partition (chromosome) = (${broadcast.grouping}, ${partitioned.grouping})
            |  broadcast: left, partition: right
            |  lhsStart = ${broadcast.start}
@@ -42,7 +42,7 @@ class AIListIntervalJoinStrategy(spark: SparkSession) extends Strategy with Seri
            |""".stripMargin
       )
 
-      Nil
+      Nil // FIXME
 
     case _ =>
       Nil
