@@ -9,8 +9,7 @@ val SparkVersion = "3.5.1"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "interwalled",
-    idePackagePrefix := Some("com.eternalsh.interwalled")
+    name := "interwalled"
   )
 
 libraryDependencies += "org.apache.spark" %% "spark-core" % SparkVersion % "provided"
