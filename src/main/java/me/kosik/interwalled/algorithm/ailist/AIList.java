@@ -2,6 +2,7 @@ package me.kosik.interwalled.algorithm.ailist;
 
 import me.kosik.interwalled.algorithm.Interval;
 import me.kosik.interwalled.algorithm.IntervalHolder;
+import me.kosik.interwalled.algorithm.OverlapIterator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,11 +40,15 @@ public class AIList<T> implements IntervalHolder<T> {
     }
 
     @Override
-    public Iterator<Interval<T>> overlapping(Interval<T> interval) {
-        return new OverlapIterator<>(interval.start(), interval.end(), this);
+    public OverlapIterator<T> overlapping(Interval<T> interval) {
+        return new AIListIterator<T>(interval.start(), interval.end(), this);
     }
 
     /* OverlapIterator interface. */
+
+    int size() {
+        return intervals.size();
+    }
 
     int getComponentStartIndex(final int componentIndex) {
         return componentsStartIndexes.get(componentIndex);
@@ -54,7 +59,15 @@ public class AIList<T> implements IntervalHolder<T> {
     }
 
     long getComponentMaxEnd(final int componentIndex) {
-        return componentsMaxEnds.get(componentIndex);
+        int componentStartIndex = getComponentStartIndex(componentIndex);
+        int componentLength = getComponentLength(componentIndex);
+        int componentEndIndex = componentStartIndex + componentLength - 1;
+
+        return componentsMaxEnds.get(componentEndIndex);
+    }
+
+    long getIntervalMaxEnd(final int intervalIndex) {
+        return componentsMaxEnds.get(intervalIndex);
     }
 
     int getComponentsCount() {
@@ -63,5 +76,9 @@ public class AIList<T> implements IntervalHolder<T> {
 
     Interval<T> getInterval(final int index) {
         return intervals.get(index);
+    }
+
+    ArrayList<Interval<T>> getIntervals() {
+        return intervals;
     }
 }

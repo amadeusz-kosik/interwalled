@@ -9,37 +9,14 @@ import org.apache.spark.sql.types.{DataType, LongType, StringType, StructField, 
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.BeforeAndAfter
 
-import scala.collection.Seq
-import scala.util.Random
 
-class TestRegisterIntervalJoin extends AnyFunSuite with DataFrameSuiteBase with BeforeAndAfter {
-
-  lazy val lhsSchema: StructType = StructType(Array(
-    StructField("chromosome", StringType),
-    StructField("start",      LongType),
-    StructField("end",        LongType)
-  ))
-
-  lazy val rhsSchema: StructType = StructType(Array(
-    StructField("chromosome", StringType),
-    StructField("start",      LongType),
-    StructField("end",        LongType)
-  ))
-
-  def createDF(range: Long, schema: StructType, mapping: Long => Row): DataFrame = {
-    val rdd = spark.sparkContext
-      .parallelize(1L to range)
-      .map(mapping)
-
-    spark.createDataFrame(rdd, schema)
-  }
+class TestRegisterIntervalJoin extends CommonDFSuiteBase with BeforeAndAfter {
 
   lazy val lhsDF: DataFrame =
-    createDF(100L, lhsSchema, i => Row("ch-01", i, i + 1))
+    createDF(100L, lhsSchema, i => Row("ch-01", i, i))
 
   lazy val rhsDF: DataFrame =
-    createDF(100L, lhsSchema, i => Row("ch-01", i, i + 1))
-
+    createDF(100L, lhsSchema, i => Row("ch-01", i, i))
 
   test("Without registering IntervalJoinStrategy") {
     spark.experimental.extraStrategies = Nil
@@ -71,7 +48,7 @@ class TestRegisterIntervalJoin extends AnyFunSuite with DataFrameSuiteBase with 
     assertTrue(plan.contains("BroadcastAIListIntervalJoinPlan"))
   }
 
-  ignore("Register AIListIntervalJoinStrategy, run full version") {
+  test("Register AIListIntervalJoinStrategy, run full version") {
     spark.experimental.extraStrategies = new AIListIntervalJoinStrategy(spark) :: Nil
 
     val job = lhsDF.join(

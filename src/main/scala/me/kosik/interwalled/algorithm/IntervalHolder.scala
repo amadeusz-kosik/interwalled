@@ -1,7 +1,7 @@
 package me.kosik.interwalled.algorithm
 
 trait IntervalHolder[T] extends Serializable {
-  def overlapping(interval: Interval[T]): java.util.Iterator[Interval[T]]
+  def overlapping(interval: Interval[T]): OverlapIterator[T]
 }
 
 trait IntervalHolderBuilder[T, A >: IntervalHolder[T]] extends Serializable {
