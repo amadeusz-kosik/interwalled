@@ -1,8 +1,8 @@
 package me.kosik.interwalled.spark.strategy
 
-import me.kosik.interwalled.spark.plan.{BroadcastAIListIntervalJoinPlan, IntervalJoinPlanRDDMetadata}
+import me.kosik.interwalled.spark.plan.{BroadcastAIListIntervalJoinPlan, FullAIListIntervalJoinPlan}
+import me.kosik.interwalled.spark.plan.metadata.IntervalJoinPlanRDDMetadata
 import me.kosik.interwalled.spark.strategy.extractor.{BroadcastIntervalJoinPredicatePattern, FullIntervalJoinPredicatePattern, IntervalSource}
-
 import org.apache.spark.sql.catalyst.expressions.PredicateHelper
 import org.apache.spark.sql.catalyst.plans.logical.LogicalPlan
 import org.apache.spark.sql.execution.SparkPlan
@@ -41,7 +41,10 @@ class AIListIntervalJoinStrategy(spark: SparkSession) extends Strategy with Seri
            |""".stripMargin
       )
 
-      Nil // FIXME
+      val lhsMetadata = toJoinPlanRDDMetadata(left)
+      val rhsMetadata = toJoinPlanRDDMetadata(right)
+
+      FullAIListIntervalJoinPlan(lhsMetadata, rhsMetadata, spark) :: Nil
 
     case _ =>
       Nil

@@ -2,59 +2,53 @@
 package me.kosik.interwalled.acceptance
 
 import me.kosik.interwalled.spark.strategy.AIListIntervalJoinStrategy
-import com.holdenkarau.spark.testing.DataFrameSuiteBase
-import org.apache.spark.sql.Row
-import org.apache.spark.sql.types.{LongType, StringType, StructField, StructType}
+import org.apache.spark.sql.functions.broadcast
+import org.apache.spark.sql.{DataFrame, Row}
 import org.scalatest.BeforeAndAfter
-import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 
-class TestIntervalJoinCorrectness extends AnyFunSuite with DataFrameSuiteBase with BeforeAndAfter with Matchers {
+class TestIntervalJoinCorrectness extends CommonDFSuiteBase with BeforeAndAfter with Matchers {
 
-  val lhsSchema: StructType = StructType(Array(
-    StructField("chromosome", StringType),
-    StructField("start",      LongType),
-    StructField("end",        LongType)
-  ))
+  lazy val lhsDF: DataFrame =
+    createDF(100L, lhsSchema, i => Row("ch-01", i, i))
 
-  val rhsSchema: StructType = StructType(Array(
-    StructField("chromosome", StringType),
-    StructField("start",      LongType),
-    StructField("end",        LongType)
-  ))
+  lazy val rhsDF: DataFrame =
+    createDF(100L, lhsSchema, i => Row("ch-01", i, i))
 
-  def createTempView(range: Long, name: String, schema: StructType, mapping: Long => Row): Unit = {
-    val rdd = spark.sparkContext
-      .parallelize(1L to range)
-      .map(mapping)
+  private lazy val JoinPredicate =
+    (lhsDF("chromosome") === rhsDF("chromosome")) && (lhsDF("start") <= rhsDF("end")) && (rhsDF("start") <= lhsDF("end"))
 
-    val df = spark
-      .createDataFrame(rdd, schema)
 
-    df.createOrReplaceTempView(name)
+  test("Smoke test - without any Interwalled methods Spark should return valid results") {
+    spark.experimental.extraStrategies = Nil
+
+    val actual = lhsDF
+      .join(broadcast(rhsDF), JoinPredicate, "inner")
+      .cache()
+
+    actual.show()
+    actual.count() shouldEqual 100
   }
-
-  before {
-    createTempView(10L, "view_lhs", lhsSchema, i => Row("ch-01", i * 2, i * 2 + 1))
-    createTempView(10L, "view_rhs", rhsSchema, i => Row("ch-01", i * 2, i * 2 + 1))
-
-    spark.experimental.extraStrategies = new AIListIntervalJoinStrategy(spark) :: Nil
-  }
-
-  private val SQL_STRING_SIMPLE = """ |
-    | SELECT * FROM view_lhs lhs
-    |   INNER JOIN view_rhs rhs ON (
-    |     lhs.start <= rhs.end AND
-    |     rhs.start <= lhs.end AND
-    |     lhs.chromosome = rhs.chromosome
-    |   )""".stripMargin
-
 
   test("BroadcastAIListIntervalJoinPlan should return valid results") {
-    val actual = spark.sqlContext
-      .sql(SQL_STRING_SIMPLE)
+    spark.experimental.extraStrategies = new AIListIntervalJoinStrategy(spark) :: Nil
 
-    actual.count() shouldEqual 10
+    val actual = lhsDF
+      .join(broadcast(rhsDF), JoinPredicate, "inner")
+      .cache()
+
     actual.show()
+    actual.count() shouldEqual 100
+  }
+
+  test("FullAIListIntervalJoinPlan should return valid results") {
+    spark.experimental.extraStrategies = new AIListIntervalJoinStrategy(spark) :: Nil
+
+    val actual = lhsDF
+      .join(rhsDF, JoinPredicate, "inner")
+      .cache()
+
+    actual.show()
+    actual.count() shouldEqual 100
   }
 }
