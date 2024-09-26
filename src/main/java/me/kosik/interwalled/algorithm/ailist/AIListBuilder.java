@@ -59,7 +59,7 @@ public class AIListBuilder<T> implements IntervalHolderBuilder<T, AIList<T>>, Se
                     int j = 1;
                     int cov = 0;
                     // count intervals covered by i'th interval
-                    while (j <= intervalsCountToCheckLookahead && cov < intervalsCountToTriggerExtraction && i + j < intervals.size()) {
+                    while (j <= intervalsCountToCheckLookahead && cov <= intervalsCountToTriggerExtraction && i + j < intervals.size()) {
                         if (intervals.get(i + j).end() <= interval.end()) {
                             cov++;
                         }
