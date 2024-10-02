@@ -5,7 +5,6 @@ import me.kosik.interwalled.algorithm.IntervalHolder;
 import me.kosik.interwalled.algorithm.OverlapIterator;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 // Augmented Interval List implementation
 public class AIList<T> implements IntervalHolder<T> {
@@ -41,7 +40,7 @@ public class AIList<T> implements IntervalHolder<T> {
 
     @Override
     public OverlapIterator<T> overlapping(Interval<T> interval) {
-        return new AIListIterator<T>(interval.start(), interval.end(), this);
+        return new AIListIterator<>(interval.start(), interval.end(), this);
     }
 
     /* OverlapIterator interface. */
@@ -80,5 +79,38 @@ public class AIList<T> implements IntervalHolder<T> {
 
     ArrayList<Interval<T>> getIntervals() {
         return intervals;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("AIList { Components: ");
+        sb.append(componentsCount);
+        sb.append("; ");
+
+        for(int componentIndex = 0; componentIndex < componentsCount; componentIndex++) {
+            sb.append("Component #");
+            sb.append(componentIndex);
+            sb.append("{");
+
+            for(int intervalIndex = 0; intervalIndex < componentsLengths.get(componentIndex); ++ intervalIndex) {
+                int intervalRealIndex = componentsStartIndexes.get(componentIndex) + intervalIndex;
+                Interval<T> interval = intervals.get(intervalRealIndex);
+
+                sb.append("<");
+                sb.append(interval.start());
+                sb.append("- ");
+                sb.append(interval.end());
+                sb.append("; ");
+                sb.append(getIntervalMaxEnd(intervalRealIndex));
+                sb.append(">");
+            }
+
+            sb.append("} ");
+        }
+
+        sb.append("}");
+
+        return sb.toString();
     }
 }
