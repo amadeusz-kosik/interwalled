@@ -121,6 +121,6 @@ class ListSplittingTest extends AnyFunSuite {
     }
 
     assert(21 == aiList.size,               "All 21 Intervals should be persisted.")
-    assert( 1 == aiList.getComponentsCount, "All intervals should be placed in a separate component.")
+    assert( 1 == aiList.getComponentsCount, "All intervals should be placed in a single component.")
   }
 }
