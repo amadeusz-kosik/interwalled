@@ -14,7 +14,7 @@ public class AIListBuilder<T> implements IntervalHolderBuilder<T, AIList<T>>, Se
     private final int intervalsCountToTriggerExtraction;
     private final int minimumComponentSize;
 
-    private ArrayList<Interval<T>> intervals = new ArrayList<>();
+    private final ArrayList<Interval<T>> intervals = new ArrayList<>();
 
     public AIListBuilder(
             final int maximumComponentsCount,
@@ -37,71 +37,84 @@ public class AIListBuilder<T> implements IntervalHolderBuilder<T, AIList<T>>, Se
         ArrayList<Integer> componentsStartIndexes = new ArrayList<>();
         ArrayList<Long> componentsMaxEnds = new ArrayList<>();
 
-        if (intervals.size() <= minimumComponentSize) {
+        if (intervals.size() <= minimumComponentSize || maximumComponentsCount == 1) {
+            // Edge case: at start of the algorithm assign everything to a single component.
             componentsCount = 1;
             componentsLengths.add(intervals.size());
             componentsStartIndexes.add(0);
         } else {
-            ArrayList<Interval<T>> decomposed = new ArrayList<>();
-            final int inputSize = intervals.size();
+            // Decompose lists while:
+            //  1/ max component number is not exceeded
+            //  2/ number of intervals left is big enough
+            //  3/ it is worth to decompose
 
-            // decompose while
-            // max component number is not exceeded
-            // and number of intervals left is big enough
-            // to be worth decomposing it
-            while (componentsCount < maximumComponentsCount && inputSize - decomposed.size() > minimumComponentSize) {
-                ArrayList<Interval<T>> remainingIntervals = new ArrayList<>();
+            int lastAssignedIndex = -1;
+
+            for(int componentIndex = 0; componentIndex < maximumComponentsCount - 1; ++ componentIndex) {
+                // If the number of intervals left is smaller than expected minimal component size, then break.
+                if(lastAssignedIndex  >= (intervals.size() - minimumComponentSize)) {
+                    break;
+                }
+
+                int currentComponentStartIndex = lastAssignedIndex + 1;
+                int currentComponentLength = 0;
+
                 ArrayList<Interval<T>> extractedIntervals = new ArrayList<>();
 
-                for (int i = 0; i < intervals.size(); i++) {
-                    final Interval<T> interval = intervals.get(i);
+                for(int currentIntervalIndex = currentComponentStartIndex; currentIntervalIndex < intervals.size(); ) {
+                    final Interval<T> currentInterval = intervals.get(currentIntervalIndex);
+                    int coverage = 0;
 
-                    int j = 1;
-                    int cov = 0;
-                    // count intervals covered by i'th interval
-                    while (j <= intervalsCountToCheckLookahead && cov <= intervalsCountToTriggerExtraction && i + j < intervals.size()) {
-                        if (intervals.get(i + j).end() <= interval.end()) {
-                            cov++;
-                        }
-                        j++;
+                    // Count interval's coverage: how many further intervals are "covered" by the current one's length.
+                    for(int lookaheadOffset = 1; lookaheadOffset <= intervalsCountToCheckLookahead; ++ lookaheadOffset) {
+                        int lookaheadIndex = lookaheadOffset + currentIntervalIndex;
+
+                        // Guard against going outside the intervals' list.
+                        //  Break if all intervals are already visited.
+                        if (lookaheadIndex >= intervals.size())
+                            break;
+
+                        // If current interval is reaching further than the checked
+                        //  one, increment coverage
+                        if (intervals.get(lookaheadIndex).end() <= currentInterval.end())
+                            coverage++;
+
+                        // If enough intervals are already covered, skip browsing the rest.
+                        if (coverage >= intervalsCountToTriggerExtraction)
+                            break;
                     }
-                    // check if it is worth to extract i'th interval
-                    // and if it is do so
-                    if (cov < intervalsCountToTriggerExtraction)
-                        remainingIntervals.add(interval);
-                    else
-                        extractedIntervals.add(interval);
 
-                }
-                // add the component info
-                componentsStartIndexes.add(decomposed.size());
-                componentsLengths.add(remainingIntervals.size());
-                componentsCount ++;
+                    if(coverage == intervalsCountToTriggerExtraction) {
+                        // Move the current interval to the extracted ones.
+                        extractedIntervals.add(currentInterval);
+                        intervals.remove(currentIntervalIndex);
+                    } else {
+                        lastAssignedIndex = currentIntervalIndex;
 
-                // check if list2 will be the last component
-                if (extractedIntervals.size() <= minimumComponentSize || componentsCount == maximumComponentsCount - 2) {
-                    // no more decomposing, add list2 if not empty
-                    // if it is empty, then list1 was already added
-                    // in the previous loop
-                    if (!extractedIntervals.isEmpty()) {
-                        decomposed.addAll(remainingIntervals);
-                        componentsStartIndexes.add(decomposed.size());
-                        componentsLengths.add(extractedIntervals.size());
-                        decomposed.addAll(extractedIntervals);
-                        componentsCount ++;
-                    } else if (remainingIntervals.size() > minimumComponentSize) {
-                        // if last component has size > minimumComponentSize
-                        // but can't be decomposed
-                        decomposed.addAll(remainingIntervals);
+                        // Move the index right (skip).
+                        ++ currentIntervalIndex;
+                        ++ currentComponentLength;
                     }
-                } else {
-                    // prepare for the next loop
-                    decomposed.addAll(remainingIntervals);
-                    intervals = extractedIntervals;
                 }
+
+                // Save new component
+                ++ componentsCount;
+                componentsStartIndexes.add(currentComponentStartIndex); // ERROR
+                componentsLengths.add(currentComponentLength);
+
+                // Re-add extracted intervals back to the original list.
+                intervals.addAll(extractedIntervals);
             }
 
-            intervals = decomposed;
+            // Put remaining elements to the last component
+            if(componentsLengths.stream().mapToLong(Integer::longValue).sum() < intervals.size()) {
+                int lastComponentStartIndex = (int) componentsLengths.stream().mapToLong(Integer::longValue).sum();
+
+                ++ componentsCount;
+
+                componentsStartIndexes.add(lastComponentStartIndex);
+                componentsLengths.add(intervals.size() - lastComponentStartIndex);
+            }
         }
 
         for (int i = 0; i < componentsCount; i ++) {
