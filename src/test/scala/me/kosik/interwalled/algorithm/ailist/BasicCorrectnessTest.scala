@@ -96,4 +96,23 @@ class BasicCorrectnessTest extends AnyFunSuite {
     assert(aiList.getComponentsCount == 2, "This test requires AIList with two components.")
     actual.toSet should contain theSameElementsAs expected
   }
+
+  test("All to all matching.") {
+    val lhs = (1 to 100) map { i => Interval(i, 1000 + i, "L")}
+    val rhs = (1 to 100) map { i => Interval(i, 1000 + i, "R")}
+
+    val aiList = {
+      val aiListBuilder = new AIListBuilder[String](10, 20, 10, 64)
+      lhs.foreach(aiListBuilder.put)
+      aiListBuilder.build()
+    }
+
+    val expected = (for {
+      i <- (1 to 100)
+      j <- (1 to 100)
+    } yield Interval(i, i + 1000, "L") -> Interval(j, j + 1000, "R")).toSet.toList
+    val actual = rhs.flatMap(interval => aiList.overlapping(interval).asScala.map(_ -> interval)).toSet.toList
+
+    assert(actual equals expected, "All expected elements should be present in the results set.")
+  }
 }
