@@ -27,4 +27,14 @@ abstract class SortedDataCorrectnessTest extends CommonDFSuiteBase with BeforeAn
     actual.show()
     actual.count() shouldEqual 199
   }
+
+  test("1:all join") {
+    val lhsDF = createDF(100L, lhsSchema, i => Row("ch-01", i, i +    1))
+    val rhsDF = createDF(  1L, lhsSchema, i => Row("ch-01", i, i + 1000))
+
+    val actual = join(lhsDF, rhsDF, getJoinPredicate(lhsDF, rhsDF), "inner")
+
+    actual.show()
+    actual.count() shouldEqual 100
+  }
 }
