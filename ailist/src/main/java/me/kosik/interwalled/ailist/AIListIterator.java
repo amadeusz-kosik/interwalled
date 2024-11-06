@@ -1,8 +1,6 @@
-package me.kosik.interwalled.algorithm.ailist;
+package me.kosik.interwalled.ailist;
 
-import me.kosik.interwalled.algorithm.Interval;
-import me.kosik.interwalled.algorithm.OverlapIterator;
-import me.kosik.interwalled.algorithm.ailist.utils.BinarySearch;
+import me.kosik.interwalled.ailist.utils.BinarySearch;
 
 public class AIListIterator<T> implements OverlapIterator<T>
 {

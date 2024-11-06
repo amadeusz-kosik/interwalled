@@ -1,8 +1,9 @@
-package me.kosik.interwalled.algorithm.ailist.utils;
+package me.kosik.interwalled.ailist.utils;
 
-import me.kosik.interwalled.algorithm.Interval;
+import me.kosik.interwalled.ailist.Interval;
 
 import java.util.ArrayList;
+
 
 public class LinearSearch {
     public static <T> int findRightmost(

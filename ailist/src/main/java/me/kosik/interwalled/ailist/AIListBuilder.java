@@ -1,13 +1,10 @@
-package me.kosik.interwalled.algorithm.ailist;
-
-import me.kosik.interwalled.algorithm.Interval;
-import me.kosik.interwalled.algorithm.IntervalHolderBuilder;
+package me.kosik.interwalled.ailist;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class AIListBuilder<T> implements IntervalHolderBuilder<T, AIList<T>>, Serializable {
+public class AIListBuilder<T> implements Serializable {
 
     private final int maximumComponentsCount;
     private final int intervalsCountToCheckLookahead;
@@ -28,7 +25,6 @@ public class AIListBuilder<T> implements IntervalHolderBuilder<T, AIList<T>>, Se
         this.minimumComponentSize = minimumComponentSize;
     }
 
-    @Override
     public AIList<T> build() {
         intervals.sort(Comparator.comparingLong(Interval::start));
 
@@ -139,7 +135,6 @@ public class AIListBuilder<T> implements IntervalHolderBuilder<T, AIList<T>>, Se
         );
     }
 
-    @Override
     public void put(final Interval<T> interval) {
         intervals.add(interval);
     }
