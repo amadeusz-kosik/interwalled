@@ -1,7 +1,6 @@
-package me.kosik.interwalled.spark.implementation
+package me.kosik.interwalled.spark.implementation.join.ailist
 
-import me.kosik.interwalled.algorithm.Interval
-import me.kosik.interwalled.algorithm.ailist.AIListBuilder
+import me.kosik.interwalled.ailist.{AIList, AIListBuilder, Interval}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.InternalRow
@@ -11,10 +10,7 @@ import scala.jdk.CollectionConverters.IteratorHasAsScala
 
 object FullAIListIntervalJoin extends Serializable {
 
-  def overlapJoin(spark: SparkSession,
-                  leftRDD: RDD[(String, Interval[InternalRow])],
-                  rightRDD: RDD[(String, Interval[InternalRow])]
-                 ): RDD[(InternalRow, InternalRow)] = {
+  def overlapJoin(spark: SparkSession, leftRDD: RDD[(String, Interval[InternalRow])], rightRDD: RDD[(String, Interval[InternalRow])]): RDD[(InternalRow, InternalRow)] = {
 
     val rightAIListRDD = toDistributedAILists(rightRDD)
 

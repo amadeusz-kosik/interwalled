@@ -1,9 +1,6 @@
-package me.kosik.interwalled.algorithm.ailist
+package me.kosik.interwalled.ailist
 
-import me.kosik.interwalled.algorithm.Interval
 import org.scalatest.funsuite.AnyFunSuite
-
-import scala.jdk.CollectionConverters._
 
 class ListSplittingTest extends AnyFunSuite {
 

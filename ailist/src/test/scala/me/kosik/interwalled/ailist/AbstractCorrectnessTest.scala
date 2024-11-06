@@ -1,4 +1,4 @@
-package me.kosik.interwalled.algorithm.ailist
+package me.kosik.interwalled.ailist
 
 import org.scalatest.funsuite.AnyFunSuite
 

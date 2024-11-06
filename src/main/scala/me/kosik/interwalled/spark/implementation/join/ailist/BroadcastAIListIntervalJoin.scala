@@ -1,18 +1,16 @@
-package me.kosik.interwalled.spark.implementation
+package me.kosik.interwalled.spark.implementation.join.ailist
 
-import me.kosik.interwalled.algorithm.Interval
-import me.kosik.interwalled.algorithm.ailist.{AIList, AIListBuilder}
+import me.kosik.interwalled.ailist.{AIList, AIListBuilder, Interval}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.InternalRow
 
+import scala.jdk.CollectionConverters.IteratorHasAsScala
+
 
 object BroadcastAIListIntervalJoin extends Serializable {
 
-  def overlapJoin(spark: SparkSession,
-                  broadcastRDD: RDD[(String, Interval[InternalRow])],
-                  partitionedRDD: RDD[(String, Interval[InternalRow])]
-                 ): RDD[(InternalRow, InternalRow)] = {
+  def overlapJoin(spark: SparkSession, broadcastRDD: RDD[(String, Interval[InternalRow])],partitionedRDD: RDD[(String, Interval[InternalRow])]): RDD[(InternalRow, InternalRow)] = {
 
     /* Collect only Reference regions and the index of indexedRdd1 */
     val intervalTrees: Map[String, AIList[InternalRow]] = {
@@ -33,7 +31,6 @@ object BroadcastAIListIntervalJoin extends Serializable {
       .broadcast(intervalTrees)
 
     val joinedRDD: RDD[(InternalRow, InternalRow)] = partitionedRDD.mapPartitions { partition =>
-      import scala.jdk.CollectionConverters._
 
       partition.flatMap { case (partition, interval) =>
         intervalTreesBroadcast.value.get(partition) match {

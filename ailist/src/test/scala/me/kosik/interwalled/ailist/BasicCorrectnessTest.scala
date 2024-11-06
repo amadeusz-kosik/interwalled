@@ -1,13 +1,11 @@
-package me.kosik.interwalled.algorithm.ailist
+package me.kosik.interwalled.ailist
 
-import me.kosik.interwalled.algorithm.Interval
 import org.scalatest.funsuite.AnyFunSuite
-import org.scalatest.matchers.must.Matchers.contain
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.matchers.should.Matchers
 
 import scala.jdk.CollectionConverters._
 
-class BasicCorrectnessTest extends AnyFunSuite {
+class BasicCorrectnessTest extends AnyFunSuite with Matchers {
 
   test("Correctness test - no overlapping intervals") {
     val lhs = (1 to 1000) map { i => Interval(i +    0, i +    0, i)}

@@ -1,8 +1,6 @@
 
 package me.kosik.interwalled.spark.benchmark.rdd.simple
 
-import me.kosik.interwalled.algorithm.Interval
-import me.kosik.interwalled.algorithm.ailist.AIListBuilder
 import org.apache.spark.rdd.RDD
 
 

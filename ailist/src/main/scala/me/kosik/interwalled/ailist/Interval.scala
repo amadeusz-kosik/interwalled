@@ -1,4 +1,4 @@
-package me.kosik.interwalled.algorithm
+package me.kosik.interwalled.ailist
 
 case class Interval[T](
   start: Long,

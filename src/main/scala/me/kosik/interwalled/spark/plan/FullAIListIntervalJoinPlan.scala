@@ -1,6 +1,6 @@
 package me.kosik.interwalled.spark.plan
 
-import me.kosik.interwalled.spark.implementation.FullAIListIntervalJoin
+import me.kosik.interwalled.spark.implementation.join.ailist.FullAIListIntervalJoin
 import me.kosik.interwalled.spark.plan.metadata.IntervalJoinPlanRDDMetadata
 import org.apache.spark.annotation.DeveloperApi
 import org.apache.spark.rdd.RDD

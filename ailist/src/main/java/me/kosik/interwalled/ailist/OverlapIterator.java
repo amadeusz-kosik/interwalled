@@ -1,4 +1,4 @@
-package me.kosik.interwalled.algorithm;
+package me.kosik.interwalled.ailist;
 
 import java.util.Iterator;
 

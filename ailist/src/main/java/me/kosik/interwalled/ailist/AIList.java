@@ -1,13 +1,8 @@
-package me.kosik.interwalled.algorithm.ailist;
-
-import me.kosik.interwalled.algorithm.Interval;
-import me.kosik.interwalled.algorithm.IntervalHolder;
-import me.kosik.interwalled.algorithm.OverlapIterator;
+package me.kosik.interwalled.ailist;
 
 import java.util.ArrayList;
 
-// Augmented Interval List implementation
-public class AIList<T> implements IntervalHolder<T> {
+public class AIList<T> {
 
     // All intervals
     private final ArrayList<Interval<T>> intervals;
@@ -38,7 +33,6 @@ public class AIList<T> implements IntervalHolder<T> {
         this.componentsMaxEnds = componentsMaxEnds;
     }
 
-    @Override
     public OverlapIterator<T> overlapping(Interval<T> interval) {
         return new AIListIterator<>(interval.start(), interval.end(), this);
     }
