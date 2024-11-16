@@ -7,9 +7,8 @@ package object ailist {
 
   object AIListTestHelper extends Matchers {
 
-    def buildList[T](intervals: Seq[Interval[T]]): AIList[T] = {
-      val listConfig  = AIListConfig.DEFAULT
-      val listBuilder = new AIListBuilder[T](listConfig)
+    def buildList[T](intervals: Seq[Interval[T]], aiListConfig: AIListConfig = AIListConfig.DEFAULT): AIList[T] = {
+      val listBuilder = new AIListBuilder[T](aiListConfig)
 
       intervals.foreach(interval => listBuilder.put(interval))
       listBuilder.build()
