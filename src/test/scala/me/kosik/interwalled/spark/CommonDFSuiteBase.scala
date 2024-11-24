@@ -11,29 +11,8 @@ import org.scalatest.matchers.should.Matchers
 
 trait CommonDFSuiteBase extends AnyFunSuite with DataFrameSuiteBase with Matchers {
 
-  lazy val lhsSchema: StructType = StructType(Array(
-    StructField("chromosome", StringType),
-    StructField("start",      LongType),
-    StructField("end",        LongType)
-  ))
-
-  lazy val rhsSchema: StructType = StructType(Array(
-    StructField("chromosome", StringType),
-    StructField("start",      LongType),
-    StructField("end",        LongType)
-  ))
-
-  protected def createDF(range: Long, schema: StructType, mapping: Long => Row): DataFrame = {
-    val rdd = spark.sparkContext
-      .parallelize(1L to range)
-      .map(mapping)
-
-    spark.createDataFrame(rdd, schema)
-  }
-
   protected def getJoinPredicate(lhsDF: DataFrame, rhsDF: DataFrame): Column =
-    (lhsDF("chromosome") === rhsDF("chromosome")) && (lhsDF("start") <= rhsDF("end")) && (rhsDF("start") <= lhsDF("end"))
-
+    (lhsDF("chromosome") === rhsDF("chromosome")) && (lhsDF("from") <= rhsDF("to")) && (rhsDF("from") <= lhsDF("to"))
 
   override def beforeAll(): Unit = {
     super.beforeAll()
