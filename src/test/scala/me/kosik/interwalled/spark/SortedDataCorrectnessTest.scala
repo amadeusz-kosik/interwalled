@@ -1,4 +1,4 @@
-package me.kosik.interwalled.acceptance
+package me.kosik.interwalled.spark
 
 import org.apache.spark.sql.{Column, DataFrame, Row}
 import org.scalatest.BeforeAndAfterEach

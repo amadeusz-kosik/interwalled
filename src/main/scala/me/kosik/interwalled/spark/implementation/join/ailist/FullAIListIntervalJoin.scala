@@ -39,7 +39,7 @@ object FullAIListIntervalJoin extends Serializable {
       partitionIterator.toArray
         .groupBy { case (partition, _) => partition }
         .map { case (partition, intervals) =>
-          val aiList = new AIListBuilder[InternalRow](10, 20, 10, 64) // FIXME: hardcoded values again
+          val aiList = new AIListBuilder[InternalRow]()
           intervals
             .map { case (_, values) => values }
             .foreach(aiList.put)

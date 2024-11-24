@@ -1,8 +1,9 @@
 package me.kosik.interwalled.ailist;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class AIList<T> {
+public class AIList<T> implements Serializable {
 
     // All intervals
     private final ArrayList<Interval<T>> intervals;

@@ -30,7 +30,6 @@ case class FullAIListIntervalJoinPlan(
       .execute()
       .map(AIListIntervalJoinPlanHelper.extractGroupingKeys(rhsKeyGenerator))
 
-
     FullAIListIntervalJoin
       .overlapJoin(sparkSession, lhsRDD, rhsRDD)
       .mapPartitions { partition => {

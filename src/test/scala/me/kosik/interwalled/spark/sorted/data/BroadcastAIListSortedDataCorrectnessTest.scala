@@ -1,6 +1,6 @@
-package me.kosik.interwalled.acceptance.sorted.data
+package me.kosik.interwalled.spark.sorted.data
 
-import me.kosik.interwalled.acceptance.SortedDataCorrectnessTest
+import me.kosik.interwalled.spark.SortedDataCorrectnessTest
 import me.kosik.interwalled.spark.strategy.AIListIntervalJoinStrategy
 import org.apache.spark.sql.functions.broadcast
 import org.apache.spark.sql.{Column, DataFrame}
