@@ -13,14 +13,22 @@ lazy val ailist = (project in file("ailist"))
     name := "ailist"
   )
 
+lazy val testDataGenerator = (project in file("test-data-generator"))
+  .settings(
+    name := "test-data-generator"
+  )
+
 lazy val root = (project in file("."))
-  .aggregate(ailist)
+  .aggregate(ailist, testDataGenerator)
   .dependsOn(ailist)
   .settings(
     name := "interwalled"
   )
 
 ailist / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test
+
+testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-core" % SparkVersion
+testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-sql"  % SparkVersion
 
 libraryDependencies += "org.apache.spark" %% "spark-core" % SparkVersion % "provided"
 libraryDependencies += "org.apache.spark" %% "spark-sql"  % SparkVersion % "provided"
