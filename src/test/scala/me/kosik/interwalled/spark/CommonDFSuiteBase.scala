@@ -1,9 +1,9 @@
-package me.kosik.interwalled.acceptance
+package me.kosik.interwalled.spark
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.apache.log4j.Level
 import org.apache.spark.SparkContext
-import org.apache.spark.sql.{DataFrame, Row}
+import org.apache.spark.sql.{Column, DataFrame, Row}
 import org.apache.spark.sql.types.{LongType, StringType, StructField, StructType}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.funsuite.AnyFunSuite
@@ -31,7 +31,7 @@ trait CommonDFSuiteBase extends AnyFunSuite with DataFrameSuiteBase with Matcher
     spark.createDataFrame(rdd, schema)
   }
 
-  protected def getJoinPredicate(lhsDF: DataFrame, rhsDF: DataFrame) =
+  protected def getJoinPredicate(lhsDF: DataFrame, rhsDF: DataFrame): Column =
     (lhsDF("chromosome") === rhsDF("chromosome")) && (lhsDF("start") <= rhsDF("end")) && (rhsDF("start") <= lhsDF("end"))
 
 

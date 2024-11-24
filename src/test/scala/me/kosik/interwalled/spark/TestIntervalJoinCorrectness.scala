@@ -1,5 +1,5 @@
 
-package me.kosik.interwalled.acceptance
+package me.kosik.interwalled.spark
 
 import me.kosik.interwalled.spark.strategy.AIListIntervalJoinStrategy
 import org.apache.spark.sql.functions.broadcast

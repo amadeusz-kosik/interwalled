@@ -1,6 +1,7 @@
 
-package me.kosik.interwalled.spark.benchmark.rdd.simple
+package me.kosik.interwalled.spark.benchmark.rdd.simple.benchmarks
 
+import me.kosik.interwalled.spark.benchmark.rdd.simple.{Benchmark, SimpleInterval}
 import org.apache.spark.rdd.RDD
 
 class BaselineBenchmark extends Benchmark {

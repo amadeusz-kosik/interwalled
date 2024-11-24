@@ -1,4 +1,4 @@
-package me.kosik.interwalled.acceptance
+package me.kosik.interwalled.spark
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import me.kosik.interwalled.spark.strategy.AIListIntervalJoinStrategy

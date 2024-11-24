@@ -1,5 +1,5 @@
 
-package me.kosik.interwalled
+package me.kosik.interwalled.spark
 
 import org.apache.log4j.Logger
 import org.apache.spark.sql.SparkSession
