@@ -34,7 +34,7 @@ public class AIList<T> implements Serializable {
         this.componentsMaxEnds = componentsMaxEnds;
     }
 
-    public OverlapIterator<T> overlapping(Interval<T> interval) {
+    public AIListIterator<T> overlapping(Interval<T> interval) {
         return new AIListIterator<>(interval.start(), interval.end(), this);
     }
 

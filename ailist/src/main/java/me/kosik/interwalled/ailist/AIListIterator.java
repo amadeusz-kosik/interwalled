@@ -2,7 +2,9 @@ package me.kosik.interwalled.ailist;
 
 import me.kosik.interwalled.ailist.utils.BinarySearch;
 
-public class AIListIterator<T> implements OverlapIterator<T>
+import java.util.Iterator;
+
+public class AIListIterator<T> implements Iterator<Interval<T>>
 {
     private final long queryStart;
     private final long queryEnd;
