@@ -12,12 +12,46 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup JDK
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 17
-      - name: Generate test data
-        run: sbt "testDataGenerator/run 100 one-to-one" "testDataGenerator/run 100 one-to-many" "testDataGenerator/run 100 one-to-all"
+
+      - name: Cache one-to-one test data
+        id: cache-one-to-one
+        uses: actions/cache@v4
+        with:
+          path: one-to-all
+          key: ${{ runner.os }}-one-to-one
+
+      - name: Cache one-to-many test data
+        id: cache-one-to-many
+        uses: actions/cache@v4
+        with:
+          path: one-to-all
+          key: ${{ runner.os }}-one-to-many
+
+      - name: Cache one-to-all test data
+        id: cache-one-to-all
+        uses: actions/cache@v4
+        with:
+          path: one-to-all
+          key: ${{ runner.os }}-one-to-all
+
+
+      - name: Generate test data - one-to-one
+        if: steps.cache-one-to-one.outputs.cache-hit != 'true'
+        run: sbt "testDataGenerator/run 100 one-to-one"
+
+      - name: Generate test data - one-to-many
+        if: steps.cache-one-to-many.outputs.cache-hit != 'true'
+        run: sbt "testDataGenerator/run 100 one-to-many"
+
+      - name: Generate test data - one-to-all
+        if: steps.cache-one-to-all.outputs.cache-hit != 'true'
+        run: sbt "testDataGenerator/run 100 one-to-all"
+
       - name: Build and Test
         run: sbt -v +test
