@@ -18,6 +18,6 @@ jobs:
           distribution: temurin
           java-version: 17
       - name: Generate test data
-        run: sbt testDataGenerator/run me.kosik.interwalled.test.data.generator.Main 100 one-on-one
+        run: sbt "testDataGenerator/run 100 one-to-one" "testDataGenerator/run 100 one-to-many" "testDataGenerator/run 100 one-to-all"
       - name: Build and Test
         run: sbt -v +test
