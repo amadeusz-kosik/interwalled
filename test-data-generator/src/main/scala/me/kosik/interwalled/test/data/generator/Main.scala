@@ -1,6 +1,6 @@
 package me.kosik.interwalled.test.data.generator
 
-import me.kosik.interwalled.test.data.generator.test.cases.{TestOneToAll, TestOneToOne}
+import me.kosik.interwalled.test.data.generator.test.cases.{TestOneToAll, TestOneToMany, TestOneToOne}
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.slf4j.LoggerFactory
 
@@ -12,11 +12,14 @@ object Main extends App {
     .master("local[4]")
     .getOrCreate()
 
-  val testDataSize = 100_000_000
+  val testDataSize = args(0).toLong
 
-  val testCase = args.head match {
+  val testCase = args(1) match {
     case "one-to-one" =>
       TestOneToOne(testDataSize)
+
+    case "one-to-many" =>
+      TestOneToMany(testDataSize, 4)
 
     case "one-to-all" =>
       TestOneToAll(testDataSize)
@@ -26,9 +29,9 @@ object Main extends App {
       sys.exit(1)
   }
 
-  write(testCase.generateLHS, "in-lhs")
-  write(testCase.generateRHS, "in-rhs")
-  write(testCase.generateResult, "out-result")
+  write(testCase.generateLHS,     s"$testDataSize/in-lhs")
+  write(testCase.generateRHS,     s"$testDataSize/in-rhs")
+  write(testCase.generateResult,  s"$testDataSize/out-result")
 
 
   private def write[T](dataset: Dataset[T], datasetName: String): Unit = {

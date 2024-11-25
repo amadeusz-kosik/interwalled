@@ -8,13 +8,8 @@ case class TestOneToAll(rowsCount: Long) extends TestCase {
 
   override def testCaseName: String = "one-to-all"
 
-  override def generateLHS(implicit spark: SparkSession): Dataset[model.TestDataRow] = {
-    import spark.implicits._
-
-    spark.sparkContext.range(1L, rowsCount + 1)
-      .map(i => TestDataRow(i, i, "CH1"))
-      .toDS()
-  }
+  override def generateLHS(implicit spark: SparkSession): Dataset[model.TestDataRow] =
+    generateLinear(rowsCount)
 
   override def generateRHS(implicit spark: SparkSession): Dataset[model.TestDataRow] = {
     import spark.implicits._

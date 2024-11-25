@@ -9,18 +9,10 @@ case class TestOneToOne(rowsCount: Long) extends TestCase {
   override def testCaseName: String = "one-to-one"
 
   override def generateLHS(implicit spark: SparkSession): Dataset[model.TestDataRow] =
-    generate(spark)
+    generateLinear(rowsCount)
 
   override def generateRHS(implicit spark: SparkSession): Dataset[model.TestDataRow] =
-    generate(spark)
-
-  private def generate(implicit spark: SparkSession) = {
-    import spark.implicits._
-
-    spark.sparkContext.range(1L, rowsCount + 1)
-      .map(i => TestDataRow(i, i, "CH1"))
-      .toDS()
-  }
+    generateLinear(rowsCount)
 
   override def generateResult(implicit spark: SparkSession): Dataset[model.TestResultRow] = {
     import spark.implicits._
