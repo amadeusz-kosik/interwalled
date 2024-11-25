@@ -27,6 +27,8 @@ lazy val root = (project in file("."))
 
 ailist / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test
 
+testDataGenerator / mainClass in (Compile, run) := Some("me.kosik.interwalled.test.data.generator.Main")
+testDataGenerator / libraryDependencies += "org.apache.hadoop" % "hadoop-client" % "3.3.4"
 testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-core" % SparkVersion
 testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-sql"  % SparkVersion
 
