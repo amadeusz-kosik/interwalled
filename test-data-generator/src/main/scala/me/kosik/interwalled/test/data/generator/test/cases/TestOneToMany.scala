@@ -15,7 +15,7 @@ case class TestOneToMany(lhsRowsCount: Long, lhsPerRhs: Int) extends TestCase {
     import spark.implicits._
 
     spark.sparkContext.range(1L, lhsRowsCount, step = lhsPerRhs)
-      .map(i => TestDataRow(i, i + lhsPerRhs - 1, "CH1"))
+      .map(i => TestDataRow(i, i + lhsPerRhs - 1, V_KEY, V_VALUE))
       .toDS()
   }
 
@@ -24,9 +24,11 @@ case class TestOneToMany(lhsRowsCount: Long, lhsPerRhs: Int) extends TestCase {
 
     spark.sparkContext.range(1L, lhsRowsCount, step = lhsPerRhs)
       .flatMap { iRHS =>
-        (0 until lhsPerRhs).map { iLHS =>
-          TestResultRow(iLHS + iRHS, iLHS + iRHS, iRHS, iRHS + lhsPerRhs - 1, "CH1")
-        }
+        (0 until lhsPerRhs).map { iLHS => TestResultRow(
+          TestDataRow(iLHS + iRHS, iLHS + iRHS, V_KEY, V_VALUE),
+          TestDataRow(iRHS, iRHS + lhsPerRhs - 1, V_KEY, V_VALUE),
+          V_KEY
+        )}
       }
       .toDS()
   }

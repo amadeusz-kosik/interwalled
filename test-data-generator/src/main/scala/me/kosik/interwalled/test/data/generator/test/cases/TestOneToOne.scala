@@ -18,7 +18,11 @@ case class TestOneToOne(rowsCount: Long) extends TestCase {
     import spark.implicits._
 
     spark.sparkContext.range(1L, rowsCount + 1)
-      .map(i => TestResultRow(i, i, i, i, "CH1"))
+      .map(i => TestResultRow(
+        TestDataRow(i, i, V_KEY, V_VALUE),
+        TestDataRow(i, i, V_KEY, V_VALUE),
+        V_KEY
+      ))
       .toDS()
   }
 }

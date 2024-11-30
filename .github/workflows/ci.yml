@@ -19,18 +19,8 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Generate test data - one-to-one
-        if: steps.cache-one-to-one.outputs.cache-hit != 'true'
-        run: sbt "testDataGenerator/run 100 one-to-one"
-
-      - name: Generate test data - one-to-many
-        if: steps.cache-one-to-many.outputs.cache-hit != 'true'
-        run: sbt "testDataGenerator/run 100 one-to-many"
-
-      - name: Generate test data - one-to-all
-        if: steps.cache-one-to-all.outputs.cache-hit != 'true'
-        run: sbt "testDataGenerator/run 100 one-to-all"
-
+      - name: Generate test data
+        run: sbt "testDataGenerator/run"
 
       - name: Build and Test
         run: sbt -v +test
