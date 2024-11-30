@@ -1,22 +1,41 @@
 package me.kosik.interwalled.spark.join
 
-import com.holdenkarau.spark.testing.{DataFrameSuiteBase, DatasetSuiteBase}
+import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import me.kosik.interwalled.domain.{Interval, IntervalsPair}
 import org.apache.log4j.Level
-import org.apache.spark.sql.Dataset
-import org.apache.spark.sql.{functions => f}
+import org.apache.spark.sql.{DataFrame, Dataset}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite
-import org.scalatest.matchers.should.Matchers
 
 
-abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameSuiteBase with Matchers with BeforeAndAfterEach {
+abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameSuiteBase with BeforeAndAfterEach {
 
-  def inputSizes: Array[Long] = Array(100L)
+  def inputSizes: Array[Long] = Array(100L, 1_000L)
 
   def inputSuites: Array[String] = Array("one-to-all", "one-to-many", "one-to-one")
 
   def intervalJoin: IntervalJoin
+
+  // ---------------------------------------------------------------------------------------------------------------- //
+
+  def assertDataEqual(expected: Dataset[IntervalsPair[String]], actual: Dataset[IntervalsPair[String]]): Unit = {
+    import expected.sparkSession.implicits._
+
+    def prepareResult(data: Dataset[IntervalsPair[String]]): DataFrame = data
+      .toDF()
+      .select(
+        $"lhs.from" .as("lhs_from"),
+        $"lhs.to"   .as("lhs_to"),
+        $"lhs.key"  .as("lhs_key"),
+        $"lhs.value".as("lhs_value"),
+        $"rhs.from" .as("rhs_from"),
+        $"rhs.to"   .as("rhs_to"),
+        $"rhs.key"  .as("rhs_key"),
+        $"rhs.value".as("rhs_value"),
+      )
+
+    assertDataFrameDataEquals(expected = prepareResult(expected), result = prepareResult(actual))
+  }
 
   // ---------------------------------------------------------------------------------------------------------------- //
 
@@ -31,40 +50,19 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
 
       def loadInput(datasetName: String): Dataset[Interval[String]] =
         spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
-          .select(
-            $"chromosome".as("key"),
-            $"from",
-            $"to",
-            f.lit("CONST_VALUE").as("value")
-          )
           .as[Interval[String]]
 
       def loadResult(datasetName: String): Dataset[IntervalsPair[String]] =
         spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
-          .select(
-            $"chromosome".as("key"),
-            f.struct(
-              $"chromosome".as("key"),
-              $"fromLHS".as("from"),
-              $"toLHS".as("to"),
-              f.lit("CONST_VALUE").as("value")
-            ).as("lhs"),
-            f.struct(
-              $"chromosome".as("key"),
-              $"fromRHS".as("from"),
-              $"toRHS".as("to"),
-              f.lit("CONST_VALUE").as("value")
-            ).as("rhs")
-          )
           .as[IntervalsPair[String]]
 
       val lhs = loadInput("in-lhs").as[Interval[String]]
       val rhs = loadInput("in-rhs").as[Interval[String]]
 
       val expected = loadResult("out-result")
-      val actual = intervalJoin.join(lhs, rhs)
+      val actual   = intervalJoin.join(lhs, rhs)
 
-      assertDataFrameDataEquals(expected = expected.toDF(), result = actual.toDF())
+      assertDataEqual(expected = expected, actual = actual)
     }
   }}
 }

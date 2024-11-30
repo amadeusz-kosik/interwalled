@@ -11,27 +11,16 @@ trait TestCase {
 
   def generateRHS(implicit spark: SparkSession): Dataset[TestDataRow]
 
-  def generateResult(implicit spark: SparkSession): Dataset[TestResultRow] = {
-    import spark.implicits._
+  def generateResult(implicit spark: SparkSession): Dataset[TestResultRow]
 
-    val lhsData = generateLHS.collect()
-    val rhsData = generateRHS.collect()
-
-    lhsData
-      .flatMap(lhs => rhsData
-        .filter(rhs => lhs.start <= rhs.end && rhs.start <= lhs.end && lhs.chromosome == rhs.chromosome)
-        .map(rhs => TestResultRow(lhs.start, lhs.end, rhs.start, rhs.end, lhs.chromosome))
-      )
-      .toSeq
-      .toDS()
-  }
-
+  final val V_KEY   : String = "CH1"
+  final val V_VALUE : String = "CONST_VALUE"
 
   final protected def generateLinear(rowsCount: Long)(implicit spark: SparkSession): Dataset[TestDataRow] = {
     import spark.implicits._
 
     spark.sparkContext.range(1L, rowsCount + 1)
-      .map(i => TestDataRow(i, i, "CH1"))
+      .map(i => TestDataRow(i, i, V_KEY, V_VALUE))
       .toDS()
   }
 }

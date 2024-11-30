@@ -1,3 +1,3 @@
 package me.kosik.interwalled.domain.test
 
-case class TestResultRow(startLHS: Long, endLHS: Long, startRHS: Long, endRHS: Long, chromosome: String)
+case class TestResultRow(lhs: TestDataRow, rhs: TestDataRow, key: String)
