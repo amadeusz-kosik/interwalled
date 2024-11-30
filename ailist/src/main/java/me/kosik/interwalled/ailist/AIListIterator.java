@@ -1,6 +1,7 @@
 package me.kosik.interwalled.ailist;
 
 import me.kosik.interwalled.ailist.utils.BinarySearch;
+import me.kosik.interwalled.domain.Interval;
 
 import java.util.Iterator;
 
@@ -67,7 +68,7 @@ public class AIListIterator<T> implements Iterator<Interval<T>>
 
         // Shortcut for completely disjoint intervals.
         //  2/ if first_component.min > query.end, skip
-        if(this.parentAIList.getInterval(currentComponentStartIndex).start() > queryEnd) {
+        if(this.parentAIList.getInterval(currentComponentStartIndex).from() > queryEnd) {
             checkNextComponent();
             return;
         }
@@ -108,7 +109,7 @@ public class AIListIterator<T> implements Iterator<Interval<T>>
         while(_nextIntervalIndex >= currentComponentStartIndex) {
             _nextInterval = parentAIList.getInterval(_nextIntervalIndex);
 
-            if (_nextInterval.start() <= queryEnd && _nextInterval.end() >= queryStart) {
+            if (_nextInterval.from() <= queryEnd && _nextInterval.to() >= queryStart) {
                 break;
             } else if(intervalMaxEnd(_nextIntervalIndex) < queryStart) {
                 _nextInterval = null;

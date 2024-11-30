@@ -1,5 +1,7 @@
 package me.kosik.interwalled.ailist;
 
+import me.kosik.interwalled.domain.Interval;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -35,7 +37,7 @@ public class AIList<T> implements Serializable {
     }
 
     public AIListIterator<T> overlapping(Interval<T> interval) {
-        return new AIListIterator<>(interval.start(), interval.end(), this);
+        return new AIListIterator<>(interval.from(), interval.to(), this);
     }
 
     /* OverlapIterator interface. */
@@ -93,9 +95,9 @@ public class AIList<T> implements Serializable {
                 Interval<T> interval = intervals.get(intervalRealIndex);
 
                 sb.append("<");
-                sb.append(interval.start());
+                sb.append(interval.from());
                 sb.append("- ");
-                sb.append(interval.end());
+                sb.append(interval.to());
                 sb.append("; ");
                 sb.append(getIntervalMaxEnd(intervalRealIndex));
                 sb.append(">");

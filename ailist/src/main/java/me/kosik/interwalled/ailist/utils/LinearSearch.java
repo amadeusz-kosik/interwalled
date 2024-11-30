@@ -1,6 +1,6 @@
 package me.kosik.interwalled.ailist.utils;
 
-import me.kosik.interwalled.ailist.Interval;
+import me.kosik.interwalled.domain.Interval;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public class LinearSearch {
             final long queryEnd
     ) {
         for(int index = rightBound; index >= leftBound; -- index) {
-            if(intervals.get(index).start() <= queryEnd)
+            if(intervals.get(index).from() <= queryEnd)
                 return index;
         }
 

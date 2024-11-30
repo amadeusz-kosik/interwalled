@@ -8,19 +8,20 @@ val SparkVersion            = "3.5.3"
 val SparkTestingBaseVersion = "2.0.1"
 
 
+lazy val intervalDomain = (project in file("domain"))
+  .settings(name := "domain")
+
 lazy val ailist = (project in file("ailist"))
-  .settings(
-    name := "ailist"
-  )
+  .settings(name := "ailist")
+  .dependsOn(intervalDomain)
 
 lazy val testDataGenerator = (project in file("test-data-generator"))
-  .settings(
-    name := "test-data-generator"
-  )
+  .settings(name := "test-data-generator")
+  .dependsOn(intervalDomain)
 
 lazy val root = (project in file("."))
   .aggregate(ailist, testDataGenerator)
-  .dependsOn(ailist)
+  .dependsOn(ailist, intervalDomain)
   .settings(
     name := "interwalled"
   )
