@@ -1,7 +1,8 @@
 package me.kosik.interwalled.test.data.generator.test.cases
 
-import me.kosik.interwalled.test.data.generator.model._
+import me.kosik.interwalled.domain.test.{TestDataRow, TestResultRow}
 import org.apache.spark.sql.{Dataset, SparkSession}
+
 
 trait TestCase {
   def testCaseName: String
@@ -18,8 +19,8 @@ trait TestCase {
 
     lhsData
       .flatMap(lhs => rhsData
-        .filter(rhs => lhs.from <= rhs.to && rhs.from <= lhs.to && lhs.chromosome == rhs.chromosome)
-        .map(rhs => TestResultRow(lhs.from, lhs.to, rhs.from, rhs.to, lhs.chromosome))
+        .filter(rhs => lhs.start <= rhs.end && rhs.start <= lhs.end && lhs.chromosome == rhs.chromosome)
+        .map(rhs => TestResultRow(lhs.start, lhs.end, rhs.start, rhs.end, lhs.chromosome))
       )
       .toSeq
       .toDS()

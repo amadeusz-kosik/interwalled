@@ -1,8 +1,7 @@
 package me.kosik.interwalled.ailist.utils;
 
-import me.kosik.interwalled.ailist.Interval;
-
 import java.util.ArrayList;
+import me.kosik.interwalled.domain.Interval;
 
 
 public class BinarySearch {
@@ -15,13 +14,13 @@ public class BinarySearch {
     ) {
         // EDGE CASE:
         // All elements are less than the {queryEnd}:
-        if(intervals.get(rightBound).end() < queryEnd) {
+        if(intervals.get(rightBound).to() < queryEnd) {
             return rightBound;
         }
 
         // EDGE CASE:
         // All elements are greater than the {queryEnd}:
-        if(intervals.get(leftBound).start() > queryEnd) {
+        if(intervals.get(leftBound).from() > queryEnd) {
             return -1;
         }
 
@@ -32,7 +31,7 @@ public class BinarySearch {
         while(rightIndex - leftIndex > 15) {
             int middleIndex = (leftIndex + rightIndex) / 2;
 
-            if(intervals.get(middleIndex).start() >= queryEnd) {
+            if(intervals.get(middleIndex).from() >= queryEnd) {
                 // Intervals' left edge is further right than the query's right edge.
                 //  The middleIndex is too far right (will not find anything there) and the right side of the array
                 //  does not contain any valid queries, skip.

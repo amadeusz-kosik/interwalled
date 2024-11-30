@@ -1,5 +1,6 @@
 package me.kosik.interwalled.ailist
 
+import me.kosik.interwalled.domain.Interval
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 
@@ -8,31 +9,31 @@ class ListSplittingTest extends AnyFunSuite with Matchers {
 
   test("Splitting list into components test: basic splitting intervals") {
     val intervals = Array(
-      Interval(  1,  11, "NIL"),
-      Interval(  1,  12, "NIL"),
-      Interval(  2,  13, "NIL"),
-      Interval(  2,  14, "NIL"),
-      Interval(  3,  15, "NIL"),
+      Interval("CH1",   1,  11, "NIL"),
+      Interval("CH1",   1,  12, "NIL"),
+      Interval("CH1",   2,  13, "NIL"),
+      Interval("CH1",   2,  14, "NIL"),
+      Interval("CH1",   3,  15, "NIL"),
 
-      Interval(  4,  64, "NIL"),
+      Interval("CH1",   4,  64, "NIL"),
 
-      Interval(  4,  12, "NIL"),
-      Interval(  5,  10, "NIL"),
-      Interval(  6,  12, "NIL"),
-      Interval(  6,  14, "NIL"),
-      Interval(  7,  18, "NIL"),
+      Interval("CH1",   4,  12, "NIL"),
+      Interval("CH1",   5,  10, "NIL"),
+      Interval("CH1",   6,  12, "NIL"),
+      Interval("CH1",   6,  14, "NIL"),
+      Interval("CH1",   7,  18, "NIL"),
 
-      Interval(  8,  64, "NIL"),
-      Interval(  8,  62, "NIL"),
-      Interval(  9,  63, "NIL"),
-      Interval(  9,  61, "NIL"),
-      Interval( 10,  60, "NIL"),
+      Interval("CH1",   8,  64, "NIL"),
+      Interval("CH1",   8,  62, "NIL"),
+      Interval("CH1",   9,  63, "NIL"),
+      Interval("CH1",   9,  61, "NIL"),
+      Interval("CH1",  10,  60, "NIL"),
 
-      Interval( 10,  33, "NIL"),
-      Interval( 11,  32, "NIL"),
-      Interval( 12,  33, "NIL"),
-      Interval( 12,  32, "NIL"),
-      Interval( 15,  33, "NIL"),
+      Interval("CH1",  10,  33, "NIL"),
+      Interval("CH1",  11,  32, "NIL"),
+      Interval("CH1",  12,  33, "NIL"),
+      Interval("CH1",  12,  32, "NIL"),
+      Interval("CH1",  15,  33, "NIL"),
     )
 
     val aiList = buildList(intervals, new AIListConfig(10, 5, 5, 3))
@@ -43,31 +44,31 @@ class ListSplittingTest extends AnyFunSuite with Matchers {
 
   test("Splitting list into components test - no splitting intervals due to minimum component length") {
     val intervals = Array(
-      Interval(  1,  11, "NIL"),
-      Interval(  1,  12, "NIL"),
-      Interval(  2,  13, "NIL"),
-      Interval(  2,  14, "NIL"),
-      Interval(  3,  15, "NIL"),
+      Interval("CH1",   1,  11, "NIL"),
+      Interval("CH1",   1,  12, "NIL"),
+      Interval("CH1",   2,  13, "NIL"),
+      Interval("CH1",   2,  14, "NIL"),
+      Interval("CH1",   3,  15, "NIL"),
 
-      Interval(  4,  64, "NIL"),
+      Interval("CH1",   4,  64, "NIL"),
 
-      Interval(  4,  12, "NIL"),
-      Interval(  5,  10, "NIL"),
-      Interval(  6,  12, "NIL"),
-      Interval(  6,  14, "NIL"),
-      Interval(  7,  18, "NIL"),
+      Interval("CH1",   4,  12, "NIL"),
+      Interval("CH1",   5,  10, "NIL"),
+      Interval("CH1",   6,  12, "NIL"),
+      Interval("CH1",   6,  14, "NIL"),
+      Interval("CH1",   7,  18, "NIL"),
 
-      Interval(  8,  64, "NIL"),
-      Interval(  8,  62, "NIL"),
-      Interval(  9,  63, "NIL"),
-      Interval(  9,  61, "NIL"),
-      Interval( 10,  60, "NIL"),
+      Interval("CH1",   8,  64, "NIL"),
+      Interval("CH1",   8,  62, "NIL"),
+      Interval("CH1",   9,  63, "NIL"),
+      Interval("CH1",   9,  61, "NIL"),
+      Interval("CH1",  10,  60, "NIL"),
 
-      Interval( 10,  33, "NIL"),
-      Interval( 11,  32, "NIL"),
-      Interval( 12,  33, "NIL"),
-      Interval( 12,  32, "NIL"),
-      Interval( 15,  33, "NIL"),
+      Interval("CH1",  10,  33, "NIL"),
+      Interval("CH1",  11,  32, "NIL"),
+      Interval("CH1",  12,  33, "NIL"),
+      Interval("CH1",  12,  32, "NIL"),
+      Interval("CH1",  15,  33, "NIL"),
     )
 
     val aiList = buildList(intervals, new AIListConfig(10, 5, 5, 25))
@@ -78,31 +79,31 @@ class ListSplittingTest extends AnyFunSuite with Matchers {
 
   test("Splitting list into components test - no splitting intervals due to maximum component count") {
     val intervals = Array(
-      Interval(  1,  11, "NIL"),
-      Interval(  1,  12, "NIL"),
-      Interval(  2,  13, "NIL"),
-      Interval(  2,  14, "NIL"),
-      Interval(  3,  15, "NIL"),
+      Interval("CH1",   1,  11, "NIL"),
+      Interval("CH1",   1,  12, "NIL"),
+      Interval("CH1",   2,  13, "NIL"),
+      Interval("CH1",   2,  14, "NIL"),
+      Interval("CH1",   3,  15, "NIL"),
 
-      Interval(  4,  64, "NIL"),
+      Interval("CH1",   4,  64, "NIL"),
 
-      Interval(  4,  12, "NIL"),
-      Interval(  5,  10, "NIL"),
-      Interval(  6,  12, "NIL"),
-      Interval(  6,  14, "NIL"),
-      Interval(  7,  18, "NIL"),
+      Interval("CH1",   4,  12, "NIL"),
+      Interval("CH1",   5,  10, "NIL"),
+      Interval("CH1",   6,  12, "NIL"),
+      Interval("CH1",   6,  14, "NIL"),
+      Interval("CH1",   7,  18, "NIL"),
 
-      Interval(  8,  64, "NIL"),
-      Interval(  8,  62, "NIL"),
-      Interval(  9,  63, "NIL"),
-      Interval(  9,  61, "NIL"),
-      Interval( 10,  60, "NIL"),
+      Interval("CH1",   8,  64, "NIL"),
+      Interval("CH1",   8,  62, "NIL"),
+      Interval("CH1",   9,  63, "NIL"),
+      Interval("CH1",   9,  61, "NIL"),
+      Interval("CH1",  10,  60, "NIL"),
 
-      Interval( 10,  33, "NIL"),
-      Interval( 11,  32, "NIL"),
-      Interval( 12,  33, "NIL"),
-      Interval( 12,  32, "NIL"),
-      Interval( 15,  33, "NIL"),
+      Interval("CH1",  10,  33, "NIL"),
+      Interval("CH1",  11,  32, "NIL"),
+      Interval("CH1",  12,  33, "NIL"),
+      Interval("CH1",  12,  32, "NIL"),
+      Interval("CH1",  15,  33, "NIL"),
     )
 
     val aiList = buildList(intervals, new AIListConfig(1, 5, 5, 3))

@@ -1,5 +1,7 @@
 package me.kosik.interwalled.ailist;
 
+import me.kosik.interwalled.domain.Interval;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,7 +20,7 @@ public class AIListBuilder<T> implements Serializable {
     }
 
     public AIList<T> build() {
-        intervals.sort(Comparator.comparingLong(Interval::start));
+        intervals.sort(Comparator.comparingLong(Interval::from));
 
         int componentsCount = 0;
         ArrayList<Integer> componentsLengths = new ArrayList<>();
@@ -64,7 +66,7 @@ public class AIListBuilder<T> implements Serializable {
 
                         // If current interval is reaching further than the checked
                         //  one, increment coverage
-                        if (intervals.get(lookaheadIndex).end() <= currentInterval.end())
+                        if (intervals.get(lookaheadIndex).to() <= currentInterval.to())
                             coverage++;
 
                         // If enough intervals are already covered, skip browsing the rest.
@@ -109,11 +111,11 @@ public class AIListBuilder<T> implements Serializable {
             final int componentStart = componentsStartIndexes.get(i);
             final int componentEnd   = componentStart + componentsLengths.get(i);
 
-            long maxEnd = intervals.get(componentStart).end();
+            long maxEnd = intervals.get(componentStart).to();
             componentsMaxEnds.add(maxEnd);
 
             for (int j = componentStart + 1; j < componentEnd; j ++) {
-                maxEnd = Math.max(intervals.get(j).end(), maxEnd);
+                maxEnd = Math.max(intervals.get(j).to(), maxEnd);
                 componentsMaxEnds.add(maxEnd);
             }
         }

@@ -1,7 +1,9 @@
 package me.kosik.interwalled
 
+import me.kosik.interwalled.domain.Interval
 import org.scalatest.Assertion
 import org.scalatest.matchers.should.Matchers
+
 
 package object ailist {
 
@@ -24,7 +26,7 @@ package object ailist {
     }
 
     def buildExpected[T](leftIntervals: Seq[Interval[T]], rightIntervals: Seq[Interval[T]]): JoinResult[T] = {
-      def isOverlapping(lhs: Interval[T], rhs: Interval[T]): Boolean = lhs.end >= rhs.start && rhs.end >= lhs.start
+      def isOverlapping(lhs: Interval[T], rhs: Interval[T]): Boolean = lhs.to >= rhs.from && rhs.to >= lhs.from
 
       JoinResult(leftIntervals.flatMap { leftInterval =>
         rightIntervals
