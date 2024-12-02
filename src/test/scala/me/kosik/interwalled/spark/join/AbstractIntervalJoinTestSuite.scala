@@ -2,13 +2,11 @@ package me.kosik.interwalled.spark.join
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import me.kosik.interwalled.domain.{Interval, IntervalsPair}
-import org.apache.log4j.Level
 import org.apache.spark.sql.{DataFrame, Dataset}
-import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite
 
 
-abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameSuiteBase with BeforeAndAfterEach {
+abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameSuiteBase {
 
   def inputSizes: Array[Long] = Array(100L, 1_000L)
 
@@ -40,11 +38,6 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
   }
 
   // ---------------------------------------------------------------------------------------------------------------- //
-
-  override def beforeAll(): Unit = {
-    super.beforeAll()
-    sc.setLogLevel(Level.WARN.toString)
-  }
 
   inputSizes foreach { inputSize => inputSuites.foreach { inputSuite =>
     inputPartitions foreach { case (lhsPartitions, rhsPartitions) =>
