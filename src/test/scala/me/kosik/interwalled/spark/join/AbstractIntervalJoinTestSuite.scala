@@ -12,6 +12,8 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
 
   def inputSizes: Array[Long] = Array(100L, 1_000L)
 
+  def inputPartitions: Array[(Int, Int)] = Array((1, 1), (4, 4))
+
   def inputSuites: Array[String] = Array("one-to-all", "one-to-many", "one-to-one")
 
   def intervalJoin: IntervalJoin
@@ -45,24 +47,27 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
   }
 
   inputSizes foreach { inputSize => inputSuites.foreach { inputSuite =>
-    test(s"$inputSize rows, $inputSuite") {
-      import spark.implicits._
+    inputPartitions foreach { case (lhsPartitions, rhsPartitions) =>
 
-      def loadInput(datasetName: String): Dataset[Interval[String]] =
-        spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
-          .as[Interval[String]]
+      test(s"$inputSize rows, $inputSuite, $lhsPartitions x $rhsPartitions partitions") {
+        import spark.implicits._
 
-      def loadResult(datasetName: String): Dataset[IntervalsPair[String]] =
-        spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
-          .as[IntervalsPair[String]]
+        def loadInput(datasetName: String): Dataset[Interval[String]] =
+          spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
+            .as[Interval[String]]
 
-      val lhs = loadInput("in-lhs").as[Interval[String]]
-      val rhs = loadInput("in-rhs").as[Interval[String]]
+        def loadResult(datasetName: String): Dataset[IntervalsPair[String]] =
+          spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
+            .as[IntervalsPair[String]]
 
-      val expected = loadResult("out-result")
-      val actual   = intervalJoin.join(lhs, rhs)
+        val lhs = loadInput("in-lhs").as[Interval[String]].repartition(lhsPartitions)
+        val rhs = loadInput("in-rhs").as[Interval[String]].repartition(rhsPartitions)
 
-      assertDataEqual(expected = expected, actual = actual)
+        val expected = loadResult("out-result")
+        val actual = intervalJoin.join(lhs, rhs)
+
+        assertDataEqual(expected = expected, actual = actual)
+      }
     }
   }}
 }
