@@ -26,6 +26,8 @@ lazy val root = (project in file("."))
     name := "interwalled"
   )
 
+parallelExecution in Test := false
+
 ailist / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test
 
 testDataGenerator / mainClass in (Compile, run) := Some("me.kosik.interwalled.test.data.generator.Main")
@@ -36,4 +38,5 @@ testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-sql"  % 
 libraryDependencies += "org.apache.spark" %% "spark-core" % SparkVersion % "provided"
 libraryDependencies += "org.apache.spark" %% "spark-sql"  % SparkVersion % "provided"
 
+libraryDependencies += "org.apache.hadoop" % "hadoop-client" % "3.3.4" % "test"
 libraryDependencies += "com.holdenkarau"  %% "spark-testing-base" % f"${SparkVersion}_${SparkTestingBaseVersion}" % "test"
