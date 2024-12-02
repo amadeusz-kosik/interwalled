@@ -13,7 +13,7 @@ Running on newer Java versions requires adding `--add-exports java.base/sun.nio.
     as a JVM option. 
 
 ## External links
-- [Original me.kosik.interwalled.ailist.AIList article](https://academic.oup.com/bioinformatics/article/35/23/4907/5509521)
-- [Original me.kosik.interwalled.ailist.AIList implementation on GitHub](https://github.com/databio/me.kosik.interwalled.ailist.AIList/)
+- [Original AIList article](https://academic.oup.com/bioinformatics/article/35/23/4907/5509521)
+- [Original AIList implementation on GitHub](https://github.com/databio/me.kosik.interwalled.ailist.AIList/)
 - [IITII implementation on Apache Spark - 1](https://github.com/Wychowany/mgr-iitii/tree/main)
 - [IITII implementation on Apache Spark - 2](https://github.com/Wychowany/mgr-code/tree/main)
