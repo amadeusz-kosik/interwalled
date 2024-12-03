@@ -1,8 +1,9 @@
 package me.kosik.interwalled.spark.join
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
-import me.kosik.interwalled.domain.{Interval, IntervalsPair}
+import me.kosik.interwalled.domain.{Interval, IntervalColumns, IntervalsPair}
 import org.apache.spark.sql.{DataFrame, Dataset}
+import org.apache.spark.sql.{functions => f}
 import org.scalatest.funsuite.AnyFunSuite
 
 
@@ -52,6 +53,32 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
         def loadResult(datasetName: String): Dataset[IntervalsPair[String]] =
           spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
             .as[IntervalsPair[String]]
+
+        val lhs = loadInput("in-lhs").as[Interval[String]].repartition(lhsPartitions)
+        val rhs = loadInput("in-rhs").as[Interval[String]].repartition(rhsPartitions)
+
+        val expected = loadResult("out-result")
+        val actual = intervalJoin.join(lhs, rhs)
+
+        assertDataEqual(expected = expected, actual = actual)
+      }
+
+      test(s"Multiple keys, ${inputSize * 4} rows, $inputSuite, $lhsPartitions x $rhsPartitions partitions") {
+        import spark.implicits._
+
+        def loadInput(datasetName: String): Dataset[Interval[String]] =
+          spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
+            .drop(IntervalColumns.KEY)
+            .withColumn(IntervalColumns.KEY, f.explode(f.array(f.lit("CH-1"), f.lit("CH-2"), f.lit("CH-3"), f.lit("CH-4"))))
+            .as[Interval[String]]
+
+
+        def loadResult(datasetName: String): Dataset[IntervalsPair[String]] =
+          spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
+            .as[IntervalsPair[String]]
+            .flatMap(pair => Array("CH-1", "CH-2", "CH-3", "CH-4").map {
+              key => pair.copy(key = key, lhs = pair.lhs.copy(key = key), rhs = pair.rhs.copy(key = key))
+            })
 
         val lhs = loadInput("in-lhs").as[Interval[String]].repartition(lhsPartitions)
         val rhs = loadInput("in-rhs").as[Interval[String]].repartition(rhsPartitions)
