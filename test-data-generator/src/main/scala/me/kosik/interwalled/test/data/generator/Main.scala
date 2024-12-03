@@ -12,7 +12,14 @@ object Main extends App {
     .master("local[4]")
     .getOrCreate()
 
-  val testDataSizes = Array(100L, 1_000L)
+  val testDataSizes: Array[Long] = {
+    if(sys.env.getOrElse("INTERWALLED_RUN_100K", "FALSE") != "FALSE")
+      Array(100L, 1_000L, 10_000L, 100_000L)
+    else if(sys.env.getOrElse("INTERWALLED_RUN_10K", "FALSE") != "FALSE")
+      Array(100L, 1_000L, 10_000L)
+    else
+      Array(100L, 1_000L)
+  }
   val testCaseNames = Array("one-to-one", "one-to-many", "one-to-all")
 
   testDataSizes foreach { testDataSize => testCaseNames foreach { testCaseName =>
