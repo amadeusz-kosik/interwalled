@@ -9,7 +9,14 @@ import org.scalatest.funsuite.AnyFunSuite
 
 abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameSuiteBase {
 
-  def inputSizes: Array[Long] = Array(100L, 1_000L)
+  def inputSizes: Array[Long] = {
+    if(sys.env.getOrElse("INTERWALLED_RUN_100K", "FALSE") != "FALSE")
+      Array(100L, 1_000L, 10_000L, 100_000L)
+    else if(sys.env.getOrElse("INTERWALLED_RUN_10K", "FALSE") != "FALSE")
+      Array(100L, 1_000L, 10_000L)
+    else
+      Array(100L, 1_000L)
+  }
 
   def inputPartitions: Array[(Int, Int)] = Array((1, 1), (4, 4))
 
