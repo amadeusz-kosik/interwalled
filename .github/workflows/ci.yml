@@ -19,6 +19,9 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: Setup SBT
+        uses: sbt/setup-sbt@v1
+
       - name: Generate test data
         run: sbt "testDataGenerator/run"
 
