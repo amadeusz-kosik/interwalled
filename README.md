@@ -25,7 +25,7 @@ Execution measured for 10_000 buckets, Spark in _local[16]_ mode, 32G memory for
 | BroadcastAIListIntervalJoin   |                | Total size of serialized results of 15 tasks (1083.2 MiB) is bigger |
 |                               |                |  than spark.driver.maxResultSize (1024.0 MiB)                       |
 +-------------------------------+----------------+---------------------------------------------------------------------+
-| PartitionedAIListIntervalJoin |      51 802 ms |                                                                     |
+| PartitionedAIListIntervalJoin |      78 807 ms |                                                                     |
 +-------------------------------+----------------+---------------------------------------------------------------------+
 | SparkNativeIntervalJoin       |     442 937 ms |                                                                     |
 +-------------------------------+----------------+---------------------------------------------------------------------+
