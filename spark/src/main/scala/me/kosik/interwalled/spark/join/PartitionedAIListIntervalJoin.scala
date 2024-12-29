@@ -8,7 +8,6 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{Dataset, Encoder, Encoders, SparkSession}
 
 import scala.annotation.nowarn
-import scala.collection.mutable
 import scala.jdk.CollectionConverters.IteratorHasAsScala
 import scala.reflect.runtime.universe._
 
@@ -36,20 +35,23 @@ object PartitionedAIListIntervalJoin extends IntervalJoin with Logging {
 
     val joinedRDD = aiListsLHS
       .cogroup(aiListsRHS)
-      .flatMap { case (bucket, (lhsAIListsMaps, rhsIntervals)) =>
+      .flatMap { case (bucket, (lhsAILists, rhsIntervals)) =>
         logInfo(s"Computing bucket $bucket.")
 
+        val lhsAIListsMaps: Map[String, Seq[AIList[T]]] = lhsAILists
+          .groupBy(_._1)
+          .map { case (key, lists) => key -> lists.map(_._2).toSeq }
+
         val intervalsPairs: Iterable[IntervalsPair[T]] = for {
-          aiListsMap            <- lhsAIListsMaps
-          rhsBucketedInterval   <- rhsIntervals
-          aiList                <- aiListsMap.get(rhsBucketedInterval.key).toSeq
+          rhsBucketedInterval   <- rhsIntervals.toSeq
           rhsInterval            = Interval(
             rhsBucketedInterval.key,
             rhsBucketedInterval.from,
             rhsBucketedInterval.to,
             rhsBucketedInterval.value
           )
-          overlapping           <- aiList.overlapping(rhsInterval).asScala
+          aiLists               <- lhsAIListsMaps.getOrElse(rhsBucketedInterval.key, Seq.empty)
+          overlapping           <- aiLists.overlapping(rhsInterval).asScala
         } yield IntervalsPair(rhsInterval.key, overlapping, rhsInterval)
 
         logInfo(s"Intervals pairs computed for $bucket.")
@@ -59,30 +61,24 @@ object PartitionedAIListIntervalJoin extends IntervalJoin with Logging {
     joinedRDD.toDF().as[IntervalsPair[T]]
   }
 
-  private def datasetToAILists[T : TypeTag](inputRDD: RDD[BucketedInterval[T]]): RDD[(Long, Map[String, AIList[T]])] = {
-    inputRDD
-      .mapPartitions { partition =>
-
-        val buckets: mutable.HashMap[Long, mutable.HashMap[String, AIListBuilder[T]]] =
-          new mutable.HashMap[Long, mutable.HashMap[String, AIListBuilder[T]]]
-
-        partition.foreach { bucketedInterval =>
-          buckets
-            .getOrElse(bucketedInterval._bucket, { new mutable.HashMap[String, AIListBuilder[T]]})
-            .getOrElse(bucketedInterval.key, { new AIListBuilder[T]() })
-            .put(Interval(
-              bucketedInterval.key,
-              bucketedInterval.from,
-              bucketedInterval.to,
-              bucketedInterval.value
-            ))
-        }
-
-        buckets.map { case(bucket, builders) =>
-          bucket -> builders.map { case (key, aiListBuilder) =>
-            key -> aiListBuilder.build()
-          }.toMap
-        }.iterator
+  private def datasetToAILists[T : TypeTag](inputRDD: RDD[BucketedInterval[T]]): RDD[(Long, (String, AIList[T]))] = {
+    val grouped = inputRDD.mapPartitions { partition =>
+      partition
+        .toList
+        .groupBy(bi => (bi.key, bi._bucket))
+        .iterator
       }
+
+    val mapped = grouped.mapPartitions { partition =>
+      partition
+        .map { case (key, _bucket) -> intervals =>
+          val aiListBuilder = new AIListBuilder[T]()
+          intervals.foreach(bi => aiListBuilder.put(Interval(bi.key, bi.from, bi.to, bi.value)))
+          _bucket -> (key, aiListBuilder.build())
+        }
+        .iterator
+    }
+
+    mapped
   }
 }
