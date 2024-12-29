@@ -9,7 +9,7 @@ import scala.jdk.CollectionConverters.IteratorHasAsScala
 import scala.reflect.runtime.universe._
 
 
-object BroadcastPartitionedAIListIntervalJoin extends IntervalJoin {
+class BroadcastPartitionedAIListIntervalJoin(bucketSize: Long) extends IntervalJoin {
 
   override def join[T : TypeTag](lhsInput: Dataset[Interval[T]], rhsInput: Dataset[Interval[T]]): Dataset[IntervalsPair[T]] = {
     implicit val spark: SparkSession = lhsInput.sparkSession
