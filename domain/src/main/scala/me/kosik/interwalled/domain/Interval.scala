@@ -7,9 +7,18 @@ case class Interval[T](
   value: T
 )
 
+case class BucketedInterval[T](
+  _bucket: Long,
+  key: String,
+  from: Long,
+  to: Long,
+  value: T
+)
+
 object IntervalColumns {
-  val KEY   : String = "key"
-  val FROM  : String = "from"
-  val TO    : String = "to"
-  val VALUE : String = "value"
+  val BUCKET : String = "_bucket"
+  val KEY    : String = "key"
+  val FROM   : String = "from"
+  val TO     : String = "to"
+  val VALUE  : String = "value"
 }
