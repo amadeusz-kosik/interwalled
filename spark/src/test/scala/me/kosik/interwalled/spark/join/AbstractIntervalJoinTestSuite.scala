@@ -2,8 +2,7 @@ package me.kosik.interwalled.spark.join
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import me.kosik.interwalled.domain.{Interval, IntervalColumns, IntervalsPair}
-import org.apache.spark.sql.{DataFrame, Dataset}
-import org.apache.spark.sql.{functions => f}
+import org.apache.spark.sql.{DataFrame, Dataset, functions => f}
 import org.scalatest.funsuite.AnyFunSuite
 
 
