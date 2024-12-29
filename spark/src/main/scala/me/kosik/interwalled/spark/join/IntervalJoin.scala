@@ -1,7 +1,7 @@
 package me.kosik.interwalled.spark.join
 
 import me.kosik.interwalled.domain.{Interval, IntervalsPair}
-import org.apache.spark.sql.{DataFrame, Dataset, Encoder}
+import org.apache.spark.sql.Dataset
 
 import scala.reflect.runtime.universe._
 

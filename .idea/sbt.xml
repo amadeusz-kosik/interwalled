@@ -9,8 +9,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/ailist" />
+            <option value="$PROJECT_DIR$/benchmark" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/project" />
+            <option value="$PROJECT_DIR$/spark" />
             <option value="$PROJECT_DIR$/test-data-generator" />
           </set>
         </option>

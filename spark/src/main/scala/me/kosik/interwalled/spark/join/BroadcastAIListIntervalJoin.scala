@@ -13,7 +13,6 @@ object BroadcastAIListIntervalJoin extends IntervalJoin {
 
   override def join[T : TypeTag](lhsInput: Dataset[Interval[T]], rhsInput: Dataset[Interval[T]]): Dataset[IntervalsPair[T]] = {
     implicit val spark: SparkSession = lhsInput.sparkSession
-    import spark.implicits._
 
     @nowarn implicit val iTT = typeTag[Interval[T]]
     implicit val iEncoder: Encoder[Interval[T]] = Encoders.product[Interval[T]]
