@@ -11,7 +11,7 @@ import scala.reflect.runtime.universe._
 import org.apache.spark.sql.{functions => F}
 
 
-object SparkNativeIntervalJoin extends IntervalJoin {
+class SparkNativeIntervalJoin(bucketsCount: Long) extends IntervalJoin {
 
   override def join[T : TypeTag](lhsInput: Dataset[Interval[T]], rhsInput: Dataset[Interval[T]]): Dataset[IntervalsPair[T]] = {
     implicit val spark: SparkSession = lhsInput.sparkSession
@@ -22,7 +22,7 @@ object SparkNativeIntervalJoin extends IntervalJoin {
     @nowarn implicit val ipTT = typeTag[IntervalsPair[T]]
     implicit val ipEncoder: Encoder[IntervalsPair[T]] = Encoders.product[IntervalsPair[T]]
 
-    val bucketizer = new Bucketizer(10_000)
+    val bucketizer = new Bucketizer(bucketsCount)
 
     val lhsInputBucketed = lhsInput.transform(bucketizer.bucketize)
     val rhsInputBucketed = rhsInput.transform(bucketizer.bucketize)

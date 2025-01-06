@@ -1,30 +1,25 @@
 package me.kosik.interwalled.benchmark
 
+import me.kosik.interwalled.benchmark.bucketing.SparkNativeBucketingBenchmark
 import me.kosik.interwalled.domain.{Interval, IntervalColumns}
 import me.kosik.interwalled.spark.join._
 import org.apache.spark.sql.types.LongType
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession, functions => F}
 
+import java.util.concurrent.TimeUnit.NANOSECONDS
 import scala.io.StdIn
 
 
 object Main extends App {
-  private val Array(sparkMaster, databasePath, queryPath, joinAlgorithmName, driverMemory) = args
 
-  private val joinAlgorithm: IntervalJoin = joinAlgorithmName match {
-    case "BroadcastAIList" => BroadcastAIListIntervalJoin
-    case "BroadcastPartitionedAIList" => new BroadcastPartitionedAIListIntervalJoin(10_000)
-    case "BroadcastPartitionedMinMaxAIList" => BroadcastPartitionedMinMaxAIListIntervalJoin
-    case "PartitionedAIList" => PartitionedAIListIntervalJoin
-    case "SparkNaive" => SparkNativeIntervalJoin
-  }
+  private val Array(sparkMaster, driverMemory, joinAlgorithmName, databasePath, queryPath) = args.take(5)
+  private val extraArguments = args.drop(5)
 
   private val spark: SparkSession = SparkSession.builder()
     .appName("InterwalledBenchmark")
     .config("spark.driver.memory", driverMemory)
     .master(sparkMaster)
     .getOrCreate()
-
 
   private def parse(input: DataFrame): Dataset[Interval[String]] = {
     import spark.implicits._
@@ -40,23 +35,24 @@ object Main extends App {
       .as[Interval[String]]
   }
 
+  private val database = spark.read.text(databasePath)
+    .transform(parse)
 
-  private def run(): Unit = {
-    val database = spark.read.text(databasePath)
-      .transform(parse)
+  private val query = spark.read.text(queryPath)
+    .transform(parse)
 
-    val query = spark.read.text(queryPath)
-      .transform(parse)
+  private val benchmark: Benchmark = joinAlgorithmName match {
+//    case "BroadcastAIList" => BroadcastAIListIntervalJoin
+//    case "BroadcastPartitionedAIList" => new BroadcastPartitionedAIListIntervalJoin(10_000)
+//    case "BroadcastPartitionedMinMaxAIList" => BroadcastPartitionedMinMaxAIListIntervalJoin
+//    case "PartitionedAIList" => PartitionedAIListIntervalJoin
 
-    joinAlgorithm
-      .join(database, query)
-      .foreach (_ => ())
+    case "SparkNaiveBucketingBenchmark" =>
+      SparkNativeBucketingBenchmark
   }
 
+  benchmark.run(database, query, spark, extraArguments)
 
-  spark.time {
-    run()
-  }
-
+  println("Benchmark done.")
   StdIn.readLine()
 }
