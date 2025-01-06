@@ -17,19 +17,15 @@ Running on newer Java versions requires adding `--add-exports java.base/sun.nio.
 Execution measured for 10_000 buckets, Spark in _local[16]_ mode, 32G memory for the driver.
 
 ### Execution times 
-#### 80M dataset
-```
-+-------------------------------+----------------+---------------------------------------------------------------------+
-| Algorithm                     | Execution time | Error message (if failed)                                           |
-+-------------------------------+----------------+---------------------------------------------------------------------+
-| BroadcastAIListIntervalJoin   |                | Total size of serialized results of 15 tasks (1083.2 MiB) is bigger |
-|                               |                |  than spark.driver.maxResultSize (1024.0 MiB)                       |
-+-------------------------------+----------------+---------------------------------------------------------------------+
-| PartitionedAIListIntervalJoin |      78 807 ms |                                                                     |
-+-------------------------------+----------------+---------------------------------------------------------------------+
-| SparkNativeIntervalJoin       |     442 937 ms |                                                                     |
-+-------------------------------+----------------+---------------------------------------------------------------------+
-```
+
+
+| Algorithm                     | Dataset          | Execution time | Error message (if failed)                                                                                        |
+|-------------------------------|------------------|----------------|------------------------------------------------------------------------------------------------------------------|
+| BroadcastAIListIntervalJoin   | Mirror join, 80M | N/A            | Total size of serialized results of 15 tasks (1083.2 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB) |
+| PartitionedAIListIntervalJoin | Mirror join, 80M | 78 807 ms      |                                                                                                                  |
+| SparkNativeIntervalJoin       | Mirror join, 80M | 442 937 ms     |                                                                                                                  |
+
+
 
 
 ## External links
