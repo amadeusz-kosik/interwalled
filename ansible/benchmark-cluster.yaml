@@ -1,0 +1,8 @@
+---
+- name: Install Apache Spark
+  hosts: all
+  roles:
+    - os
+    - jdk
+    - hdfs
+    - spark

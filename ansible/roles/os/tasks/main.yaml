@@ -1,0 +1,20 @@
+- name: Install compression utility packages
+  apt:
+    name:
+      - gnupg-utils
+      - unzip
+    state: present
+
+# The ansible.builtins.unarchive tries to use unzip binary to extract .tar.gz files
+#  ignoring tar binary. To overcome that dumb bug, create gtar link to point to tar
+#  to fix that behaviour.
+- name: Link tar to gtar since ansible unarchive is broken
+  file:
+    src: "/usr/bin/tar"
+    dest: "/usr/bin/gtar"
+    state: link
+
+- name: Setup /etc/hosts since Spark cannot into IP
+  template:
+    src: "hosts.j2"
+    dest: "/etc/hosts"
