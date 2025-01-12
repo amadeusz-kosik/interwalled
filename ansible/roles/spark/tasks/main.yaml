@@ -1,0 +1,90 @@
+- name: Create service account for Spark
+  user:
+    name: "spark"
+    system: true
+    state: "present"
+
+- name: Create .ssh directory
+  file:
+    path: "/home/spark/.ssh"
+    state: directory
+    mode: 0755
+    owner: "spark"
+    group: "spark"
+
+- name: Put public key onto all nodes
+  template:
+    src: "hp-spark.ssh.public"
+    dest: "/home/spark/.ssh/authorized_keys"
+    owner: "spark"
+    group: "spark"
+    mode: 0644
+
+- name: Put private key onto master node
+  template:
+    src: "hp-spark.ssh.private"
+    dest: "/home/spark/.ssh/id_ed25519"
+    owner: "spark"
+    group: "spark"
+    mode: 0600
+  when: inventory_hostname in groups['master']
+
+- name: Create downloads directory for Spark
+  file:
+    path: "/home/spark/downloads"
+    state: directory
+    owner: "spark"
+    group: "spark"
+
+- name: Download Spark package
+  get_url:
+    url: "https://dlcdn.apache.org/spark/spark-3.5.4/spark-3.5.4-bin-hadoop3.tgz"
+    dest: "/home/spark/downloads/spark-3.5.4.tar.gz"
+    checksum: sha512:df049be04119d4943f5c048108e511a95d05a7cdcf7f1256384a3a6caa322f7898b6b1b20b0ad45036887f4ae93ce5f17ac97906950b14f07532d94ed7fe1faa
+    owner: "spark"
+    group: "spark"
+
+- name: Create bundle directory for Spark
+  file:
+    path: "/home/spark/bundle"
+    state: directory
+    owner: "spark"
+    group: "spark"
+
+- name: Extract Spark package
+  unarchive:
+    src: "/home/spark/downloads/spark-3.5.4.tar.gz"
+    dest: "/home/spark/bundle"
+    remote_src: true
+    owner: "spark"
+    group: "spark"
+    extra_opts:
+      - --strip-components=1
+
+- name: Create work directory for Spark
+  file:
+    path: "/home/spark/workdir"
+    state: directory
+    owner: "spark"
+    group: "spark"
+
+- name: Upload Spark environment configuration file (spark-env.sh)
+  template:
+    src: "spark-env.sh.j2"
+    dest: "/home/spark/bundle/conf/spark-env.sh"
+    owner: "spark"
+    group: "spark"
+    mode: 0755
+
+- name: Upload Spark cluster workers list (workers)
+  template:
+    src: "workers.j2"
+    dest: "/home/spark/bundle/conf/workers"
+    owner: "spark"
+    group: "spark"
+
+- name: Upload Spark profile configuration (sets SPARK_HOME)
+  template:
+    src: "spark-profile.sh.j2"
+    dest: "/etc/profile.d/spark-env.sh"
+    mode: 0755
