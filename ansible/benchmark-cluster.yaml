@@ -4,4 +4,5 @@
   roles:
     - os
     - jdk
+    - hdfs
     - spark
