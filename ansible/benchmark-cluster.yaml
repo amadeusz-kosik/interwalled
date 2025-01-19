@@ -2,7 +2,12 @@
 - name: Install Apache Spark
   hosts: all
   roles:
-    - os
-    - jdk
-    - hdfs
-    - spark
+    - role: os
+
+    - role: jdk
+
+    - role: hdfs
+      tags: hdfs-only
+
+    - role: spark
+      tags: spark-only
