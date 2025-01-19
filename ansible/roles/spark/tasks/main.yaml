@@ -68,6 +68,12 @@
     owner: "spark"
     group: "spark"
 
+- name: Upload Spark default configuration (spark-defaults.conf)
+  template:
+    src: "spark-defaults.conf.j2"
+    dest: "/home/spark/bundle/conf/spark-defaults.conf"
+    mode: 0755
+
 - name: Upload Spark environment configuration file (spark-env.sh)
   template:
     src: "spark-env.sh.j2"
