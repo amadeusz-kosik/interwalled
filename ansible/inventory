@@ -1,7 +1,7 @@
 [master]
-192.168.0.128
+"hp-elitedesk-01"
 
 [workers]
-192.168.0.129
-192.168.0.130
-192.168.0.131
+"hp-elitedesk-02"
+"hp-elitedesk-03"
+"hp-elitedesk-04"
