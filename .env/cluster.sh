@@ -1,0 +1,3 @@
+export IW_CLUSTER_MASTER_HOST="192.168.0.128"
+export IW_CLUSTER_MASTER_USER="spark"
+export IW_CLUSTER_MASTER_KEY="$HOME/.ssh/hp-spark"

@@ -20,7 +20,7 @@ class Bucketizer(bucketSize: Long) {
       .withColumn(IntervalColumns.BUCKET,
         F.explode(bucketize(input.col(IntervalColumns.FROM), input.col(IntervalColumns.TO), F.lit(bucketSize)))
       )
-      .repartition(F.col(IntervalColumns.BUCKET))
+      .repartition(F.col(IntervalColumns.BUCKET), F.col(IntervalColumns.KEY))
       .as[BucketedInterval[T]]
   }
 

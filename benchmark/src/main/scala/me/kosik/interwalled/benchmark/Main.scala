@@ -1,6 +1,6 @@
 package me.kosik.interwalled.benchmark
 
-import me.kosik.interwalled.benchmark.bucketing.SparkNativeBucketingBenchmark
+import me.kosik.interwalled.benchmark.bucketing.{PartitionedAIListBenchmark, SparkNativeBucketingBenchmark}
 import me.kosik.interwalled.domain.{Interval, IntervalColumns}
 import me.kosik.interwalled.spark.join._
 import org.apache.spark.sql.types.LongType
@@ -46,6 +46,9 @@ object Main extends App {
 //    case "BroadcastPartitionedAIList" => new BroadcastPartitionedAIListIntervalJoin(10_000)
 //    case "BroadcastPartitionedMinMaxAIList" => BroadcastPartitionedMinMaxAIListIntervalJoin
 //    case "PartitionedAIList" => PartitionedAIListIntervalJoin
+
+    case "PartitionedAIListBenchmark" =>
+      PartitionedAIListBenchmark
 
     case "SparkNaiveBucketingBenchmark" =>
       SparkNativeBucketingBenchmark

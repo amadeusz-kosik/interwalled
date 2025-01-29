@@ -10,11 +10,11 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
 
   def inputSizes: Array[Long] = {
     if(sys.env.getOrElse("INTERWALLED_RUN_100K", "FALSE") != "FALSE")
-      Array(100L, 1_000L, 10_000L, 100_000L)
+      Array(100L, 1 * 1000L, 10 * 1000L, 100 * 1000L)
     else if(sys.env.getOrElse("INTERWALLED_RUN_10K", "FALSE") != "FALSE")
-      Array(100L, 1_000L, 10_000L)
+      Array(100L, 1 * 1000L, 10 * 1000L)
     else
-      Array(100L, 1_000L)
+      Array(100L, 1 * 1000L)
   }
 
   def inputPartitions: Array[(Int, Int)] = Array((1, 1), (4, 4))

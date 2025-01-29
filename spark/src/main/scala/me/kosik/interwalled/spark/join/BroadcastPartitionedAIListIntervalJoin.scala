@@ -5,7 +5,7 @@ import me.kosik.interwalled.domain.{Interval, IntervalColumns, IntervalsPair}
 import org.apache.spark.sql.{Dataset, Encoder, Encoders, SparkSession, functions => f}
 
 import scala.annotation.nowarn
-import scala.jdk.CollectionConverters.IteratorHasAsScala
+import scala.collection.JavaConverters._
 import scala.reflect.runtime.universe._
 
 
