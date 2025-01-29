@@ -1,12 +1,10 @@
 package me.kosik.interwalled.spark.join
 
-import me.kosik.interwalled.ailist.{AIList, AIListBuilder}
 import me.kosik.interwalled.domain.{Interval, IntervalColumns, IntervalsPair}
 import me.kosik.interwalled.utility.Bucketizer
 import org.apache.spark.sql.{Dataset, Encoder, Encoders, SparkSession}
 
 import scala.annotation.nowarn
-import scala.jdk.CollectionConverters.IteratorHasAsScala
 import scala.reflect.runtime.universe._
 import org.apache.spark.sql.{functions => F}
 

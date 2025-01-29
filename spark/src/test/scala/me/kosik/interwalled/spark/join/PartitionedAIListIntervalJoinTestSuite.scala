@@ -1,6 +1,7 @@
 package me.kosik.interwalled.spark.join
 
-class PartitionedAIListIntervalJoinTestSuite extends AbstractIntervalJoinTestSuite {
+class PartitionedAIListIntervalJoinTestSuite(val bucketSize: Long) extends AbstractIntervalJoinTestSuite {
 
-  override def intervalJoin: IntervalJoin = PartitionedAIListIntervalJoin
+  override def intervalJoin: IntervalJoin = new PartitionedAIListIntervalJoin(bucketSize = bucketSize)
 }
+

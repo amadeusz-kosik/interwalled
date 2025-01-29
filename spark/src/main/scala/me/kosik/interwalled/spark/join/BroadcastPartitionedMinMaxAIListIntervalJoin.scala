@@ -6,7 +6,7 @@ import me.kosik.interwalled.utility.FPUtils
 import org.apache.spark.sql.{Dataset, Encoder, Encoders, SparkSession, functions => f}
 
 import scala.annotation.nowarn
-import scala.jdk.CollectionConverters.IteratorHasAsScala
+import scala.collection.JavaConverters._
 import scala.reflect.runtime.universe._
 
 
@@ -50,7 +50,7 @@ object BroadcastPartitionedMinMaxAIListIntervalJoin extends IntervalJoin {
 
     val boundariesBroadcast = spark.sparkContext.broadcast(boundaries)
 
-    val filteredRhsInput = rhsInput.filter { interval =>
+    val filteredRhsInput = rhsInput.filter { interval: Interval[T] =>
       boundariesBroadcast.value.get(interval.key) match {
         case Some((min, max)) =>
           ! ((interval.from > max) || (interval.to < min))

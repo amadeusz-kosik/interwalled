@@ -4,6 +4,8 @@ import me.kosik.interwalled.domain.Interval
 import org.scalatest.Assertion
 import org.scalatest.matchers.should.Matchers
 
+import scala.collection.JavaConverters._
+
 
 package object ailist {
 
@@ -17,8 +19,6 @@ package object ailist {
     }
 
     def buildResult[T](aiList: AIList[T], otherList: Seq[Interval[T]]): JoinResult[T] = {
-      import scala.jdk.CollectionConverters._
-
       val intervalsPairs = otherList.flatMap { rightInterval =>
         aiList.overlapping(rightInterval).asScala.map(leftInterval => IntervalsPair(leftInterval, rightInterval))
       }

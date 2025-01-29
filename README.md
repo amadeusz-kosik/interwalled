@@ -9,12 +9,14 @@ implementation can be found [on GitHub](https://github.com/databio/me.kosik.inte
 
 ## Implementation details
 
+
+
 ### Running on Java 17
 Running on newer Java versions requires adding `--add-exports java.base/sun.nio.ch=ALL-UNNAMED` 
     as a JVM option. 
 
 ## Rough benchmark
-Execution measured for 10_000 buckets, Spark in _local[16]_ mode, 32G memory for the driver.
+Execution measured for 10.000 buckets, Spark in _local[16]_ mode, 32G memory for the driver.
 
 ### Execution times 
 

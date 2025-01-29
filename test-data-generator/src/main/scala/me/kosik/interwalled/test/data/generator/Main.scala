@@ -14,20 +14,20 @@ object Main extends App {
 
   val testDataSizes: Array[Long] = {
     if(sys.env.getOrElse("INTERWALLED_RUN_100K", "FALSE") != "FALSE")
-      Array(100L, 1_000L, 10_000L, 100_000L)
+      Array(100L, 1 * 1000L, 10 * 1000L, 100 * 1000L)
     else if(sys.env.getOrElse("INTERWALLED_RUN_10K", "FALSE") != "FALSE")
-      Array(100L, 1_000L, 10_000L)
+      Array(100L, 1 * 1000L, 10 * 1000L)
     else
-      Array(100L, 1_000L)
+      Array(100L, 1 * 1000L)
   }
   val testCaseNames = Array("one-to-one", "one-to-many", "one-to-all")
 
   testDataSizes foreach { testDataSize => testCaseNames foreach { testCaseName =>
 
     val testCase = testCaseName match {
-      case "one-to-one" => TestOneToOne(testDataSize)
-      case "one-to-many" => TestOneToMany(testDataSize, 4)
-      case "one-to-all" => TestOneToAll(testDataSize)
+      case "one-to-one"   => TestOneToOne(testDataSize)
+      case "one-to-many"  => TestOneToMany(testDataSize, 4)
+      case "one-to-all"   => TestOneToAll(testDataSize)
 
       case unknown => sys.exit(1)
     }
