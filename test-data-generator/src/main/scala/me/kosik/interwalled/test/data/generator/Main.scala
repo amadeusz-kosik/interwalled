@@ -20,6 +20,7 @@ object Main extends App {
     else
       Array(100L, 1 * 1000L)
   }
+
   val testCaseNames = Array("one-to-one", "one-to-many", "one-to-all")
 
   testDataSizes foreach { testDataSize => testCaseNames foreach { testCaseName =>

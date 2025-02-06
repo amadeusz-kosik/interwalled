@@ -38,9 +38,9 @@ lazy val root = (project in file("."))
 ailist / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test
 
 benchmark / mainClass in (Compile, run) := Some("me.kosik.interwalled.benchmark.Main")
-benchmark / libraryDependencies += "org.apache.hadoop" % "hadoop-client"  % "3.3.4"       % "provided"
-benchmark / libraryDependencies += "org.apache.spark"  %% "spark-core"    % SparkVersion  % "provided"
-benchmark / libraryDependencies += "org.apache.spark"  %% "spark-sql"     % SparkVersion  % "provided"
+benchmark / libraryDependencies += "org.apache.hadoop" % "hadoop-client"  % "3.3.4"
+benchmark / libraryDependencies += "org.apache.spark"  %% "spark-core"    % SparkVersion
+benchmark / libraryDependencies += "org.apache.spark"  %% "spark-sql"     % SparkVersion
 
 spark / parallelExecution in Test := false
 spark / libraryDependencies     += "org.apache.spark"  %% "spark-core"    % SparkVersion % "provided"
