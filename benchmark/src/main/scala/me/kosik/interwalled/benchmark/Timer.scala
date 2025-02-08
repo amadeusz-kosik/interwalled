@@ -2,6 +2,7 @@ package me.kosik.interwalled.benchmark
 
 import java.util.concurrent.TimeUnit.NANOSECONDS
 
+
 object Timer {
   def start(): Timer =
     new Timer(System.nanoTime())

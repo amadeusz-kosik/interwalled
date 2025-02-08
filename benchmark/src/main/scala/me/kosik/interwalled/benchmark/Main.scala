@@ -1,9 +1,10 @@
 package me.kosik.interwalled.benchmark
 
 import me.kosik.interwalled.benchmark.bucketing._
+import me.kosik.interwalled.benchmark.utils.{BenchmarkCallback, BenchmarkRunner}
 import org.apache.spark.sql.SparkSession
 
-import scala.util.{Failure, Success}
+import scala.util.{Failure, Success, Try}
 
 
 object Main extends App {
@@ -51,26 +52,25 @@ object Main extends App {
     .master(sparkMaster)
     .getOrCreate()
 
-  private val testDatas = for {
-    testDataSize  <- testDataSizes
-    testDataSuite <- testDataSuites
-  } yield TestData.fromPath(s"$testDataDirectory/$testDataSuite/$testDataSize", spark)
+  private val results = BenchmarkRunner.run(
+    spark,
+    benchmarks,
+    testDataDirectory,
+    testDataSizes,
+    testDataSuites
+  )
 
-  private val results = benchmarks flatMap { benchmarkCallback =>
-    testDatas map { testData =>
-      val benchmarkResult = benchmarkCallback.fn(testData.database, testData.query)
+  results
+    .map {
+      case Success(benchmarkResult) =>
+        s"Benchmark ${benchmarkResult.benchmarkDescription} " +
+          s"on ${benchmarkResult.dataDescription} " +
+          s"took ${benchmarkResult.elapsedTime} ms."
 
-      benchmarkResult match {
-        case Success(BenchmarkResult(elapsedMillis)) =>
-          s"Benchmark ${benchmarkCallback.description} took $elapsedMillis ms."
-
-        case Failure(reason) =>
-          reason.printStackTrace()
-          s"Benchmark ${benchmarkCallback.description} failed with ${reason.getMessage}."
-      }
-
+      case Failure(failureReason) =>
+        failureReason.printStackTrace()
+        s"Benchmark failed with ${failureReason.getMessage}."
     }
-  }
-
-  results foreach Console.out.println
+    .foreach(Console.out.println)
 }
+

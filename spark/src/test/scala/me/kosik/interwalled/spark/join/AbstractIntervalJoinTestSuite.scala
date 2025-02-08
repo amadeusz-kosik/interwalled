@@ -60,10 +60,10 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
           spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
             .as[IntervalsPair[String]]
 
-        val lhs = loadInput("in-lhs").as[Interval[String]].repartition(lhsPartitions)
-        val rhs = loadInput("in-rhs").as[Interval[String]].repartition(rhsPartitions)
+        val lhs = loadInput("database").as[Interval[String]].repartition(lhsPartitions)
+        val rhs = loadInput("query").as[Interval[String]].repartition(rhsPartitions)
 
-        val expected = loadResult("out-result")
+        val expected = loadResult("result")
         val actual = intervalJoin.join(lhs, rhs)
 
         assertDataEqual(expected = expected, actual = actual)
@@ -78,7 +78,6 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
             .withColumn(IntervalColumns.KEY, f.explode(f.array(f.lit("CH-1"), f.lit("CH-2"), f.lit("CH-3"), f.lit("CH-4"))))
             .as[Interval[String]]
 
-
         def loadResult(datasetName: String): Dataset[IntervalsPair[String]] =
           spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
             .as[IntervalsPair[String]]
@@ -86,10 +85,11 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
               key => pair.copy(key = key, lhs = pair.lhs.copy(key = key), rhs = pair.rhs.copy(key = key))
             })
 
-        val lhs = loadInput("in-lhs").as[Interval[String]].repartition(lhsPartitions)
-        val rhs = loadInput("in-rhs").as[Interval[String]].repartition(rhsPartitions)
 
-        val expected = loadResult("out-result")
+        val lhs = loadInput("database").as[Interval[String]].repartition(lhsPartitions)
+        val rhs = loadInput("query").as[Interval[String]].repartition(rhsPartitions)
+
+        val expected = loadResult("result")
         val actual = intervalJoin.join(lhs, rhs)
 
         assertDataEqual(expected = expected, actual = actual)
