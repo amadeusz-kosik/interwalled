@@ -1,7 +1,8 @@
 package me.kosik.interwalled.benchmark.bucketing
 
-import me.kosik.interwalled.benchmark.{Benchmark, BenchmarkArguments}
+import me.kosik.interwalled.benchmark.utils.{Benchmark, BenchmarkArguments}
 import me.kosik.interwalled.spark.join.{IntervalJoin, SparkNativeIntervalJoin}
+
 
 object SparkNativeBucketingBenchmark extends Benchmark[SparkNativeBucketingBenchmarkArguments] {
 

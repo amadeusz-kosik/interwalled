@@ -12,7 +12,7 @@ import scala.collection.JavaConverters._
 import scala.reflect.runtime.universe._
 
 
-class PartitionedAIListIntervalJoin(bucketSize: Long) extends IntervalJoin with Logging {
+class PartitionedAIListIntervalJoin(bucketSize: Long) extends IntervalJoin with Logging with Serializable {
 
   override def join[T : TypeTag](lhsInput: Dataset[Interval[T]], rhsInput: Dataset[Interval[T]]): Dataset[IntervalsPair[T]] = {
     implicit val spark: SparkSession = lhsInput.sparkSession

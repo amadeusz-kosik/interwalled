@@ -33,9 +33,9 @@ object Main extends App {
       case unknown => sys.exit(1)
     }
 
-    write(testCaseName, testCase.generateLHS,     s"$testDataSize/in-lhs")
-    write(testCaseName, testCase.generateRHS,     s"$testDataSize/in-rhs")
-    write(testCaseName, testCase.generateResult,  s"$testDataSize/out-result")
+    write(testCaseName, testCase.generateLHS,     s"$testDataSize/database")
+    write(testCaseName, testCase.generateRHS,     s"$testDataSize/query")
+    write(testCaseName, testCase.generateResult,  s"$testDataSize/result")
   }}
 
 
