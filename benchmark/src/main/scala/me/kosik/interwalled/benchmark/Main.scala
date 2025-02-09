@@ -1,7 +1,7 @@
 package me.kosik.interwalled.benchmark
 
-import me.kosik.interwalled.benchmark.bucketing._
-import me.kosik.interwalled.benchmark.utils.{BenchmarkCallback, BenchmarkRunner}
+import me.kosik.interwalled.benchmark.join._
+import me.kosik.interwalled.benchmark.utils.{BenchmarkCallback, BenchmarkRunner, CSV}
 import org.apache.spark.sql.SparkSession
 
 import scala.util.{Failure, Success, Try}
@@ -25,17 +25,17 @@ object Main extends App {
   )
 
   private val benchmarks: Seq[BenchmarkCallback] = {
+    val broadcastAIList = Array(BroadcastAIListBenchmark)
+
     val partitionedAIList = for {
       bucketSize <- bucketsSize
-      arguments   = PartitionedAIListBenchmarkArguments(bucketSize)
-    } yield PartitionedAIListBenchmark.prepareBenchmark(arguments)
+    } yield new PartitionedAIListBenchmark(bucketSize)
 
     val sparkNativeBucketing = for {
       bucketSize <- bucketsSize
-      arguments   = SparkNativeBucketingBenchmarkArguments(bucketSize)
-    } yield SparkNativeBucketingBenchmark.prepareBenchmark(arguments)
+    } yield new SparkNativeBucketingBenchmark(bucketSize)
 
-    partitionedAIList ++ sparkNativeBucketing
+    (sparkNativeBucketing ++ broadcastAIList ++ partitionedAIList).map(_.prepareBenchmark)
   }
 
   private val testDataSuites = Array(
@@ -60,12 +60,28 @@ object Main extends App {
     testDataSuites
   )
 
+  System.out.println("")
+  System.out.println("CSV results (success only):")
+
+  CSV
+    .toCSV(results.flatMap {
+      case Success(benchmarkResult) =>
+        Some(benchmarkResult)
+
+      case Failure(_) =>
+        None
+    })
+    .foreach(System.out.println)
+
+  System.out.println("")
+  System.out.println("Benchmark summary (human-friendly):")
+
   results
     .map {
       case Success(benchmarkResult) =>
-        s"Benchmark ${benchmarkResult.benchmarkDescription} " +
-          s"on ${benchmarkResult.dataDescription} " +
-          s"took ${benchmarkResult.elapsedTime} ms."
+        s"Benchmark ${benchmarkResult.joinName} " +
+          s"on ${benchmarkResult.dataSuite} (${benchmarkResult.dataSize} rows) " +
+          s"took: \n\t ${benchmarkResult.elapsedTime} ms."
 
       case Failure(failureReason) =>
         failureReason.printStackTrace()

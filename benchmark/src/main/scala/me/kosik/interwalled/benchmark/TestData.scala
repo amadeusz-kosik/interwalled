@@ -5,7 +5,8 @@ import org.apache.spark.sql.{Dataset, SparkSession}
 
 
 case class TestData(
-  description: String,
+  suite: String,
+  size: Long,
   database: Dataset[Interval[String]],
   query: Dataset[Interval[String]]
 )
@@ -13,7 +14,8 @@ case class TestData(
 
 object TestData {
   def fromPath(pathPrefix: String, suite: String, size: Long, sparkSession: SparkSession): TestData = TestData(
-    s"$suite: $size",
+    suite,
+    size,
     load(s"$pathPrefix/$suite/$size/database.parquet", sparkSession),
     load(s"$pathPrefix/$suite/$size/query.parquet", sparkSession)
   )
