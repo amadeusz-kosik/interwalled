@@ -2,7 +2,8 @@ package me.kosik.interwalled.benchmark.utils
 
 
 case class BenchmarkResult(
-  dataDescription: String,
-  benchmarkDescription: String,
+  dataSuite: String,
+  dataSize: Long,
+  joinName: String,
   elapsedTime: Long
 )

@@ -6,25 +6,21 @@ import me.kosik.interwalled.spark.join.IntervalJoin
 import scala.util.Try
 
 
-trait Benchmark[T <: BenchmarkArguments] {
+trait Benchmark {
 
-  def prepareBenchmark(arguments: T): BenchmarkCallback = {
-    val benchmarkDescription = arguments.toString
+  def prepareBenchmark: BenchmarkCallback = {
     val fn = (testData: TestData) => Try {
-      val joinImplementation = prepareJoin(arguments)
       val timer = Timer.start()
 
       val result = joinImplementation.join(testData.database, testData.query)
       result.foreach(_ => ())
 
       val msElapsed = timer.millisElapsed()
-      BenchmarkResult(testData.description, benchmarkDescription, msElapsed)
+      BenchmarkResult(testData.suite, testData.size, this.toString, msElapsed)
     }
 
-    BenchmarkCallback(benchmarkDescription, fn)
+    BenchmarkCallback(this.toString, fn)
   }
 
-  def prepareJoin(arguments: T): IntervalJoin
+  def joinImplementation: IntervalJoin
 }
-
-trait BenchmarkArguments
