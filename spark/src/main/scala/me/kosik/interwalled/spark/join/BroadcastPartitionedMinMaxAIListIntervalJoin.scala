@@ -10,6 +10,7 @@ import scala.collection.JavaConverters._
 import scala.reflect.runtime.universe._
 
 
+// FIXME
 object BroadcastPartitionedMinMaxAIListIntervalJoin extends IntervalJoin {
 
   override def join[T : TypeTag](lhsInput: Dataset[Interval[T]], rhsInput: Dataset[Interval[T]]): Dataset[IntervalsPair[T]] = {
