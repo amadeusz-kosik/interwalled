@@ -6,7 +6,7 @@ import org.apache.spark.sql.{Dataset, SparkSession}
 
 case class TestOneToMany(lhsRowsCount: Long, lhsPerRhs: Int) extends TestCase {
 
-  override def testCaseName: String = "one-to-many"
+  override def testCaseName: String = s"one-to-many-$lhsPerRhs"
 
   override def generateLHS(implicit spark: SparkSession): Dataset[TestDataRow] =
     generateLinear(lhsRowsCount)

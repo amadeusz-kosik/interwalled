@@ -4,34 +4,40 @@ import me.kosik.interwalled.test.data.generator.test.cases.{TestOneToAll, TestOn
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.slf4j.LoggerFactory
 
+
 object Main extends App {
   val logger = LoggerFactory.getLogger(getClass)
+  val env = MainEnv.build()
+  val Array(generateLargeDataset) = args.take(1)
 
   implicit val spark: SparkSession = SparkSession.builder()
-    .appName("TestDataGenerator")
-    .master("local[4]")
+    .appName("InterwalledTestDataGenerator")
+    .config("spark.driver.memory",    env.driverMemory)
+    .config("spark.executor.memory",  env.executorMemory)
+    .master(env.sparkMaster)
     .getOrCreate()
 
   val testDataSizes: Array[Long] = {
-    if(sys.env.getOrElse("INTERWALLED_RUN_100K", "FALSE") != "FALSE")
-      Array(100L, 1 * 1000L, 10 * 1000L, 100 * 1000L)
-    else if(sys.env.getOrElse("INTERWALLED_RUN_10K", "FALSE") != "FALSE")
-      Array(100L, 1 * 1000L, 10 * 1000L)
+    val baseline = Array(100L, 1000L, 10 * 1000L)
+    val extended = Array(100 * 1000L, 1000 * 1000L)
+
+    if(generateLargeDataset.toLowerCase == "true")
+      baseline ++ extended
     else
-      Array(100L, 1 * 1000L)
+      baseline
   }
 
-  val testCaseNames = Array("one-to-one", "one-to-many", "one-to-all")
+  val testCases = Array(
+    (testDataSize: Long) => TestOneToOne(testDataSize),
+    (testDataSize: Long) => TestOneToMany(testDataSize,   4),
+    (testDataSize: Long) => TestOneToMany(testDataSize,  64),
+    (testDataSize: Long) => TestOneToMany(testDataSize, 256),
+    (testDataSize: Long) => TestOneToAll(testDataSize)
+  )
 
-  testDataSizes foreach { testDataSize => testCaseNames foreach { testCaseName =>
-
-    val testCase = testCaseName match {
-      case "one-to-one"   => TestOneToOne(testDataSize)
-      case "one-to-many"  => TestOneToMany(testDataSize, 4)
-      case "one-to-all"   => TestOneToAll(testDataSize)
-
-      case unknown => sys.exit(1)
-    }
+  testDataSizes foreach { testDataSize => testCases foreach { testCaseCallback =>
+    val testCase = testCaseCallback(testDataSize)
+    val testCaseName = testCase.testCaseName
 
     write(testCaseName, testCase.generateLHS,     s"$testDataSize/database")
     write(testCaseName, testCase.generateRHS,     s"$testDataSize/query")
@@ -40,7 +46,7 @@ object Main extends App {
 
 
   private def write[T](testCaseName: String, dataset: Dataset[T], datasetName: String): Unit = {
-    val writePath = f"data/${testCaseName}/$datasetName.parquet"
+    val writePath = f"${env.dataDirectory}/${testCaseName}/$datasetName.parquet"
 
     logger.info(s"Writing $datasetName dataset to ${writePath}.")
 
