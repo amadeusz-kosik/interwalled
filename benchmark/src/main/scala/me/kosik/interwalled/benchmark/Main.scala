@@ -49,6 +49,7 @@ object Main extends App {
   private val spark: SparkSession = SparkSession.builder()
     .appName("InterwalledBenchmark")
     .config("spark.driver.memory", driverMemory)
+    .config("spark.executor.memory", driverMemory)
     .master(sparkMaster)
     .getOrCreate()
 
