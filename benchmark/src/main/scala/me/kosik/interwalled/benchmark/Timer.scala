@@ -8,7 +8,9 @@ object Timer {
     new Timer(System.nanoTime())
 }
 
-class Timer(startTime: Long) {
-  def millisElapsed(): Long =
-    NANOSECONDS.toMillis(System.nanoTime() - startTime)
+class Timer(private val startTime: Long) {
+  def millisElapsed(): TimerResult =
+    TimerResult(NANOSECONDS.toMillis(System.nanoTime() - startTime))
 }
+
+case class TimerResult(milliseconds: Long)

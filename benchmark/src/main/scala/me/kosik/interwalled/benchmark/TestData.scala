@@ -6,19 +6,25 @@ import org.apache.spark.sql.{Dataset, SparkSession}
 
 case class TestData(
   suite: String,
-  size: Long,
+  clustersCount: Int,
+  rowsPerCluster: Long,
   database: Dataset[Interval[String]],
   query: Dataset[Interval[String]]
-)
+) {
+  override def toString: String = s"TestData($suite, $rowsPerCluster, $clustersCount)"
+}
 
 
-object TestData {
-  def fromPath(pathPrefix: String, suite: String, size: Long, sparkSession: SparkSession): TestData = TestData(
+case class TestDataBuilder(pathPrefix: String, suite: String, clustersCount: Int, rowsPerCluster: Long) {
+  def apply(spark: SparkSession): TestData = TestData(
     suite,
-    size,
-    load(s"$pathPrefix/$suite/$size/database.parquet", sparkSession),
-    load(s"$pathPrefix/$suite/$size/query.parquet", sparkSession)
+    clustersCount,
+    rowsPerCluster,
+    load(s"$pathPrefix/$suite/$rowsPerCluster/$clustersCount/database.parquet", spark),
+    load(s"$pathPrefix/$suite/$rowsPerCluster/$clustersCount/query.parquet", spark)
   )
+
+  override def toString: String = s"TestData($suite, $rowsPerCluster, $clustersCount)"
 
   private def load(path: String, spark: SparkSession): Dataset[Interval[String]] = {
     import spark.implicits._
