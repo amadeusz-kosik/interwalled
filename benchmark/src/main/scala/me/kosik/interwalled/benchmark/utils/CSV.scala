@@ -1,21 +1,27 @@
 package me.kosik.interwalled.benchmark.utils
 
-import scala.reflect.runtime.universe._
+import scala.util.{Failure, Success}
 
 
 object CSV {
 
   private val DELIMITER = ","
 
-  def toCSV[T <: Product: TypeTag](rows: Seq[T]): Seq[String] = {
-    val caseClassFields = typeOf[T].members
-      .collect { case m: MethodSymbol if m.isCaseAccessor => m.name.toString }
-      .toSeq
-      .reverse
+  def toCSV(rows: Seq[BenchmarkResult]): Seq[String] = {
+    val header = Seq("data_suite", "clusters_count", "rows_per_cluster", "join_name", "elapsed_time", "result")
+    val body = rows
+      .map { result => Seq(
+        result.dataSuite,
+        result.clustersCount,
+        result.rowsPerCluster,
+        result.joinName,
+        result.elapsedTime.milliseconds,
+        result.result match {
+          case Success(_) => "success"
+          case Failure(exception) => exception.getMessage.split("\n").head
+        }
+      )}
 
-    val header = caseClassFields.mkString(DELIMITER)
-    val body   = rows.map(_.productIterator.mkString(DELIMITER))
-
-    Seq(header) ++ body
+    Seq(header.mkString(DELIMITER)) ++ body.map(_.mkString(DELIMITER))
   }
 }

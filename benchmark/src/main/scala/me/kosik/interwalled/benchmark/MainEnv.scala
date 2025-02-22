@@ -1,13 +1,10 @@
-package me.kosik.interwalled.test.data.generator
-
+package me.kosik.interwalled.benchmark
 
 case class MainEnv(
   sparkMaster: String,
   driverMemory: String,
   executorMemory: String,
   dataDirectory: String,
-
-  clustersCount: Int
 )
 
 object MainEnv {
@@ -18,8 +15,6 @@ object MainEnv {
     sparkMaster     = envVariables.getOrElse("INTERWALLED_SPARK_MASTER",            "local[*]"),
     driverMemory    = envVariables.getOrElse("INTERWALLED_SPARK_DRIVER_MEMORY",     "4G"),
     executorMemory  = envVariables.getOrElse("INTERWALLED_SPARK_EXECUTOR_MEMORY",   "4G"),
-    dataDirectory   = envVariables.getOrElse("INTERWALLED_DATA_DIRECTORY",          "data"),
-
-    clustersCount   = envVariables.getOrElse("INTERWALLED_CLUSTERS_COUNT",          "16").toInt
+    dataDirectory   = envVariables.getOrElse("INTERWALLED_DATA_DIRECTORY",          "data")
   )
 }

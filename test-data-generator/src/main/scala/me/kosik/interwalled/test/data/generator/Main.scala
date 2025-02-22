@@ -1,6 +1,7 @@
 package me.kosik.interwalled.test.data.generator
 
-import me.kosik.interwalled.test.data.generator.test.cases.{TestOneToAll, TestOneToMany, TestOneToOne}
+import me.kosik.interwalled.domain.benchmark.ActiveBenchmarks
+import me.kosik.interwalled.test.data.generator.test.cases.{TestOneToAll, TestOneToOne, TestSparse}
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.slf4j.LoggerFactory
 
@@ -18,30 +19,25 @@ object Main extends App {
     .getOrCreate()
 
   val testDataSizes: Array[Long] = {
-    val baseline = Array(100L, 1000L, 10 * 1000L)
-    val extended = Array(100 * 1000L, 1000 * 1000L)
-
     if(generateLargeDataset.toLowerCase == "true")
-      baseline ++ extended
+      ActiveBenchmarks.TestDataSizes.extended
     else
-      baseline
+      ActiveBenchmarks.TestDataSizes.baseline
   }
 
   val testCases = Array(
-    (testDataSize: Long) => TestOneToOne(testDataSize),
-    (testDataSize: Long) => TestOneToMany(testDataSize,   4),
-    (testDataSize: Long) => TestOneToMany(testDataSize,  64),
-    (testDataSize: Long) => TestOneToMany(testDataSize, 256),
-    (testDataSize: Long) => TestOneToAll(testDataSize)
+    (testDataSize: Long) => TestOneToOne(env.clustersCount, testDataSize),
+    (testDataSize: Long) => TestSparse(env.clustersCount, testDataSize, 16),
+    (testDataSize: Long) => TestOneToAll(env.clustersCount, testDataSize)
   )
 
   testDataSizes foreach { testDataSize => testCases foreach { testCaseCallback =>
     val testCase = testCaseCallback(testDataSize)
     val testCaseName = testCase.testCaseName
 
-    write(testCaseName, testCase.generateLHS,     s"$testDataSize/database")
-    write(testCaseName, testCase.generateRHS,     s"$testDataSize/query")
-    write(testCaseName, testCase.generateResult,  s"$testDataSize/result")
+    write(testCaseName, testCase.generateLHS,     s"$testDataSize/${env.clustersCount}/database")
+    write(testCaseName, testCase.generateRHS,     s"$testDataSize/${env.clustersCount}/query")
+    write(testCaseName, testCase.generateResult,  s"$testDataSize/${env.clustersCount}/result")
   }}
 
 
@@ -54,6 +50,6 @@ object Main extends App {
       .mode("overwrite")
       .parquet(writePath)
 
-    logger.info(s"Dataset $datasetName written successfully.")
+    logger.info(s"\tDataset $datasetName written successfully.")
   }
 }

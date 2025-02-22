@@ -2,21 +2,24 @@ package me.kosik.interwalled.benchmark
 
 import me.kosik.interwalled.benchmark.join._
 import me.kosik.interwalled.benchmark.utils.{BenchmarkCallback, BenchmarkRunner, CSV}
+import me.kosik.interwalled.domain.benchmark.ActiveBenchmarks
 import org.apache.spark.sql.SparkSession
+import org.slf4j.LoggerFactory
 
-import scala.util.{Failure, Success, Try}
 
 
 object Main extends App {
 
-  private val Array(sparkMaster, driverMemory, testDataDirectory) = args.take(3)
+  val logger = LoggerFactory.getLogger(getClass)
+  val env = MainEnv.build()
+  val Array(useLargeDataset) = args.take(1)
 
-  private val testDataSizes = Array(
-       100L,
-      1000L,
-     10000L,
-    100000L
-  )
+  val testDataSizes: Array[(Int, Long)] = {
+    if(useLargeDataset.toLowerCase == "true")
+      ActiveBenchmarks.TestDataSizes.extended
+    else
+      ActiveBenchmarks.TestDataSizes.baseline
+  }
 
   private val bucketsSize = Array(
       10,
@@ -40,54 +43,36 @@ object Main extends App {
 
   private val testDataSuites = Array(
     "one-to-all",
-    "one-to-many",
-    "one-to-one"
+    "one-to-one",
+    "sparse-16"
   )
 
   // --------------------------------------------------------------------
 
-  private val spark: SparkSession = SparkSession.builder()
-    .appName("InterwalledBenchmark")
-    .config("spark.driver.memory", driverMemory)
-    .config("spark.executor.memory", driverMemory)
-    .master(sparkMaster)
-    .getOrCreate()
+  private def sparkFactory(): SparkSession = {
+    SparkSession.getActiveSession.foreach(_.stop())
+
+    SparkSession.builder()
+      .appName("InterwalledBenchmark")
+      .config("spark.driver.memory", env.driverMemory)
+      .config("spark.executor.memory", env.executorMemory)
+      .master(env.sparkMaster)
+      .getOrCreate()
+  }
 
   private val results = BenchmarkRunner.run(
-    spark,
+    sparkFactory,
     benchmarks,
-    testDataDirectory,
+    env.dataDirectory,
     testDataSizes,
     testDataSuites
   )
 
   System.out.println("")
-  System.out.println("CSV results (success only):")
+  System.out.println("CSV results:")
 
   CSV
-    .toCSV(results.flatMap {
-      case Success(benchmarkResult) =>
-        Some(benchmarkResult)
-
-      case Failure(_) =>
-        None
-    })
+    .toCSV(results)
     .foreach(System.out.println)
-
-  System.out.println("")
-  System.out.println("Benchmark summary (human-friendly):")
-
-  results
-    .map {
-      case Success(benchmarkResult) =>
-        s"Benchmark ${benchmarkResult.joinName} " +
-          s"on ${benchmarkResult.dataSuite} (${benchmarkResult.dataSize} rows) " +
-          s"took: \n\t ${benchmarkResult.elapsedTime} ms."
-
-      case Failure(failureReason) =>
-        failureReason.printStackTrace()
-        s"Benchmark failed with ${failureReason.getMessage}."
-    }
-    .foreach(Console.out.println)
 }
 
