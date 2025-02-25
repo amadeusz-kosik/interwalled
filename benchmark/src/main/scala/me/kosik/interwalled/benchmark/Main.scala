@@ -22,23 +22,27 @@ object Main extends App {
   }
 
   private val bucketsSize = Array(
-      10,
-     100,
-    1000,
+             10,
+            100,
+           1000,
+
+      10 * 1000,
+     100 * 1000,
+    1000 * 1000
   )
 
   private val benchmarks: Seq[BenchmarkCallback] = {
     val broadcastAIList = Array(BroadcastAIListBenchmark)
 
-    val partitionedAIList = for {
-      bucketSize <- bucketsSize
-    } yield new PartitionedAIListBenchmark(bucketSize)
+//    val partitionedAIList = for {
+//      bucketSize <- bucketsSize
+//    } yield new PartitionedAIListBenchmark(bucketSize)
 
     val sparkNativeBucketing = for {
       bucketSize <- bucketsSize
     } yield new SparkNativeBucketingBenchmark(bucketSize)
 
-    (sparkNativeBucketing ++ broadcastAIList ++ partitionedAIList).map(_.prepareBenchmark)
+    (sparkNativeBucketing ++ broadcastAIList /*++ partitionedAIList*/).map(_.prepareBenchmark)
   }
 
   private val testDataSuites = Array(
@@ -50,8 +54,6 @@ object Main extends App {
   // --------------------------------------------------------------------
 
   private def sparkFactory(): SparkSession = {
-    SparkSession.getActiveSession.foreach(_.stop())
-
     SparkSession.builder()
       .appName("InterwalledBenchmark")
       .config("spark.driver.memory", env.driverMemory)
