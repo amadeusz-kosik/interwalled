@@ -10,6 +10,6 @@ class PartitionedAIListBenchmark(private val bucketSize: Long) extends Benchmark
     new PartitionedAIListIntervalJoin(bucketSize)
 
   override def toString: String =
-    s"PartitionedAIListBenchmark($bucketSize)"
+    s"partitioned-ailist-benchmark-$bucketSize"
 }
 

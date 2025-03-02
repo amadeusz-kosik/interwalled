@@ -1,0 +1,55 @@
+data_suite,clusters_count,rows_per_cluster,join_name,elapsed_time,result
+one-to-all,16,100,broadcast-ailist-benchmark,900,success
+one-to-one,16,100,broadcast-ailist-benchmark,180,success
+sparse-16,16,100,broadcast-ailist-benchmark,110,success
+one-to-all,16,250,broadcast-ailist-benchmark,120,success
+one-to-one,16,250,broadcast-ailist-benchmark,103,success
+sparse-16,16,250,broadcast-ailist-benchmark,88,success
+one-to-all,16,500,broadcast-ailist-benchmark,95,success
+one-to-one,16,500,broadcast-ailist-benchmark,107,success
+sparse-16,16,500,broadcast-ailist-benchmark,99,success
+one-to-all,16,1000,broadcast-ailist-benchmark,102,success
+one-to-one,16,1000,broadcast-ailist-benchmark,125,success
+sparse-16,16,1000,broadcast-ailist-benchmark,90,success
+one-to-all,16,2500,broadcast-ailist-benchmark,117,success
+one-to-one,16,2500,broadcast-ailist-benchmark,131,success
+sparse-16,16,2500,broadcast-ailist-benchmark,96,success
+one-to-all,16,5000,broadcast-ailist-benchmark,161,success
+one-to-one,16,5000,broadcast-ailist-benchmark,167,success
+sparse-16,16,5000,broadcast-ailist-benchmark,85,success
+one-to-all,16,10000,broadcast-ailist-benchmark,237,success
+one-to-one,16,10000,broadcast-ailist-benchmark,227,success
+sparse-16,16,10000,broadcast-ailist-benchmark,79,success
+one-to-all,16,25000,broadcast-ailist-benchmark,606,success
+one-to-one,16,25000,broadcast-ailist-benchmark,543,success
+sparse-16,16,25000,broadcast-ailist-benchmark,106,success
+one-to-all,16,50000,broadcast-ailist-benchmark,1161,success
+one-to-one,16,50000,broadcast-ailist-benchmark,1189,success
+sparse-16,16,50000,broadcast-ailist-benchmark,178,success
+one-to-all,16,100000,broadcast-ailist-benchmark,2723,success
+one-to-one,16,100000,broadcast-ailist-benchmark,2684,success
+sparse-16,16,100000,broadcast-ailist-benchmark,272,success
+one-to-all,16,250000,broadcast-ailist-benchmark,7744,success
+one-to-one,16,250000,broadcast-ailist-benchmark,7824,success
+sparse-16,16,250000,broadcast-ailist-benchmark,345,success
+one-to-all,16,500000,broadcast-ailist-benchmark,18162,success
+one-to-one,16,500000,broadcast-ailist-benchmark,17790,success
+sparse-16,16,500000,broadcast-ailist-benchmark,709,success
+one-to-all,16,1000000,broadcast-ailist-benchmark,38855,success
+one-to-one,16,1000000,broadcast-ailist-benchmark,38495,success
+sparse-16,16,1000000,broadcast-ailist-benchmark,1756,success
+one-to-all,16,2500000,broadcast-ailist-benchmark,106489,success
+one-to-one,16,2500000,broadcast-ailist-benchmark,126059,success
+sparse-16,16,2500000,broadcast-ailist-benchmark,4648,success
+one-to-all,16,5000000,broadcast-ailist-benchmark,1656,Job aborted due to stage failure: Total size of serialized results of 15 tasks (1026.1 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+one-to-one,16,5000000,broadcast-ailist-benchmark,1324,Job aborted due to stage failure: Total size of serialized results of 15 tasks (1025.2 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+sparse-16,16,5000000,broadcast-ailist-benchmark,11140,success
+one-to-all,16,10000000,broadcast-ailist-benchmark,3282,Job aborted due to stage failure: Total size of serialized results of 11 tasks (1033.1 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+one-to-one,16,10000000,broadcast-ailist-benchmark,2175,Job aborted due to stage failure: Total size of serialized results of 11 tasks (1033.3 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+sparse-16,16,10000000,broadcast-ailist-benchmark,24374,success
+one-to-all,16,25000000,broadcast-ailist-benchmark,2981,Job aborted due to stage failure: Total size of serialized results of 10 tasks (1123.5 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+one-to-one,16,25000000,broadcast-ailist-benchmark,2416,Job aborted due to stage failure: Total size of serialized results of 10 tasks (1117.8 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+sparse-16,16,25000000,broadcast-ailist-benchmark,62804,success
+one-to-all,16,50000000,broadcast-ailist-benchmark,3193,Job aborted due to stage failure: Total size of serialized results of 8 tasks (1093.7 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+one-to-one,16,50000000,broadcast-ailist-benchmark,2503,Job aborted due to stage failure: Total size of serialized results of 8 tasks (1093.9 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+sparse-16,16,50000000,broadcast-ailist-benchmark,131261,success

@@ -9,6 +9,7 @@ object BroadcastAIListBenchmark extends Benchmark {
   override def joinImplementation: IntervalJoin =
     BroadcastAIListIntervalJoin
 
-  override def toString: String = "BroadcastAIListBenchmark"
+  override def toString: String =
+    "broadcast-ailist-benchmark"
 }
 

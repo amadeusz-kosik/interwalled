@@ -18,7 +18,7 @@ object Main extends App {
     .master(env.sparkMaster)
     .getOrCreate()
 
-  val testDataSizes: Array[Long] = {
+  val testDataSizes: Array[(Int, Long)] = {
     if(generateLargeDataset.toLowerCase == "true")
       ActiveBenchmarks.TestDataSizes.extended
     else

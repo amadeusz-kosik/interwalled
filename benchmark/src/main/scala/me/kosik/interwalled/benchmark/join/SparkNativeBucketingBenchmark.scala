@@ -10,6 +10,6 @@ class SparkNativeBucketingBenchmark(private val bucketSize: Long) extends Benchm
     new SparkNativeIntervalJoin(bucketSize)
 
   override def toString: String =
-    s"SparkNativeBucketingBenchmark($bucketSize)"
+    s"spark-native-bucketing-benchmark-$bucketSize"
 
 }

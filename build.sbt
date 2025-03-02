@@ -21,8 +21,25 @@ lazy val spark = (project in file("spark"))
 lazy val benchmark = (project in file("benchmark"))
   .settings(
     name := "benchmark",
+    scalacOptions ++= Seq("-deprecation", "-unchecked", "-Xlint", "-Xdisable-assertions"),
     assembly / assemblyJarName := "interwalled-benchmark.jar",
-    assembly / mainClass := Some("me.kosik.interwalled.benchmark.Main")
+    assembly / mainClass := Some("me.kosik.interwalled.benchmark.Main"),
+    assembly / assemblyMergeStrategy := {
+
+      // Do not erase log4j files
+      case "plugin.properties" | "log4j.properties" =>
+        MergeStrategy.concat
+
+      // Otherwise it will fail with "Failed to find the data source: parquet."
+      case PathList("META-INF", "services",  _*) =>
+        MergeStrategy.concat
+
+      case PathList("META-INF", xs @ _*) =>
+        MergeStrategy.discard
+
+      case x =>
+        MergeStrategy.first
+    }
   )
   .dependsOn(ailist, domain, spark)
 
@@ -39,20 +56,15 @@ ailist / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test
 
 benchmark / mainClass in (Compile, run) := Some("me.kosik.interwalled.benchmark.Main")
 benchmark / parallelExecution in Test := false
-
-benchmark / libraryDependencies += "org.apache.hadoop" % "hadoop-client"  % "3.3.4"
-benchmark / libraryDependencies += "org.apache.spark"  %% "spark-core"    % SparkVersion
-benchmark / libraryDependencies += "org.apache.spark"  %% "spark-sql"     % SparkVersion
-benchmark / libraryDependencies += "org.apache.hadoop" %  "hadoop-client"       % "3.3.4"                                       % "test"
+benchmark / libraryDependencies += "org.apache.spark"  %% "spark-core"          % SparkVersion
+benchmark / libraryDependencies += "org.apache.spark"  %% "spark-sql"           % SparkVersion
 benchmark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"  % f"${SparkVersion}_${SparkTestingBaseVersion}" % "test"
 
 spark / parallelExecution in Test := false
-spark / libraryDependencies += "org.apache.spark"  %% "spark-core"    % SparkVersion % "provided"
-spark / libraryDependencies += "org.apache.spark"  %% "spark-sql"     % SparkVersion % "provided"
-spark / libraryDependencies += "org.apache.hadoop" %  "hadoop-client"       % "3.3.4"                                       % "test"
+spark / libraryDependencies += "org.apache.spark"  %% "spark-core"          % SparkVersion                                  % "provided"
+spark / libraryDependencies += "org.apache.spark"  %% "spark-sql"           % SparkVersion                                  % "provided"
 spark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"  % f"${SparkVersion}_${SparkTestingBaseVersion}" % "test"
 
 testDataGenerator / mainClass in (Compile, run) := Some("me.kosik.interwalled.test.data.generator.Main")
-testDataGenerator / libraryDependencies += "org.apache.hadoop" % "hadoop-client" % "3.3.4"
 testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-core" % SparkVersion
 testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-sql"  % SparkVersion

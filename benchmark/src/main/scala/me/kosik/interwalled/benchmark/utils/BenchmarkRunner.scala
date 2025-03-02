@@ -1,59 +1,48 @@
 package me.kosik.interwalled.benchmark.utils
 
-import me.kosik.interwalled.benchmark.{TestData, TestDataBuilder}
+import me.kosik.interwalled.benchmark.TestDataBuilder
 import org.apache.spark.sql.SparkSession
 import org.slf4j.LoggerFactory
 
-import scala.util.{Failure, Success, Try}
+import java.io.Writer
+import scala.util.Try
 
 
 object BenchmarkRunner {
   private val logger = LoggerFactory.getLogger(getClass)
 
   def run(
-    sparkFactory: () => SparkSession,
-    benchmarks: Seq[BenchmarkCallback],
+    benchmarkCallback: BenchmarkCallback,
     testDataDirectory: String,
     testDataSizes: Seq[(Int, Long)],
-    testDataSuites: Seq[String]
-  ): Seq[BenchmarkResult] = {
+    testDataSuites: Seq[String],
+    outputWriter: Writer
+  )(implicit sparkSession: SparkSession): Unit = {
+
     val testDataBuilders = for {
       (clustersCount, rowsCount)  <- testDataSizes
       testDataSuite               <- testDataSuites
     } yield TestDataBuilder(testDataDirectory, testDataSuite, clustersCount, rowsCount)
 
-    for {
-      benchmarkCallback <- benchmarks
-      testDataBuilder   <- testDataBuilders
-      result            <- run(sparkFactory, testDataBuilder, benchmarkCallback)
-    } yield result
+    testDataBuilders foreach { testDataBuilder =>
+      run(testDataBuilder, benchmarkCallback, outputWriter)
+    }
   }
 
   def run(
-    sparkFactory: () => SparkSession,
     testDatabuilder: TestDataBuilder,
-    benchmarkCallback: BenchmarkCallback
-  ): Option[BenchmarkResult] = Try {
-    val spark = sparkFactory()
-    val testData = testDatabuilder(spark)
+    benchmarkCallback: BenchmarkCallback,
+    outputWriter: Writer
+  )(implicit sparkSession: SparkSession): Unit = {
 
-    logger.info(s"Running benchmark - ${benchmarkCallback.description} on $testData")
+    val appName = f"${benchmarkCallback.description} on $testDatabuilder"
+    val testData = testDatabuilder(sparkSession)
+
+    logger.info(s"Running benchmark - $appName")
     val result = benchmarkCallback.fn(testData)
-
     result.result.foreach(_ => ())
 
-    (spark, testData, result)
-  } match {
-    case Failure(exception) =>
-      logger.warn(s"Benchmark ${benchmarkCallback.description} on ${testDatabuilder} failed flat: ${exception.getMessage.split('\n').head}")
-      Option.empty[BenchmarkResult]
-
-    case Success((spark, testData, BenchmarkResult(_, _, _, _, _, Failure(_)))) =>
-      logger.warn(s"Benchmark ${benchmarkCallback.description} on $testData failed, stopping SparkContext")
-      spark.stop()
-      Option.empty[BenchmarkResult]
-
-    case Success((_, _, benchmarkResult: BenchmarkResult)) =>
-      Some(benchmarkResult)
+    outputWriter.write(CSV.row(result))
+    outputWriter.flush()
   }
 }

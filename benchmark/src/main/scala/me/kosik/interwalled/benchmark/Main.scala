@@ -6,13 +6,17 @@ import me.kosik.interwalled.domain.benchmark.ActiveBenchmarks
 import org.apache.spark.sql.SparkSession
 import org.slf4j.LoggerFactory
 
+import java.io.{PrintWriter, Writer}
 
 
 object Main extends App {
 
   val logger = LoggerFactory.getLogger(getClass)
   val env = MainEnv.build()
-  val Array(useLargeDataset) = args.take(1)
+  val Array(useLargeDataset, benchmarkName) = args.take(2)
+
+  logger.info(f"Running environment: $env.")
+  logger.info(f"Running arguments: ${args.mkString("Array(", ", ", ")")}.")
 
   val testDataSizes: Array[(Int, Long)] = {
     if(useLargeDataset.toLowerCase == "true")
@@ -21,28 +25,15 @@ object Main extends App {
       ActiveBenchmarks.TestDataSizes.baseline
   }
 
-  private val bucketsSize = Array(
-             10,
-            100,
-           1000,
+  private val benchmark: BenchmarkCallback = benchmarkName match {
+    case "broadcast-ai-list" =>
+      BroadcastAIListBenchmark.prepareBenchmark
 
-      10 * 1000,
-     100 * 1000,
-    1000 * 1000
-  )
+    case "partitioned-ai-list" =>
+      new PartitionedAIListBenchmark(args(2).toInt).prepareBenchmark
 
-  private val benchmarks: Seq[BenchmarkCallback] = {
-    val broadcastAIList = Array(BroadcastAIListBenchmark)
-
-//    val partitionedAIList = for {
-//      bucketSize <- bucketsSize
-//    } yield new PartitionedAIListBenchmark(bucketSize)
-
-    val sparkNativeBucketing = for {
-      bucketSize <- bucketsSize
-    } yield new SparkNativeBucketingBenchmark(bucketSize)
-
-    (sparkNativeBucketing ++ broadcastAIList /*++ partitionedAIList*/).map(_.prepareBenchmark)
+    case "spark-native-bucketing" =>
+      new SparkNativeBucketingBenchmark(args(2).toInt).prepareBenchmark
   }
 
   private val testDataSuites = Array(
@@ -53,28 +44,26 @@ object Main extends App {
 
   // --------------------------------------------------------------------
 
-  private def sparkFactory(): SparkSession = {
+  private implicit val sparkSession: SparkSession = {
     SparkSession.builder()
-      .appName("InterwalledBenchmark")
+      .appName(s"InterwalledBenchmark - $benchmarkName")
       .config("spark.driver.memory", env.driverMemory)
       .config("spark.executor.memory", env.executorMemory)
       .master(env.sparkMaster)
       .getOrCreate()
   }
 
-  private val results = BenchmarkRunner.run(
-    sparkFactory,
-    benchmarks,
+  private val csvWriter: Writer = new PrintWriter(f"./jupyter-lab/data/${benchmark.description}.csv")
+  csvWriter.write(CSV.header)
+
+  BenchmarkRunner.run(
+    benchmark,
     env.dataDirectory,
     testDataSizes,
-    testDataSuites
+    testDataSuites,
+    csvWriter
   )
 
-  System.out.println("")
-  System.out.println("CSV results:")
-
-  CSV
-    .toCSV(results)
-    .foreach(System.out.println)
+  csvWriter.close()
 }
 
