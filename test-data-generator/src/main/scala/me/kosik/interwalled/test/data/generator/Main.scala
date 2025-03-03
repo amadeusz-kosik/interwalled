@@ -26,18 +26,18 @@ object Main extends App {
   }
 
   val testCases = Array(
-    (testDataSize: Long) => TestOneToOne(env.clustersCount, testDataSize),
-    (testDataSize: Long) => TestSparse(env.clustersCount, testDataSize, 16),
-    (testDataSize: Long) => TestOneToAll(env.clustersCount, testDataSize)
+    (clustersCount: Int, rowsPerCluster: Long) => TestOneToOne(clustersCount, rowsPerCluster),
+    (clustersCount: Int, rowsPerCluster: Long) => TestSparse(clustersCount, rowsPerCluster, 16),
+    (clustersCount: Int, rowsPerCluster: Long) => TestOneToAll(clustersCount, rowsPerCluster)
   )
 
-  testDataSizes foreach { testDataSize => testCases foreach { testCaseCallback =>
-    val testCase = testCaseCallback(testDataSize)
+  testDataSizes foreach { case (clustersCount, testDataSize) => testCases foreach { testCaseCallback =>
+    val testCase = testCaseCallback(clustersCount, testDataSize)
     val testCaseName = testCase.testCaseName
 
-    write(testCaseName, testCase.generateLHS,     s"$testDataSize/${env.clustersCount}/database")
-    write(testCaseName, testCase.generateRHS,     s"$testDataSize/${env.clustersCount}/query")
-    write(testCaseName, testCase.generateResult,  s"$testDataSize/${env.clustersCount}/result")
+    write(testCaseName, testCase.generateLHS,     s"$testDataSize/${clustersCount}/database")
+    write(testCaseName, testCase.generateRHS,     s"$testDataSize/${clustersCount}/query")
+    write(testCaseName, testCase.generateResult,  s"$testDataSize/${clustersCount}/result")
   }}
 
 
