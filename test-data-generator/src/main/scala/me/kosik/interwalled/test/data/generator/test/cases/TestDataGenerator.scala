@@ -16,7 +16,11 @@ object TestDataGenerator {
     import spark.implicits._
 
     spark.sparkContext.range(1L, rowsToGenerate + 1)
-      .map(i => TestDataRow(i, i, cluster, f"CH-$cluster-$i-$i"))
+      .map(i => TestDataRow(i, i, cluster, ""))
+      .map(row => addValue(row))
       .toDS()
   }
+
+  def addValue(testDataRow: TestDataRow): TestDataRow =
+    testDataRow.copy(value = f"${testDataRow.key}-${testDataRow.from}-${testDataRow.to}")
 }

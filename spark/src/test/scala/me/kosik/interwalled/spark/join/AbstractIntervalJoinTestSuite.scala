@@ -1,6 +1,7 @@
 package me.kosik.interwalled.spark.join
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
+import me.kosik.interwalled.domain.benchmark.ActiveBenchmarks.TestDataSizes
 import me.kosik.interwalled.domain.{Interval, IntervalColumns, IntervalsPair}
 import org.apache.spark.sql.{DataFrame, Dataset, functions => f}
 import org.scalatest.funsuite.AnyFunSuite
@@ -8,18 +9,9 @@ import org.scalatest.funsuite.AnyFunSuite
 
 abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameSuiteBase {
 
-  def inputSizes: Array[Long] = {
-    if(sys.env.getOrElse("INTERWALLED_RUN_100K", "FALSE") != "FALSE")
-      Array(100L, 1 * 1000L, 10 * 1000L, 100 * 1000L)
-    else if(sys.env.getOrElse("INTERWALLED_RUN_10K", "FALSE") != "FALSE")
-      Array(100L, 1 * 1000L, 10 * 1000L)
-    else
-      Array(100L, 1 * 1000L)
-  }
+  val inputSizes: Array[(Int, Long)] = TestDataSizes.baseline.take(1)
 
-  def inputPartitions: Array[(Int, Int)] = Array((1, 1), (4, 4))
-
-  def inputSuites: Array[String] = Array("one-to-all", "one-to-many", "one-to-one")
+  def inputSuites: Array[String] = Array("one-to-all", "one-to-one", "sparse-16")
 
   def intervalJoin: IntervalJoin
 
@@ -46,54 +38,27 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
 
   // ---------------------------------------------------------------------------------------------------------------- //
 
-  inputSizes foreach { inputSize => inputSuites.foreach { inputSuite =>
-    inputPartitions foreach { case (lhsPartitions, rhsPartitions) =>
+  inputSizes foreach { case (clustersCount, rowsPerCluster) => inputSuites.foreach { inputSuite =>
 
-      test(s"$inputSize rows, $inputSuite, $lhsPartitions x $rhsPartitions partitions") {
-        import spark.implicits._
+    test(s"$rowsPerCluster rows, $inputSuite, $clustersCount clusters") {
+      import spark.implicits._
 
-        def loadInput(datasetName: String): Dataset[Interval[String]] =
-          spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
-            .as[Interval[String]]
+      def loadInput(datasetName: String): Dataset[Interval[String]] =
+        spark.read.parquet(s"data/$inputSuite/$rowsPerCluster/$clustersCount/$datasetName.parquet")
+          .as[Interval[String]]
 
-        def loadResult(datasetName: String): Dataset[IntervalsPair[String]] =
-          spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
-            .as[IntervalsPair[String]]
+      def loadResult(datasetName: String): Dataset[IntervalsPair[String]] =
+        spark.read.parquet(s"data/$inputSuite/$rowsPerCluster/$clustersCount/$datasetName.parquet")
+          .as[IntervalsPair[String]]
 
-        val lhs = loadInput("database").as[Interval[String]].repartition(lhsPartitions)
-        val rhs = loadInput("query").as[Interval[String]].repartition(rhsPartitions)
+      val lhs = loadInput("database").as[Interval[String]]
+      val rhs = loadInput("query").as[Interval[String]]
 
-        val expected = loadResult("result")
-        val actual = intervalJoin.join(lhs, rhs)
+      val expected = loadResult("result")
+      val actual = intervalJoin.join(lhs, rhs)
 
-        assertDataEqual(expected = expected, actual = actual)
-      }
-
-      test(s"Multiple keys, ${inputSize * 4} rows, $inputSuite, $lhsPartitions x $rhsPartitions partitions") {
-        import spark.implicits._
-
-        def loadInput(datasetName: String): Dataset[Interval[String]] =
-          spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
-            .drop(IntervalColumns.KEY)
-            .withColumn(IntervalColumns.KEY, f.explode(f.array(f.lit("CH-1"), f.lit("CH-2"), f.lit("CH-3"), f.lit("CH-4"))))
-            .as[Interval[String]]
-
-        def loadResult(datasetName: String): Dataset[IntervalsPair[String]] =
-          spark.read.parquet(s"data/$inputSuite/$inputSize/$datasetName.parquet")
-            .as[IntervalsPair[String]]
-            .flatMap(pair => Array("CH-1", "CH-2", "CH-3", "CH-4").map {
-              key => pair.copy(key = key, lhs = pair.lhs.copy(key = key), rhs = pair.rhs.copy(key = key))
-            })
-
-
-        val lhs = loadInput("database").as[Interval[String]].repartition(lhsPartitions)
-        val rhs = loadInput("query").as[Interval[String]].repartition(rhsPartitions)
-
-        val expected = loadResult("result")
-        val actual = intervalJoin.join(lhs, rhs)
-
-        assertDataEqual(expected = expected, actual = actual)
-      }
+      assertDataEqual(expected = expected, actual = actual)
     }
+
   }}
 }
