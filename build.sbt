@@ -3,6 +3,24 @@ ThisBuild / scalaVersion := "2.12.20"
 ThisBuild / organization := "me.kosik.interwalled"
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
+
+// Deduplication (assemblyMergeStrategy) for sbt-assembly
+val sparkJobAssemblyMergeStrategy: String => sbtassembly.MergeStrategy = {
+  // Do not erase log4j files
+  case "plugin.properties" | "log4j.properties" =>
+    MergeStrategy.concat
+
+  // Otherwise it will fail with "Failed to find the data source: parquet."
+  case PathList("META-INF", "services",  _*) =>
+    MergeStrategy.concat
+
+  case PathList("META-INF", xs @ _*) =>
+    MergeStrategy.discard
+
+  case x =>
+    MergeStrategy.first
+}
+
 // Libraries' versions
 val SparkVersion            = "3.5.3"
 val SparkTestingBaseVersion = "2.0.1"
@@ -24,27 +42,18 @@ lazy val benchmark = (project in file("benchmark"))
     scalacOptions ++= Seq("-deprecation", "-unchecked", "-Xlint", "-Xdisable-assertions"),
     assembly / assemblyJarName := "interwalled-benchmark.jar",
     assembly / mainClass := Some("me.kosik.interwalled.benchmark.Main"),
-    assembly / assemblyMergeStrategy := {
-
-      // Do not erase log4j files
-      case "plugin.properties" | "log4j.properties" =>
-        MergeStrategy.concat
-
-      // Otherwise it will fail with "Failed to find the data source: parquet."
-      case PathList("META-INF", "services",  _*) =>
-        MergeStrategy.concat
-
-      case PathList("META-INF", xs @ _*) =>
-        MergeStrategy.discard
-
-      case x =>
-        MergeStrategy.first
-    }
+    assembly / assemblyMergeStrategy := sparkJobAssemblyMergeStrategy
   )
   .dependsOn(ailist, domain, spark)
 
 lazy val testDataGenerator = (project in file("test-data-generator"))
-  .settings(name := "test-data-generator")
+  .settings(
+    name := "test-data-generator",
+    scalacOptions ++= Seq("-deprecation", "-unchecked", "-Xlint", "-Xdisable-assertions"),
+    assembly / assemblyJarName := "interwalled-test-data-generator.jar",
+    assembly / mainClass := Some("me.kosik.interwalled.test.data.generator.Main"),
+    assembly / assemblyMergeStrategy := sparkJobAssemblyMergeStrategy
+  )
   .dependsOn(domain)
 
 lazy val root = (project in file("."))

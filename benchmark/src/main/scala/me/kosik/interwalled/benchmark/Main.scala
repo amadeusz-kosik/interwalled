@@ -13,10 +13,12 @@ object Main extends App {
 
   val logger = LoggerFactory.getLogger(getClass)
   val env = MainEnv.build()
-  val Array(useLargeDataset, benchmarkName) = args.take(2)
 
   logger.info(f"Running environment: $env.")
   logger.info(f"Running arguments: ${args.mkString("Array(", ", ", ")")}.")
+
+  val Array(useLargeDataset, dataSuite, benchmarkName) = args.take(3)
+  val benchmarkArgs = args.drop(3)
 
   val testDataSizes: Array[(Int, Long)] = {
     if(useLargeDataset.toLowerCase == "true")
@@ -30,17 +32,11 @@ object Main extends App {
       BroadcastAIListBenchmark.prepareBenchmark
 
     case "partitioned-ai-list" =>
-      new PartitionedAIListBenchmark(args(2).toInt).prepareBenchmark
+      new PartitionedAIListBenchmark(benchmarkArgs(0).toInt).prepareBenchmark
 
     case "spark-native-bucketing" =>
-      new SparkNativeBucketingBenchmark(args(2).toInt).prepareBenchmark
+      new SparkNativeBucketingBenchmark(benchmarkArgs(0).toInt).prepareBenchmark
   }
-
-  private val testDataSuites = Array(
-    "one-to-all",
-    "one-to-one",
-    "sparse-16"
-  )
 
   // --------------------------------------------------------------------
 
@@ -53,14 +49,14 @@ object Main extends App {
       .getOrCreate()
   }
 
-  private val csvWriter: Writer = new PrintWriter(f"./jupyter-lab/data/${benchmark.description}.csv")
+  private val csvWriter: Writer = new PrintWriter(f"./jupyter-lab/data/${benchmark.description}-${dataSuite}.csv")
   csvWriter.write(CSV.header)
 
   BenchmarkRunner.run(
     benchmark,
     env.dataDirectory,
     testDataSizes,
-    testDataSuites,
+    dataSuite,
     csvWriter
   )
 

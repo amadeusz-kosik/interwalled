@@ -1,0 +1,13 @@
+data_suite,clusters_count,rows_per_cluster,join_name,elapsed_time,result
+sparse-16,16,100,broadcast-ailist-benchmark,963,success
+sparse-16,16,250,broadcast-ailist-benchmark,187,success
+sparse-16,16,500,broadcast-ailist-benchmark,235,success
+sparse-16,16,1000,broadcast-ailist-benchmark,343,success
+sparse-16,16,2500,broadcast-ailist-benchmark,980,success
+sparse-16,16,5000,broadcast-ailist-benchmark,1861,success
+sparse-16,16,10000,broadcast-ailist-benchmark,6181,success
+sparse-16,16,25000,broadcast-ailist-benchmark,19482,success
+sparse-16,16,50000,broadcast-ailist-benchmark,71271,success
+sparse-16,16,100000,broadcast-ailist-benchmark,281897,success
+sparse-16,16,250000,broadcast-ailist-benchmark,1716438,success
+sparse-16,16,500000,broadcast-ailist-benchmark,1800005,Futures timed out after [30 minutes]

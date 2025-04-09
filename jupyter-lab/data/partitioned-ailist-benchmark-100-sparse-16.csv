@@ -1,0 +1,9 @@
+data_suite,clusters_count,rows_per_cluster,join_name,elapsed_time,result
+sparse-16,16,100,partitioned-ailist-benchmark-100,1346,success
+sparse-16,16,250,partitioned-ailist-benchmark-100,371,success
+sparse-16,16,500,partitioned-ailist-benchmark-100,468,success
+sparse-16,16,1000,partitioned-ailist-benchmark-100,737,success
+sparse-16,16,2500,partitioned-ailist-benchmark-100,4157,success
+sparse-16,16,5000,partitioned-ailist-benchmark-100,22984,success
+sparse-16,16,10000,partitioned-ailist-benchmark-100,209180,success
+sparse-16,16,25000,partitioned-ailist-benchmark-100,835835,Job 39 cancelled because SparkContext was shut down

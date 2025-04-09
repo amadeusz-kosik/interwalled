@@ -1,0 +1,9 @@
+data_suite,clusters_count,rows_per_cluster,join_name,elapsed_time,result
+sparse-16,16,100,spark-native-bucketing-benchmark-10,1588,success
+sparse-16,16,250,spark-native-bucketing-benchmark-10,481,success
+sparse-16,16,500,spark-native-bucketing-benchmark-10,560,success
+sparse-16,16,1000,spark-native-bucketing-benchmark-10,2706,success
+sparse-16,16,2500,spark-native-bucketing-benchmark-10,29917,success
+sparse-16,16,5000,spark-native-bucketing-benchmark-10,189348,success
+sparse-16,16,10000,spark-native-bucketing-benchmark-10,712570,success
+sparse-16,16,25000,spark-native-bucketing-benchmark-10,1800177,Futures timed out after [30 minutes]

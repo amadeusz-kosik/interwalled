@@ -12,6 +12,9 @@ case class TestData(
   query: Dataset[Interval[String]]
 ) {
   override def toString: String = s"TestData($suite, $rowsPerCluster, $clustersCount)"
+
+  def sparkSession: SparkSession =
+    database.sparkSession
 }
 
 

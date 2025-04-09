@@ -22,7 +22,7 @@ case class TestSpanning(clustersCount: Int, rowsPerCluster: Long, span: Int) ext
   override def generateRHS(implicit spark: SparkSession): Dataset[TestDataRow] =
     TestDataGenerator.generateLinear(clustersCount, rowsPerCluster)
 
-  override def generateResult(implicit spark: SparkSession): Dataset[TestResultRow] = {
+  override def generateResult(implicit spark: SparkSession): Option[Dataset[TestResultRow]] = Some {
     import spark.implicits._
 
     generateLHS(spark)

@@ -5,7 +5,6 @@ import org.apache.spark.sql.SparkSession
 import org.slf4j.LoggerFactory
 
 import java.io.Writer
-import scala.util.Try
 
 
 object BenchmarkRunner {
@@ -15,13 +14,12 @@ object BenchmarkRunner {
     benchmarkCallback: BenchmarkCallback,
     testDataDirectory: String,
     testDataSizes: Seq[(Int, Long)],
-    testDataSuites: Seq[String],
+    testDataSuite: String,
     outputWriter: Writer
   )(implicit sparkSession: SparkSession): Unit = {
 
     val testDataBuilders = for {
       (clustersCount, rowsCount)  <- testDataSizes
-      testDataSuite               <- testDataSuites
     } yield TestDataBuilder(testDataDirectory, testDataSuite, clustersCount, rowsCount)
 
     testDataBuilders foreach { testDataBuilder =>
@@ -40,7 +38,6 @@ object BenchmarkRunner {
 
     logger.info(s"Running benchmark - $appName")
     val result = benchmarkCallback.fn(testData)
-    result.result.foreach(_ => ())
 
     outputWriter.write(CSV.row(result))
     outputWriter.flush()

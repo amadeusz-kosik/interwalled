@@ -11,5 +11,5 @@ trait TestCase {
 
   def generateRHS(implicit spark: SparkSession): Dataset[TestDataRow]
 
-  def generateResult(implicit spark: SparkSession): Dataset[TestResultRow]
+  def generateResult(implicit spark: SparkSession): Option[Dataset[TestResultRow]]
 }

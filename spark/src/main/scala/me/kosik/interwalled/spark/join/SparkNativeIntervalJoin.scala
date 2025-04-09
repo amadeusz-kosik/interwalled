@@ -31,7 +31,7 @@ class SparkNativeIntervalJoin(bucketsCount: Long) extends IntervalJoin {
         (lhsInputBucketed.col(IntervalColumns.BUCKET) === rhsInputBucketed.col(IntervalColumns.BUCKET))
       )
       .filter(
-        (lhsInput.col(IntervalColumns.FROM) >=  rhsInput.col(IntervalColumns.TO)  ) and
+        (lhsInput.col(IntervalColumns.FROM) <=  rhsInput.col(IntervalColumns.TO)  ) and
         (lhsInput.col(IntervalColumns.TO)   >=  rhsInput.col(IntervalColumns.FROM))
       )
       .drop(

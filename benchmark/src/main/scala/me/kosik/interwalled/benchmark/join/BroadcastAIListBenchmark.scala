@@ -1,7 +1,7 @@
 package me.kosik.interwalled.benchmark.join
 
 import me.kosik.interwalled.benchmark.utils.Benchmark
-import me.kosik.interwalled.spark.join.{BroadcastAIListIntervalJoin, IntervalJoin, PartitionedAIListIntervalJoin}
+import me.kosik.interwalled.spark.join.{BroadcastAIListIntervalJoin, IntervalJoin}
 
 
 object BroadcastAIListBenchmark extends Benchmark {
