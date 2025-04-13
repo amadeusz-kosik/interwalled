@@ -6,7 +6,7 @@ import org.apache.spark.sql.{Dataset, SparkSession}
 
 object TestDataGenerator {
 
-  def generateLinear(clustersCount: Int, rowsPerCluster: Long, rowLength: Int = 1)(implicit spark: SparkSession): Dataset[TestDataRow] = {
+  def generateLinear(clustersCount: Int, rowsPerCluster: Long, rowLength: Int = 0)(implicit spark: SparkSession): Dataset[TestDataRow] = {
     (1 to clustersCount)
       .map(cluster => generateLinear(f"CH-$cluster", rowsPerCluster, rowLength))
       .reduce(_.unionByName(_))

@@ -37,12 +37,17 @@ object Main extends App {
   testCases foreach { testCaseCallback => testDataSizes foreach { case (clustersCount, testDataSize) =>
     val testCase = testCaseCallback(clustersCount, testDataSize)
     val testCaseName = testCase.testCaseName
+    val outputFilesCount = 1 + (testDataSize / 1000000).toInt // 1M
 
-    write(testCaseName, testCase.generateLHS,     s"$testDataSize/${clustersCount}/database")
-    write(testCaseName, testCase.generateRHS,     s"$testDataSize/${clustersCount}/query")
+    write(testCaseName, testCase.generateLHS.coalesce(outputFilesCount),     s"$testDataSize/${clustersCount}/database")
+    write(testCaseName, testCase.generateRHS.coalesce(outputFilesCount),     s"$testDataSize/${clustersCount}/query")
 
     if(testCase.isInstanceOf[TestCase])
-      writeIfPresent(testCaseName, testCase.generateResult, s"$testDataSize/${clustersCount}/result")
+      writeIfPresent(
+        testCaseName,
+        testCase.generateResult.map(_.coalesce(outputFilesCount)),
+        s"$testDataSize/${clustersCount}/result"
+      )
   }}
 
 
@@ -59,7 +64,6 @@ object Main extends App {
     logger.info(s"Writing $datasetName dataset to ${writePath}.")
 
     dataset
-      .repartition()
       .write
       .mode("overwrite")
       .parquet(writePath)

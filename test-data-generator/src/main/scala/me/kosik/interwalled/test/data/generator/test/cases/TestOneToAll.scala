@@ -15,7 +15,7 @@ case class TestOneToAll(clustersCount: Int, rowsPerCluster: Long) extends TestCa
     import spark.implicits._
 
     (1 to clustersCount)
-      .map(cluster => TestDataRow(1L, rowsPerCluster + 1, f"CH-$cluster", f"$cluster-1-${rowsPerCluster + 1}"))
+      .map(cluster => TestDataRow(1L, rowsPerCluster + 1, f"CH-$cluster", f"CH-$cluster-1-${rowsPerCluster + 1}"))
       .toDS()
       .repartition(1)
   }
@@ -26,7 +26,7 @@ case class TestOneToAll(clustersCount: Int, rowsPerCluster: Long) extends TestCa
     generateLHS
       .map(lhs => TestResultRow(
         lhs,
-        TestDataRow(1L, rowsPerCluster + 1, f"CH-${lhs.key}", f"${lhs.key}-1-${rowsPerCluster + 1}"),
+        TestDataRow(1L, rowsPerCluster + 1, lhs.key, f"${lhs.key}-1-${rowsPerCluster + 1}"),
         lhs.key
       ))
   }

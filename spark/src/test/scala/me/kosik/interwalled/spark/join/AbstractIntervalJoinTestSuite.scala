@@ -1,9 +1,9 @@
 package me.kosik.interwalled.spark.join
 
-import com.holdenkarau.spark.testing.DataFrameSuiteBase
+import com.holdenkarau.spark.testing.{DataFrameSuiteBase, DatasetSuiteBase}
 import me.kosik.interwalled.domain.benchmark.ActiveBenchmarks.TestDataSizes
-import me.kosik.interwalled.domain.{Interval, IntervalColumns, IntervalsPair}
-import org.apache.spark.sql.{DataFrame, Dataset, functions => f}
+import me.kosik.interwalled.domain.{Interval, IntervalsPair}
+import org.apache.spark.sql.{DataFrame, Dataset}
 import org.scalatest.funsuite.AnyFunSuite
 
 
@@ -11,7 +11,8 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
 
   val inputSizes: Array[(Int, Long)] = TestDataSizes.baseline.take(1)
 
-  def inputSuites: Array[String] = Array("one-to-all", "one-to-one", "sparse-16")
+  def inputSuites: Array[String] =
+    Array("one-to-all", "one-to-one", "spanning-4", "spanning-16")
 
   def intervalJoin: IntervalJoin
 
@@ -33,7 +34,7 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
         $"rhs.value".as("rhs_value"),
       )
 
-    assertDataFrameDataEquals(expected = prepareResult(expected), result = prepareResult(actual))
+    assertDataFrameNoOrderEquals(expected = prepareResult(expected), result = prepareResult(actual))
   }
 
   // ---------------------------------------------------------------------------------------------------------------- //

@@ -35,7 +35,7 @@ class PartitionedAIListIntervalJoin(bucketSize: Long) extends IntervalJoin with 
     val joinedRDD = aiListsLHS
       .cogroup(aiListsRHS)
       .flatMap { case ((bucket, key), (lhsAIListsIterator, rhsIntervalsIterator)) =>
-        logInfo(s"Computing bucket $bucket : $key.")
+        logDebug(s"Computing bucket $bucket : $key.")
 
         val aiLists = lhsAIListsIterator
           .toSeq
@@ -50,7 +50,7 @@ class PartitionedAIListIntervalJoin(bucketSize: Long) extends IntervalJoin with 
           lhsInterval   <- aiList.overlapping(rhsInterval).asScala
         } yield IntervalsPair(rhsInterval.key, lhsInterval, rhsInterval)
 
-        logInfo(s"Intervals pairs computed for $bucket.")
+        logDebug(s"Intervals pairs computed for $bucket.")
         intervalsPairs
       }
 
