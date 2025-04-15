@@ -1,7 +1,7 @@
 package me.kosik.interwalled.test.data.generator
 
 import me.kosik.interwalled.domain.benchmark.ActiveBenchmarks
-import me.kosik.interwalled.test.data.generator.test.cases.{TestAllToAll, TestCase, TestOneToAll, TestOneToOne, TestSpanning, TestSparse}
+import me.kosik.interwalled.test.data.generator.test.cases._
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.slf4j.LoggerFactory
 
@@ -27,6 +27,7 @@ object Main extends App {
 
   val testCases = Array(
     (clustersCount: Int, rowsPerCluster: Long) => TestOneToOne(clustersCount, rowsPerCluster),
+    (clustersCount: Int, rowsPerCluster: Long) => TestContinuous(clustersCount, rowsPerCluster, 16),
     (clustersCount: Int, rowsPerCluster: Long) => TestSparse(clustersCount, rowsPerCluster, 16),
     (clustersCount: Int, rowsPerCluster: Long) => TestOneToAll(clustersCount, rowsPerCluster),
     (clustersCount: Int, rowsPerCluster: Long) => TestSpanning(clustersCount, rowsPerCluster, 4),

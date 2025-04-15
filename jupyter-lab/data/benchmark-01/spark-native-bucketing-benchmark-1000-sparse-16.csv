@@ -1,12 +1,13 @@
 data_suite,clusters_count,rows_per_cluster,join_name,elapsed_time,result
-sparse-16,16,100,spark-native-bucketing-benchmark-1000,1589,success
-sparse-16,16,250,spark-native-bucketing-benchmark-1000,492,success
-sparse-16,16,500,spark-native-bucketing-benchmark-1000,443,success
-sparse-16,16,1000,spark-native-bucketing-benchmark-1000,861,success
-sparse-16,16,2500,spark-native-bucketing-benchmark-1000,1638,success
-sparse-16,16,5000,spark-native-bucketing-benchmark-1000,4704,success
-sparse-16,16,10000,spark-native-bucketing-benchmark-1000,19131,success
-sparse-16,16,25000,spark-native-bucketing-benchmark-1000,124295,success
-sparse-16,16,50000,spark-native-bucketing-benchmark-1000,668406,success
-sparse-16,16,100000,spark-native-bucketing-benchmark-1000,1800010,Futures timed out after [30 minutes]
-sparse-16,16,250000,spark-native-bucketing-benchmark-1000,555127,Job aborted due to stage failure: Task 10 in stage 108.0 failed 1 times, most recent failure: Lost task 10.0 in stage 108.0 (TID 1143) (mac.localdomain executor driver): org.apache.spark.SparkException: [FAILED_EXECUTE_UDF] Failed to execute user defined function (`Bucketizer$$Lambda$2254/0x0000007001cfdc30`: (bigint, bigint, bigint) => array<bigint>).
+sparse-16,16,100,spark-native-bucketing-benchmark-1000,1514,success
+sparse-16,16,250,spark-native-bucketing-benchmark-1000,338,success
+sparse-16,16,500,spark-native-bucketing-benchmark-1000,277,success
+sparse-16,16,1000,spark-native-bucketing-benchmark-1000,241,success
+sparse-16,16,2500,spark-native-bucketing-benchmark-1000,384,success
+sparse-16,16,5000,spark-native-bucketing-benchmark-1000,352,success
+sparse-16,16,10000,spark-native-bucketing-benchmark-1000,402,success
+sparse-16,16,25000,spark-native-bucketing-benchmark-1000,648,success
+sparse-16,16,50000,spark-native-bucketing-benchmark-1000,1486,success
+sparse-16,16,100000,spark-native-bucketing-benchmark-1000,2674,success
+sparse-16,16,250000,spark-native-bucketing-benchmark-1000,3963,success
+sparse-16,16,500000,spark-native-bucketing-benchmark-1000,5867,success

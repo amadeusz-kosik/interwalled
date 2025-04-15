@@ -48,29 +48,32 @@ function run_benchmark() {
 }
 
 cd "$REPO_DIR" || exit
-#sbt clean compile
+sbt clean compile
 
 #sbt testDataGenerator/assembly
 #run_generator
 
 BENCHMARKS=(
-#D  "broadcast-ai-list"
-#D  "partitioned-ai-list 100"
-#D  "partitioned-ai-list 1000"
-#D  "partitioned-ai-list 10000"
-#D  "spark-native-bucketing 10"
-#D  "spark-native-bucketing 100"
-#D  "spark-native-bucketing 1000"
-#D  "spark-native-bucketing 10000"
+  "broadcast-ailist"
+  "partitioned-ailist 100"
+  "partitioned-ailist 1000"
+  "partitioned-ailist 10000"
+  "native-ailist"
+  "partitioned-native-ailist-benchmark 1000"
+  "spark-native-bucketing 10"
+  "spark-native-bucketing 100"
+  "spark-native-bucketing 1000"
+  "spark-native-bucketing 10000"
 )
 
 DATA_SUITES=(
-    "one-to-all"
-    "one-to-one"
-    "spanning-4"
-    "spanning-16"
-    "sparse-16"
-    "all-to-all"
+  "one-to-one"
+  "one-to-all"
+  "all-to-all"
+  "spanning-4"
+  "spanning-16"
+  "continuous-16"
+  "sparse-16"
 )
 
 sbt benchmark/assembly

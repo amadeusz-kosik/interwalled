@@ -1,12 +1,13 @@
 package me.kosik.interwalled.test.data.generator.test.cases
 
 import me.kosik.interwalled.domain.test.{TestDataRow, TestResultRow}
-import org.apache.spark.sql.{Dataset, SparkSession, functions => F}
+import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.sql.{functions => F}
 
 
-case class TestSparse(clustersCount: Int, rowsPerCluster: Long, rowsPerJoin: Int) extends TestCase {
+case class TestContinuous(clustersCount: Int, rowsPerCluster: Long, rowsPerJoin: Int) extends TestCase {
 
-  override def testCaseName: String = s"sparse-$rowsPerJoin"
+  override def testCaseName: String = s"continuous-$rowsPerJoin"
 
   override def generateLHS(implicit spark: SparkSession): Dataset[TestDataRow] = {
     import spark.implicits._
@@ -14,15 +15,15 @@ case class TestSparse(clustersCount: Int, rowsPerCluster: Long, rowsPerJoin: Int
     TestDataGenerator
       .generateLinear(clustersCount, rowsPerCluster / rowsPerJoin)
       .select(
-        (F.col("from") * F.lit(rowsPerJoin)).as("from"),
-        (F.col("to")   * F.lit(rowsPerJoin)).as("to"),
+        ((F.col("from") - F.lit(1)) * F.lit(rowsPerJoin)).as("from"),
+        (F.col("to") * F.lit(rowsPerJoin)).as("to"),
         F.col("key"),
         F.concat(
           F.col("key"),
           F.lit("-"),
-          F.col("from") * F.lit(rowsPerJoin),
+          (F.col("from") - F.lit(1)) * F.lit(rowsPerJoin),
           F.lit("-"),
-          F.col("to")   * F.lit(rowsPerJoin)
+          F.col("to") * F.lit(rowsPerJoin)
         ).as("value")
       )
       .as[TestDataRow]

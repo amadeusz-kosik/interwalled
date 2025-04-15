@@ -1,0 +1,12 @@
+data_suite,clusters_count,rows_per_cluster,join_name,elapsed_time,result
+spanning-4,16,100,native-ailist-benchmark-v2,1789,success
+spanning-4,16,250,native-ailist-benchmark-v2,518,success
+spanning-4,16,500,native-ailist-benchmark-v2,540,success
+spanning-4,16,1000,native-ailist-benchmark-v2,693,success
+spanning-4,16,2500,native-ailist-benchmark-v2,1787,success
+spanning-4,16,5000,native-ailist-benchmark-v2,5171,success
+spanning-4,16,10000,native-ailist-benchmark-v2,7610,success
+spanning-4,16,25000,native-ailist-benchmark-v2,34597,success
+spanning-4,16,50000,native-ailist-benchmark-v2,153392,success
+spanning-4,16,100000,native-ailist-benchmark-v2,777222,success
+spanning-4,16,250000,native-ailist-benchmark-v2,1800060,Futures timed out after [30 minutes]

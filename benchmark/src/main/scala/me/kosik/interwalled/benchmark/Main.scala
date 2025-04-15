@@ -28,11 +28,17 @@ object Main extends App {
   }
 
   private val benchmark: BenchmarkCallback = benchmarkName match {
-    case "broadcast-ai-list" =>
+    case "broadcast-ailist" =>
       BroadcastAIListBenchmark.prepareBenchmark
 
-    case "partitioned-ai-list" =>
+    case "native-ailist" =>
+      NativeAIListBenchmark.prepareBenchmark
+
+    case "partitioned-ailist" =>
       new PartitionedAIListBenchmark(benchmarkArgs(0).toInt).prepareBenchmark
+
+    case "partitioned-native-ailist-benchmark" =>
+      new PartitionedNativeAIListBenchmark(benchmarkArgs(0).toInt).prepareBenchmark
 
     case "spark-native-bucketing" =>
       new SparkNativeBucketingBenchmark(benchmarkArgs(0).toInt).prepareBenchmark
