@@ -38,6 +38,10 @@ key, from, to, value
 CH1     2,  4     A1
 CH1     7, 11     A2
 CH1    12, 14     A3
+```
+
+```csv
+key, from, to, value
 CH2     1, 21     B1
 ```
 
@@ -48,6 +52,10 @@ CH1     2,  4,      0     A1
 CH1     7, 11,      0     A2
 CH1     7, 11,      1     A2
 CH1    12, 14,      1     A3
+```
+
+```csv
+key, from, to, bucket, value
 CH2     1, 21,      0     B1
 CH2     1, 21,      1     B1
 CH2     1, 21,      2     B1
@@ -88,7 +96,8 @@ aiList
 ```
 
 This implementation does not take hits from GC, but it is prone to data skew and offers slightly worse performance than
-    the Broadcast one.
+    the Broadcast one. Also, being an iterative job, it heavily relies on caching and might benefit from storing the
+    iterations' results instead of recomputing them.
 
 ### PartitionedAIList
 This implementation is similar to _BroadcastAIList_, but computing is moved as-is from the driver to executors.
@@ -104,7 +113,8 @@ The algorithm does not load results back to the driver, but its efficiency takes
 ### PartitionedNativeAIList
 This implementation is similar to _NativeAIList_, but it also utilises _Bucketizer_ to scale down partitions' sizes.
     The only differences are using more fine-grained partitioning and deduplicating the results. However, it yields 
-    better results and offers quite similar performance to the Broadcast algorithm while being horizontally scalable. 
+    better results and offers quite similar performance to the Broadcast algorithm while being horizontally scalable - 
+    that is until caching stops working in the iterative phase. 
 
 ### SparkNative (to be renamed: PartitionedSparkNative)
 An alternative join implementation without using any specific algorithm: 
@@ -115,14 +125,19 @@ An alternative join implementation without using any specific algorithm:
 ## Benchmarking
 
 ### Running on Java 17
-Running on newer Java versions requires adding `--add-exports java.base/sun.nio.ch=ALL-UNNAMED` 
-    as a JVM option. 
+Running on newer Java versions requires adding exports' parameters as a JVM option:
+```bash
+JAVA_OPTS=""
+JAVA_OPTS="$JAVA_OPTS --add-exports java.base/sun.nio.ch=ALL-UNNAMED"
+JAVA_OPTS="$JAVA_OPTS --add-exports java.base/sun.security.action=ALL-UNNAMED"
+JAVA_OPTS="$JAVA_OPTS --add-opens java.base/java.lang=ALL-UNNAMED"
+```
 
 ### Execution times 
 Please see [the Basic benchmark](jupyter-lab/Basic%20benchmark.ipynb) jupyter notebook for execution times charts.
 
 ## External links
 - [Original AIList article](https://academic.oup.com/bioinformatics/article/35/23/4907/5509521)
-- [Original AIList implementation on GitHub](https://github.com/databio/me.kosik.interwalled.ailist.AIList/)
+- [Original AIList implementation on GitHub](https://github.com/databio/AIList/)
 - [IITII implementation on Apache Spark - 1](https://github.com/Wychowany/mgr-iitii/tree/main)
 - [IITII implementation on Apache Spark - 2](https://github.com/Wychowany/mgr-code/tree/main)
