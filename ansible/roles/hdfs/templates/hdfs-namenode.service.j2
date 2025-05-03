@@ -1,0 +1,17 @@
+[Unit]
+Description=Apache HDFS Namenode
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=hadoop
+Group=hadoop
+Type=forking
+RuntimeDirectory=hadoop
+
+WorkingDirectory=/home/hadoop/bundle/sbin
+ExecStart=/home/hadoop/bundle/sbin/hadoop-daemon.sh start namenode
+ExecStop=/home/hadoop/bundle/sbin/hadoop-daemon.sh stop namenode
+
+[Install]
+WantedBy=multi-user.target

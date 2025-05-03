@@ -203,7 +203,7 @@ export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
 # export HADOOP_STOP_TIMEOUT=5
 
 # Where pid files are stored.  /tmp by default.
-# export HADOOP_PID_DIR=/tmp
+export HADOOP_PID_DIR=/var/run/hadoop/hdfs.pid
 
 # Default log4j setting for interactive commands
 # Java property: hadoop.root.logger

@@ -1,5 +1,5 @@
 [Unit]
-Description=Apache Spark Master
+Description=Apache Spark Worker
 Wants=network-online.target
 After=network-online.target
 
@@ -12,9 +12,9 @@ SuccessExitStatus=143
 
 WorkingDirectory=/home/spark/bundle/sbin
 EnvironmentFile=/home/spark/bundle/conf/spark-env.sh
-ExecStartPost=/bin/bash -c "echo $MAINPID > /var/run/spark/spark-master.pid"
-ExecStart=/home/spark/bundle/sbin/start-master.sh
-ExecStop=/home/spark/bundle/sbin/stop-master.sh
+ExecStartPost=/bin/bash -c "echo $MAINPID > /var/run/spark/spark-worker.pid"
+ExecStart=/home/spark/bundle/sbin/start-worker.sh spark://{{ groups['master'][0] }}:7077
+ExecStop=/home/spark/bundle/sbin/stop-worker.sh
 
 [Install]
 WantedBy=multi-user.target

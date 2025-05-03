@@ -21,7 +21,7 @@ JAVA_OPTS="$JAVA_OPTS -Dfile.encoding=UTF-8"
 JAVA_OPTS="$JAVA_OPTS "
 
 GENERATE_RESULTS="false"
-RUN_EXTENDED_BENCHMARKS="false"
+RUN_EXTENDED_BENCHMARKS="true"
 
 
 function run_generator() {
@@ -50,9 +50,9 @@ function run_benchmark() {
 
 cd "$REPO_DIR" || exit
 
-sbt clean compile
-sbt benchmark/assembly
-sbt testDataGenerator/assembly
+#sbt clean compile
+#sbt benchmark/assembly
+#sbt testDataGenerator/assembly
 
 BENCHMARKS=(
   "broadcast-ailist"
@@ -80,6 +80,9 @@ DATA_SUITES=(
   "continuous-16"
   "sparse-16"
 )
+
+export INTERWALLED_SPARK_MASTER="spark://hp-elitedesk-01.localdomain:7077"
+export INTERWALLED_DATA_DIRECTORY="hdfs://hp-elitedesk-01.localdomain:9000/interwalled"
 
 run_generator
 

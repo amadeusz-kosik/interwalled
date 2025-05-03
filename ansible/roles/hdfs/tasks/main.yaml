@@ -109,3 +109,32 @@
     dest: "/home/hadoop/bundle/share/hadoop/common/lib/javax.activation-api-1.2.0.jar"
     owner: "hadoop"
     group: "hadoop"
+
+- name: Upload Hadoop SystemD configuration for Namenode
+  template:
+    src: "hdfs-namenode.service.j2"
+    dest: "/etc/systemd/system/hdfs-namenode.service"
+  when: inventory_hostname in groups['master']
+
+- name: Upload Hadoop SystemD configuration for Datanode
+  template:
+    src: "hdfs-datanode.service.j2"
+    dest: "/etc/systemd/system/hdfs-datanode.service"
+  when: inventory_hostname in groups['workers']
+
+- name: Reload SystemD services
+  command: systemctl daemon-reload
+
+- name: Start HDFS Namenode
+  service:
+    name: hdfs-namenode.service
+    state: started
+    enabled: yes
+  when: inventory_hostname in groups['master']
+
+- name: Start HDFS Datanodes
+  service:
+    name: hdfs-datanode.service
+    state: started
+    enabled: yes
+  when: inventory_hostname in groups['workers']

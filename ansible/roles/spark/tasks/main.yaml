@@ -94,3 +94,32 @@
     src: "spark-profile.sh.j2"
     dest: "/etc/profile.d/spark-env.sh"
     mode: 0755
+
+- name: Upload Spark SystemD configuration for Spark Master
+  template:
+    src: "spark-master.service.j2"
+    dest: "/etc/systemd/system/spark-master.service"
+  when: inventory_hostname in groups['master']
+
+- name: Upload Spark SystemD configuration for Spark Worker
+  template:
+    src: "spark-worker.service.j2"
+    dest: "/etc/systemd/system/spark-worker.service"
+  when: inventory_hostname in groups['workers']
+
+- name: Reload SystemD services
+  command: systemctl daemon-reload
+
+- name: Start Spark Master
+  service:
+    name: spark-master.service
+    state: started
+    enabled: yes
+  when: inventory_hostname in groups['master']
+
+- name: Start Spark Workers
+  service:
+    name: spark-worker.service
+    state: started
+    enabled: yes
+  when: inventory_hostname in groups['workers']
