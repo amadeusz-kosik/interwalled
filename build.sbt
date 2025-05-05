@@ -54,7 +54,7 @@ lazy val testDataGenerator = (project in file("test-data-generator"))
     assembly / mainClass := Some("me.kosik.interwalled.test.data.generator.Main"),
     assembly / assemblyMergeStrategy := sparkJobAssemblyMergeStrategy
   )
-  .dependsOn(domain)
+  .dependsOn(domain, spark)
 
 lazy val root = (project in file("."))
   .aggregate(domain, ailist, spark, benchmark, testDataGenerator)

@@ -31,9 +31,10 @@ trait Benchmark {
       }
 
       result match {
-        case Failure(_: TimeoutException) =>
+        case Failure(e: TimeoutException) =>
           // FIXME: Add logging, message about timeout
           testData.sparkSession.stop()
+          throw e
 
         case _ =>
           ()

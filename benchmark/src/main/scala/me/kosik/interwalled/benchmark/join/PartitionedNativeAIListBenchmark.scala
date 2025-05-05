@@ -9,6 +9,6 @@ class PartitionedNativeAIListBenchmark(bucketSplit: Long) extends Benchmark {
     new PartitionedNativeAIListIntervalJoin(bucketSplit, 10)
 
   override def toString: String =
-    "partitioned-native-ailist-benchmark"
+    f"partitioned-native-ailist-benchmark-$bucketSplit"
 }
 

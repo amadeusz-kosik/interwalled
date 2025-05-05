@@ -4,12 +4,12 @@ import me.kosik.interwalled.benchmark.utils.Benchmark
 import me.kosik.interwalled.spark.join.{IntervalJoin, PartitionedAIListIntervalJoin}
 
 
-class PartitionedAIListBenchmark(private val bucketSize: Long) extends Benchmark {
+class PartitionedAIListBenchmark(private val bucketScale: Long) extends Benchmark {
 
   override def joinImplementation: IntervalJoin =
-    new PartitionedAIListIntervalJoin(bucketSize)
+    new PartitionedAIListIntervalJoin(bucketScale)
 
   override def toString: String =
-    s"partitioned-ailist-benchmark-$bucketSize"
+    s"partitioned-ailist-benchmark-$bucketScale"
 }
 

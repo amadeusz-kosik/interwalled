@@ -1,6 +1,7 @@
 package me.kosik.interwalled.test.data.generator
 
 import me.kosik.interwalled.domain.benchmark.ActiveBenchmarks
+import me.kosik.interwalled.main.MainEnv
 import me.kosik.interwalled.test.data.generator.test.cases._
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.slf4j.LoggerFactory
@@ -9,17 +10,12 @@ import org.slf4j.LoggerFactory
 object Main extends App {
   val logger = LoggerFactory.getLogger(getClass)
   val env = MainEnv.build()
-  val Array(generateLargeDataset) = args.take(1)
+  val Array(generateLargeDataset, generateResults) = args.take(2).map(_.toLowerCase == "true")
 
-  implicit val spark: SparkSession = SparkSession.builder()
-    .appName("InterwalledTestDataGenerator")
-    .config("spark.driver.memory",    env.driverMemory)
-    .config("spark.executor.memory",  env.executorMemory)
-    .master(env.sparkMaster)
-    .getOrCreate()
+  implicit val spark: SparkSession = env.buildSparkSession("InterwalledTestDataGenerator")
 
   val testDataSizes: Array[(Int, Long)] = {
-    if(generateLargeDataset.toLowerCase == "true")
+    if(generateLargeDataset)
       ActiveBenchmarks.TestDataSizes.extended
     else
       ActiveBenchmarks.TestDataSizes.baseline
@@ -43,7 +39,7 @@ object Main extends App {
     write(testCaseName, testCase.generateLHS.coalesce(outputFilesCount),     s"$testDataSize/${clustersCount}/database")
     write(testCaseName, testCase.generateRHS.coalesce(outputFilesCount),     s"$testDataSize/${clustersCount}/query")
 
-    if(testCase.isInstanceOf[TestCase])
+    if(generateResults && testCase.isInstanceOf[TestCase])
       writeIfPresent(
         testCaseName,
         testCase.generateResult.map(_.coalesce(outputFilesCount)),
