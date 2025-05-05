@@ -1,4 +1,12 @@
 # shellcheck shell=sh
 
-export SPARK_HOME="/home/spark/bundle/"
+export SPARK_HOME="/home/spark/bundle"
 export PATH="$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin"
+
+# FIXME
+export INTERWALLED_SPARK_MASTER="spark://hp-elitedesk-01:7077"
+export INTERWALLED_SPARK_DRIVER_MEMORY="4G"
+export INTERWALLED_SPARK_EXECUTOR_MEMORY="6G"
+export INTERWALLED_SPARK_EXECUTOR_INSTANCES="10"
+export INTERWALLED_SPARK_EXECUTOR_CORES="1"
+export INTERWALLED_DATA_DIRECTORY="hdfs:///interwalled/data"
