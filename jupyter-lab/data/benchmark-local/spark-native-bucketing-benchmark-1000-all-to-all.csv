@@ -1,0 +1,13 @@
+data_suite,clusters_count,rows_per_cluster,join_name,elapsed_time,result
+all-to-all,16,100,spark-native-bucketing-benchmark-1000,1552,success
+all-to-all,16,250,spark-native-bucketing-benchmark-1000,366,success
+all-to-all,16,500,spark-native-bucketing-benchmark-1000,294,success
+all-to-all,16,1000,spark-native-bucketing-benchmark-1000,251,success
+all-to-all,16,2500,spark-native-bucketing-benchmark-1000,268,success
+all-to-all,16,5000,spark-native-bucketing-benchmark-1000,279,success
+all-to-all,16,10000,spark-native-bucketing-benchmark-1000,348,success
+all-to-all,16,25000,spark-native-bucketing-benchmark-1000,518,success
+all-to-all,16,50000,spark-native-bucketing-benchmark-1000,827,success
+all-to-all,16,100000,spark-native-bucketing-benchmark-1000,1418,success
+all-to-all,16,250000,spark-native-bucketing-benchmark-1000,3520,success
+all-to-all,16,500000,spark-native-bucketing-benchmark-1000,5941,success

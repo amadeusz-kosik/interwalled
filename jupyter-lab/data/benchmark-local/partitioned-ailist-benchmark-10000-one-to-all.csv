@@ -1,0 +1,13 @@
+data_suite,clusters_count,rows_per_cluster,join_name,elapsed_time,result
+one-to-all,16,100,partitioned-ailist-benchmark-10000,1246,success
+one-to-all,16,250,partitioned-ailist-benchmark-10000,278,success
+one-to-all,16,500,partitioned-ailist-benchmark-10000,241,success
+one-to-all,16,1000,partitioned-ailist-benchmark-10000,244,success
+one-to-all,16,2500,partitioned-ailist-benchmark-10000,247,success
+one-to-all,16,5000,partitioned-ailist-benchmark-10000,353,success
+one-to-all,16,10000,partitioned-ailist-benchmark-10000,407,success
+one-to-all,16,25000,partitioned-ailist-benchmark-10000,524,success
+one-to-all,16,50000,partitioned-ailist-benchmark-10000,722,success
+one-to-all,16,100000,partitioned-ailist-benchmark-10000,1563,success
+one-to-all,16,250000,partitioned-ailist-benchmark-10000,3162,success
+one-to-all,16,500000,partitioned-ailist-benchmark-10000,5993,success

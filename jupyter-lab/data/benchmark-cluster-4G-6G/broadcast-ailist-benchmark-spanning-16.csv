@@ -1,0 +1,11 @@
+data_suite,clusters_count,rows_per_cluster,join_name,elapsed_time,result
+spanning-16,16,100,broadcast-ailist-benchmark,5719,success
+spanning-16,16,250,broadcast-ailist-benchmark,5135,success
+spanning-16,16,500,broadcast-ailist-benchmark,3486,success
+spanning-16,16,1000,broadcast-ailist-benchmark,3965,success
+spanning-16,16,2500,broadcast-ailist-benchmark,1511,success
+spanning-16,16,5000,broadcast-ailist-benchmark,6008,success
+spanning-16,16,10000,broadcast-ailist-benchmark,6242,success
+spanning-16,16,25000,broadcast-ailist-benchmark,11565,success
+spanning-16,16,50000,broadcast-ailist-benchmark,21041,success
+spanning-16,16,100000,broadcast-ailist-benchmark,39645,success

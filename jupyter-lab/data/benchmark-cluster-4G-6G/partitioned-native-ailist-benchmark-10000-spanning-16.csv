@@ -1,0 +1,13 @@
+data_suite,clusters_count,rows_per_cluster,join_name,elapsed_time,result
+spanning-16,16,100,partitioned-native-ailist-benchmark-10000,15883,success
+spanning-16,16,250,partitioned-native-ailist-benchmark-10000,10776,success
+spanning-16,16,500,partitioned-native-ailist-benchmark-10000,10520,success
+spanning-16,16,1000,partitioned-native-ailist-benchmark-10000,8058,success
+spanning-16,16,2500,partitioned-native-ailist-benchmark-10000,11873,success
+spanning-16,16,5000,partitioned-native-ailist-benchmark-10000,23756,success
+spanning-16,16,10000,partitioned-native-ailist-benchmark-10000,41350,success
+spanning-16,16,25000,partitioned-native-ailist-benchmark-10000,45909,success
+spanning-16,16,50000,partitioned-native-ailist-benchmark-10000,48050,success
+spanning-16,16,100000,partitioned-native-ailist-benchmark-10000,83103,success
+spanning-16,16,250000,partitioned-native-ailist-benchmark-10000,222204,success
+spanning-16,16,500000,partitioned-native-ailist-benchmark-10000,487862,success
