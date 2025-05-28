@@ -2,12 +2,12 @@ package me.kosik.interwalled.benchmark
 
 import me.kosik.interwalled.benchmark.join._
 import me.kosik.interwalled.benchmark.utils.{BenchmarkCallback, BenchmarkRunner, CSV}
-import me.kosik.interwalled.domain.benchmark.ActiveBenchmarks
 import me.kosik.interwalled.main.MainEnv
 import org.apache.spark.sql.SparkSession
 import org.slf4j.LoggerFactory
 
-import java.io.{PrintWriter, Writer}
+import java.io.{File, FileOutputStream, PrintWriter, Writer}
+import java.nio.file.{Files, Path}
 
 
 object Main extends App {
@@ -18,15 +18,8 @@ object Main extends App {
   logger.info(f"Running environment: $env.")
   logger.info(f"Running arguments: ${args.mkString("Array(", ", ", ")")}.")
 
-  val Array(useLargeDataset, dataSuite, benchmarkName) = args.take(3)
-  val benchmarkArgs = args.drop(3)
-
-  val testDataSizes: Array[(Int, Long)] = {
-    if(useLargeDataset.toLowerCase == "true")
-      ActiveBenchmarks.TestDataSizes.extended
-    else
-      ActiveBenchmarks.TestDataSizes.baseline
-  }
+  val Array(dataSuite, clustersCount, clustersSize, benchmarkName) = args.take(4)
+  val benchmarkArgs = args.drop(4)
 
   private val benchmark: BenchmarkCallback = benchmarkName match {
     case "broadcast-ailist" =>
@@ -39,7 +32,7 @@ object Main extends App {
       new PartitionedAIListBenchmark(benchmarkArgs(0).toInt).prepareBenchmark
 
     case "partitioned-native-ailist-benchmark" =>
-      new PartitionedNativeAIListBenchmark(benchmarkArgs(0).toInt).prepareBenchmark
+      new PartitionedNativeAIListBenchmark(benchmarkArgs(0).toInt, benchmarkArgs(1).toInt).prepareBenchmark
 
     case "spark-native-bucketing" =>
       new SparkNativeBucketingBenchmark(benchmarkArgs(0).toInt).prepareBenchmark
@@ -47,17 +40,35 @@ object Main extends App {
 
   // --------------------------------------------------------------------
 
-  private implicit val spark: SparkSession = env.buildSparkSession(s"InterwalledBenchmark - $benchmarkName")
+  private implicit val spark: SparkSession =
+    env.buildSparkSession(s"InterwalledBenchmark - ${benchmark.description} - ${dataSuite} - ${clustersCount} - ${clustersSize}")
 
-  private val csvWriter: Writer = new PrintWriter(f"./jupyter-lab/data/${benchmark.description}-${dataSuite}.csv")
-  csvWriter.write(CSV.header)
+  private val csvWriter: Writer = {
+    val csvPathStr = f"./jupyter-lab/data/${benchmark.description}-${dataSuite}-${clustersCount}-${clustersSize}.csv"
+    val csvPath = Path.of(csvPathStr)
+
+    if(! Files.exists(csvPath)) {
+      val writer = new PrintWriter(csvPathStr)
+      writer.write(CSV.header)
+      writer.flush()
+
+      writer
+    } else {
+      val stream = new FileOutputStream(new File(csvPathStr), true)
+      val writer = new PrintWriter(stream)
+
+      writer
+    }
+  }
 
   BenchmarkRunner.run(
     benchmark,
     env.dataDirectory,
-    testDataSizes,
+    clustersCount.toInt,
+    clustersSize.toLong,
     dataSuite,
-    csvWriter
+    csvWriter,
+    env.timeoutAfter
   )
 
   csvWriter.close()

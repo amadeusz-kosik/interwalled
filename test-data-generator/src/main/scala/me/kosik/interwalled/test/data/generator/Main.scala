@@ -22,13 +22,14 @@ object Main extends App {
   }
 
   val testCases = Array(
-    (clustersCount: Int, rowsPerCluster: Long) => TestOneToOne(clustersCount, rowsPerCluster),
+    (clustersCount: Int, rowsPerCluster: Long) => TestAllToOne(clustersCount, rowsPerCluster),
+    (clustersCount: Int, rowsPerCluster: Long) => TestAllToAll(clustersCount, rowsPerCluster),
     (clustersCount: Int, rowsPerCluster: Long) => TestContinuous(clustersCount, rowsPerCluster, 16),
-    (clustersCount: Int, rowsPerCluster: Long) => TestSparse(clustersCount, rowsPerCluster, 16),
     (clustersCount: Int, rowsPerCluster: Long) => TestOneToAll(clustersCount, rowsPerCluster),
+    (clustersCount: Int, rowsPerCluster: Long) => TestOneToOne(clustersCount, rowsPerCluster),
     (clustersCount: Int, rowsPerCluster: Long) => TestSpanning(clustersCount, rowsPerCluster, 4),
     (clustersCount: Int, rowsPerCluster: Long) => TestSpanning(clustersCount, rowsPerCluster, 16),
-    (clustersCount: Int, rowsPerCluster: Long) => TestAllToAll(clustersCount, rowsPerCluster)
+    (clustersCount: Int, rowsPerCluster: Long) => TestSparse(clustersCount, rowsPerCluster, 16)
   )
 
   testCases foreach { testCaseCallback => testDataSizes foreach { case (clustersCount, testDataSize) =>

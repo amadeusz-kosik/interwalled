@@ -12,7 +12,7 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
   val inputSizes: Array[(Int, Long)] = TestDataSizes.baseline.take(1)
 
   def inputSuites: Array[String] =
-    Array("one-to-all", "one-to-one", "spanning-4", "spanning-16")
+    Array("all-to-one", "one-to-all", "one-to-one", "spanning-4", "spanning-16")
 
   def intervalJoin: IntervalJoin
 
