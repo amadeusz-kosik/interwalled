@@ -10,6 +10,10 @@ import org.slf4j.LoggerFactory
 object Main extends App {
   val logger = LoggerFactory.getLogger(getClass)
   val env = MainEnv.build()
+
+  if(args.length < 2)
+    throw new RuntimeException("This application requires at least 2 CLI parameters.")
+
   val Array(generateLargeDataset, generateResults) = args.take(2).map(_.toLowerCase == "true")
 
   implicit val spark: SparkSession = env.buildSparkSession("InterwalledTestDataGenerator")

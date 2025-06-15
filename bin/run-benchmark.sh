@@ -37,26 +37,33 @@ SPARK_WORKER_HOSTS=(
 # Available benchmarks and data suites.
 #  Commented out already discarded join algorithms.
 BENCHMARKS=(
+  "broadcast-ailist"
   "partitioned-native-ailist-benchmark     100 8"
+  "partitioned-native-ailist-benchmark    1000 8"
+  "partitioned-native-ailist-benchmark   10000 8"
+  "partitioned-native-ailist-benchmark  100000 8"
+#  "partitioned-ailist 100"
+#  "partitioned-ailist 1000"
+#  "partitioned-ailist 10000"
+#  "native-ailist"
+#  "spark-native-bucketing 100"
+#  "spark-native-bucketing 1000"
+#  "spark-native-bucketing 10000"
 )
 
 CLUSTERS_COUNTS=(
-  "16"
+  "1"
 )
 
 CLUSTER_SIZES=(
-       "100"
-       "250"
-       "500"
-      "1000"
-      "2500"
-      "5000"
-     "10000"
+     "10000"  #  10K
      "25000"
      "50000"
-    "100000"
+     "75000"
+    "100000" # 100K
     "250000"
     "500000"
+    "750000"
    "1000000"
    "2500000"
    "5000000"
@@ -66,106 +73,15 @@ CLUSTER_SIZES=(
 )
 
 DATA_SUITES=(
-#  "one-to-one"
-#  "one-to-all"
-#  "all-to-one"
-#  "all-to-all"
-#  "spanning-4"
-#  "spanning-16"
-#  "continuous-16"
-#  "sparse-16"
+  "one-to-one"
+  "one-to-all"
+  "all-to-one"
+  "all-to-all"
+  "spanning-4"
+  "spanning-16"
+  "continuous-16"
+  "sparse-16"
 )
-
-# partitioned-native-ailist-benchmark       100 8
-#  one-to-one    - 16 - 25 000 000 - no space left on the device
-#  one-to-all    - 16 - 25 000 000 - no space left on the device
-#  all-to-one    - 16 - 25 000 000 - no space left on the device
-#  all-to-all    - 16 - 10 000 000 - timeout
-#  spanning-4    - 16 -  2 500 000 - executor lost
-#  spanning-16   - 16 -  1 000 000 - executor lost
-#  continuous-16 - 16 - 25 000 000 - no space left on the device
-#  sparse-16     - 16 - 25 000 000 - no space left on the device
-
-# partitioned-native-ailist-benchmark     1 000 8
-#  one-to-one    - 16 - 25 000 000 - no space left on the device
-#  one-to-all    - 16 - 25 000 000 - no space left on the device
-#  all-to-one    - 16 - 25 000 000 - no space left on the device
-#  all-to-all    - 16 - 10 000 000 - timeout
-#  spanning-4    - 16 -  5 000 000 - executor lost
-#  spanning-16   - 16 -  1 000 000 - executor lost
-#  continuous-16 - 16 - 25 000 000 - no space left on the device
-#  sparse-16     - 16 - 25 000 000 - no space left on the device
-
-
-# partitioned-native-ailist-benchmark    10 000 8
-#  one-to-one    - 16 -  5 000 000 - timeout
-#  one-to-all    - 16 - 25 000 000 - no space left on the device
-#  all-to-one    - 16 - 25 000 000 - no space left on the device
-#  all-to-all    - 16 - 25 000 000 - out of memory - executor
-#  spanning-4    - 16 -  2 500 000 - timeout
-#  spanning-16   - 16 -  2 500 000 - executor lost
-#  continuous-16 - 16 - 25 000 000 - no space left on the device
-#  sparse-16     - 16 - 25 000 000 - no space left on the device
-
-# partitioned-native-ailist-benchmark   100 000 8
-#  one-to-one    - 16 -       500 000 - timeout
-#  one-to-all    - 16 -    25 000 000 - no space left on the device
-#  all-to-one    - 16 -    25 000 000 - no space left on the device
-#  all-to-all    - 16 -    25 000 000 - executor lost
-#  spanning-4    - 16 -       500 000 - timeout
-#  spanning-16   - 16 -       250 000 - timeout
-#  continuous-16 - 16 -     5 000 000 - timeout
-#  sparse-16     - 16 -     5 000 000 - timeout
-
-
-
-
-#BENCHMARKS=(
-##  "partitioned-native-ailist-benchmark     100 8"
-##  "partitioned-native-ailist-benchmark    1000 8"
-##  "partitioned-native-ailist-benchmark   10000 8"
-##  "partitioned-native-ailist-benchmark  100000 8"
-##F  "broadcast-ailist"
-###  "partitioned-ailist 100"
-###  "partitioned-ailist 1000"
-###  "partitioned-ailist 10000"
-###  "native-ailist"
-###  "spark-native-bucketing 100"
-###  "spark-native-bucketing 1000"
-###  "spark-native-bucketing 10000"
-#)
-
-#CLUSTER_SIZES=(
-#       "100"
-#       "250"
-#       "500"
-#      "1000"
-#      "2500"
-#      "5000"
-#     "10000"
-#     "25000"
-#     "50000"
-#    "100000"
-#    "250000"
-#    "500000"
-#   "1000000"
-#   "2500000"
-#   "5000000"
-#  "10000000"
-#  "25000000"
-#  "50000000"
-#)
-
-#DATA_SUITES=(
-#  "one-to-one"
-##  "one-to-all"
-##  "all-to-one"
-##  "all-to-all"
-##  "spanning-4"
-##  "spanning-16"
-##  "continuous-16"
-##  "sparse-16"
-#)
 
 function build() {
   echo "Building JAR archive."
@@ -185,18 +101,27 @@ function local_run_generator()  {
 
 function local_run_benchmark() {
   data_suite="$1"
-  benchmark="$2"
+  cluster_count="$2"
+  cluster_size="$3"
+  benchmark="$4"
 
-  java_command="$JAVA $LOCAL_JAVA_OPTS -jar $BENCHMARK_JAR_PATH false $data_suite $benchmark"
+  java_command=" $JAVA $LOCAL_JAVA_OPTS -jar $BENCHMARK_JAR_PATH $data_suite $cluster_count $cluster_size $benchmark"
+  echo "Running for benchmark $benchmark for $data_suite: $java_command"
 
-  echo "Running for benchmark $benchmark for $data_suite."
+  export INTERWALLED_TIMEOUT_AFTER="${ARG_TIMEOUT}"
   $java_command
 }
 
 function local_run_benchmarks() {
-  for data_suite in "${DATA_SUITES[@]}"; do
-    for benchmark in "${BENCHMARKS[@]}"; do
-      local_run_benchmark "$data_suite" "$benchmark"
+  set +e
+
+  for cluster_count in "${CLUSTERS_COUNTS[@]}"; do
+    for cluster_size in "${CLUSTER_SIZES[@]}"; do
+      for data_suite in "${DATA_SUITES[@]}"; do
+        for benchmark in "${BENCHMARKS[@]}"; do
+          local_run_benchmark "$data_suite" "$cluster_count" "$cluster_size" "$benchmark"
+        done
+      done
     done
   done
 }

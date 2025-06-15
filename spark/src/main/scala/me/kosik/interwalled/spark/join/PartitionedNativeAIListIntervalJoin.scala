@@ -53,7 +53,8 @@ class PartitionedNativeAIListIntervalJoin(config: PartitionedNativeAIListInterva
     @nowarn implicit val ipTT = typeTag[IntervalsPair[T]]
     implicit val ipEncoder: Encoder[IntervalsPair[T]] = Encoders.product[IntervalsPair[T]]
 
-    val bucketizer = new Bucketizer(databaseSize / config.bucketSize)
+    val bucketizerScale = math.max(1, databaseSize / config.bucketSize)
+    val bucketizer = new Bucketizer(bucketizerScale)
 
     val databaseBucketed = database.transform(bucketizer.bucketize)
     val queryBucketed = query.transform(bucketizer.bucketize)
