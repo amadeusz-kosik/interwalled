@@ -20,8 +20,6 @@ class MinMaxAIListBuilder[T] {
     maxValue = handleNone[Long](Math.max)(maxValue, interval.to)
   }
 
-
-
   private def handleNone[T1](f: (T1, T1) => T1)(lhs: Option[T1], rhs: T1): Option[T1] =
     Some(f(lhs.getOrElse(rhs), rhs))
 }

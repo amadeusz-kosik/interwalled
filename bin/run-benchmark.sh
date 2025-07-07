@@ -35,20 +35,12 @@ SPARK_WORKER_HOSTS=(
 )
 
 # Available benchmarks and data suites.
-#  Commented out already discarded join algorithms.
 BENCHMARKS=(
   "broadcast-ailist"
   "partitioned-native-ailist-benchmark     100 8"
   "partitioned-native-ailist-benchmark    1000 8"
   "partitioned-native-ailist-benchmark   10000 8"
   "partitioned-native-ailist-benchmark  100000 8"
-#  "partitioned-ailist 100"
-#  "partitioned-ailist 1000"
-#  "partitioned-ailist 10000"
-#  "native-ailist"
-#  "spark-native-bucketing 100"
-#  "spark-native-bucketing 1000"
-#  "spark-native-bucketing 10000"
 )
 
 CLUSTERS_COUNTS=(
@@ -60,16 +52,16 @@ CLUSTER_SIZES=(
      "25000"
      "50000"
      "75000"
-    "100000" # 100K
-    "250000"
-    "500000"
-    "750000"
-   "1000000"
-   "2500000"
-   "5000000"
-  "10000000"
-  "25000000"
-  "50000000"
+#    "100000" # 100K
+#    "250000"
+#    "500000"
+#    "750000"
+#   "1000000"
+#   "2500000"
+#   "5000000"
+#  "10000000"
+#  "25000000"
+#  "50000000"
 )
 
 DATA_SUITES=(
@@ -113,7 +105,7 @@ function local_run_benchmark() {
 }
 
 function local_run_benchmarks() {
-  set +e
+#  set +e
 
   for cluster_count in "${CLUSTERS_COUNTS[@]}"; do
     for cluster_size in "${CLUSTER_SIZES[@]}"; do

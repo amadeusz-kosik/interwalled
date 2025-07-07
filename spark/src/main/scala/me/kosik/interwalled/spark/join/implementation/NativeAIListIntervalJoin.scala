@@ -1,92 +1,59 @@
-package me.kosik.interwalled.spark.join
+package me.kosik.interwalled.spark.join.implementation
 
-import me.kosik.interwalled.domain.{Interval, IntervalColumns, IntervalsPair}
-import me.kosik.interwalled.utility.Bucketizer
+import me.kosik.interwalled.domain.IntervalColumns
+import me.kosik.interwalled.domain.{Interval, IntervalsPair}
+import me.kosik.interwalled.spark.join.api.model.IntervalJoin.Input
+import me.kosik.interwalled.spark.join.api.{BucketizedJoin, IntervalJoin}
+import me.kosik.interwalled.spark.join.config.AIListConfig
+import me.kosik.interwalled.spark.join.implementation.DriverAIListIntervalJoin.bucketizer
+import me.kosik.interwalled.utility.bucketizer.{BucketingConfig, Bucketizer}
 import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.{DataFrame, Dataset, functions => F}
 import org.apache.spark.sql.expressions.Window
-import org.apache.spark.sql.{DataFrame, Dataset, Encoder, Encoders, SparkSession, functions => F}
 
-import scala.annotation.{nowarn, tailrec}
+import scala.annotation.tailrec
 import scala.reflect.runtime.universe._
 
 
-case class PartitionedNativeAIListIntervalJoinConfig(
-  bucketSize:                         Long = 10000L,
-  maximumComponentsCount:             Int  = 10,
-  intervalsCountToCheckLookahead:     Int  = 20,
-  intervalsCountToTriggerExtraction:  Int  = 10
-)
 
-class PartitionedNativeAIListIntervalJoin(config: PartitionedNativeAIListIntervalJoinConfig) extends IntervalJoin {
+class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: Option[BucketingConfig]) extends IntervalJoin {
+  private val bucketizer = new Bucketizer(bucketingConfig)
 
-  override def join[T : TypeTag](lhsInput: Dataset[Interval[T]], rhsInput: Dataset[Interval[T]]): Dataset[IntervalsPair[T]] = {
-    @nowarn implicit val iTT = typeTag[Interval[T]]
-    implicit val iEncoder: Encoder[Interval[T]] = Encoders.product[Interval[T]]
+  override protected def prepareInput[T : TypeTag](input: Input[T]): PreparedInput[T] =
+    (bucketizer.bucketize(input.lhsData), bucketizer.bucketize(input.rhsData))
 
-    @nowarn implicit val ipTT = typeTag[IntervalsPair[T]]
-    implicit val ipEncoder: Encoder[IntervalsPair[T]] = Encoders.product[IntervalsPair[T]]
+  override protected def doJoin[T: TypeTag](lhsInputPrepared: BucketedIntervals[T], rhsInputPrepared: BucketedIntervals[T]): DataFrame = {
+    import lhsInputPrepared.sparkSession.implicits._
+    import IntervalColumns._
 
-    val lhsCount = lhsInput.count()
-    val rhsCount = rhsInput.count()
-
-    if(lhsCount >= rhsCount) {
-      doJoin(lhsInput, rhsInput, lhsCount)
-    } else {
-      doJoin(rhsInput, lhsInput, rhsCount)
-        .select(
-          F.col("key"),
-          F.col("rhs").as("lhs"),
-          F.col("lhs").as("rhs")
-        )
-        .as[IntervalsPair[T]]
-    }
-  }
-
-  private def doJoin[T : TypeTag](database: Dataset[Interval[T]], query: Dataset[Interval[T]], databaseSize: Long): Dataset[IntervalsPair[T]] = {
-    import IntervalColumns.{BUCKET, FROM, KEY, TO, VALUE, _COMPONENT, _MAX_E}
-
-    implicit val spark: SparkSession = database.sparkSession
-
-    @nowarn implicit val iTT = typeTag[Interval[T]]
-    implicit val iEncoder: Encoder[Interval[T]] = Encoders.product[Interval[T]]
-
-    @nowarn implicit val ipTT = typeTag[IntervalsPair[T]]
-    implicit val ipEncoder: Encoder[IntervalsPair[T]] = Encoders.product[IntervalsPair[T]]
-
-    val bucketizerScale = math.max(1, databaseSize / config.bucketSize)
-    val bucketizer = new Bucketizer(bucketizerScale)
-
-    val databaseBucketed = database.transform(bucketizer.bucketize)
-    val queryBucketed = query.transform(bucketizer.bucketize)
-
-    databaseBucketed.cache()
+    lhsInputPrepared.cache()
 
     val joinDatabase = {
-      val emptyDF = spark
+      val emptyDF = lhsInputPrepared.sparkSession
         .emptyDataset[Interval[T]]
         .toDF()
         .withColumn(BUCKET, F.lit(0))
         .withColumn(_COMPONENT, F.lit(0))
         .withColumn("_ailist_max_end", F.lit(0))
 
-      val inputDF = databaseBucketed
+      val inputDF = lhsInputPrepared
         .toDF()
         .sort(KEY, BUCKET, FROM, TO)
 
       iterate(inputDF, emptyDF, config.maximumComponentsCount)
-        .repartition(F.col(IntervalColumns.KEY), F.col(BUCKET), F.col(_COMPONENT))
+        .repartition(F.col(IntervalColumns.KEY), F.col(BUCKET), F.col(_COMPONENT))  // FIXME why here error?
         .rdd
         .map(row => (row.getAs[String](KEY), row.getAs[Long](BUCKET)) -> row)
     }
 
     val joinQuery = {
-      queryBucketed
+      rhsInputPrepared
         .toDF()
         .rdd
         .map(row => (row.getAs[String](KEY), row.getAs[Long](BUCKET)) -> row)
     }
 
-    val joinResultRDD: RDD[IntervalsPair[T]] = (joinDatabase cogroup joinQuery).flatMap { case ((key, bucket), (aiList, queries)) =>
+    val joinResultRDD: RDD[IntervalsPair[T]] = (joinDatabase cogroup joinQuery).flatMap { case ((key, _), (aiList, queries)) =>
       queries flatMap { query =>
         val queryFrom = query.getAs[Long](FROM)
         val queryTo = query.getAs[Long](TO)
@@ -116,16 +83,24 @@ class PartitionedNativeAIListIntervalJoin(config: PartitionedNativeAIListInterva
       }
     }
 
-    val joinResult = spark
+    val joinResult = lhsInputPrepared.sparkSession
       .createDataset(joinResultRDD)
-      .distinct()
+      .toDF
 
     joinResult
   }
 
+  override protected def finalizeResult[T : TypeTag](joinedResultRaw: DataFrame): Dataset[IntervalsPair[T]] = {
+    import joinedResultRaw.sparkSession.implicits._
+
+    bucketizer
+      .deduplicate(joinedResultRaw)
+      .as[IntervalsPair[T]]
+  }
+
   @tailrec
   private def iterate(sourceDF: DataFrame, accumulatorDF: DataFrame, maxIterations: Int): DataFrame = {
-    import IntervalColumns.{BUCKET, FROM, KEY, TO, _COMPONENT}
+    import IntervalColumns._
 
     if(maxIterations == 0) {
       sourceDF
@@ -170,7 +145,7 @@ class PartitionedNativeAIListIntervalJoin(config: PartitionedNativeAIListInterva
   }
 
   private def calculateMaxEnd(dataFrame: DataFrame): DataFrame = {
-    import IntervalColumns.{BUCKET, FROM, KEY, TO, _MAX_E, _COMPONENT}
+    import IntervalColumns._
 
     val maxEndWindow = Window
       .partitionBy(KEY, BUCKET, _COMPONENT)

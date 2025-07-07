@@ -62,13 +62,18 @@ object BenchmarkRunner {
 
       } transform { case Success((result, doContinue)) =>
         val elapsedTime = benchmarkTimer.millisElapsed()
+
+        // Second phase: statistics
+        val statistics = benchmarkCallback.statistics(testData)
+
         val benchmarkResult = BenchmarkResult(
           testData.suite,
           testData.clustersCount,
           testData.rowsPerCluster,
           benchmarkCallback.description,
           elapsedTime,
-          result
+          result,
+          statistics
         )
 
         outputWriter.write(CSV.row(benchmarkResult))

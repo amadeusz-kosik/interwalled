@@ -1,5 +1,7 @@
 package me.kosik.interwalled.benchmark.utils
 
+import me.kosik.interwalled.spark.join.api.model.IntervalStatistics
+
 import scala.util.{Failure, Success}
 
 
@@ -8,12 +10,17 @@ object CSV {
   private val DELIMITER = ","
 
   def header: String = {
-    Seq("data_suite", "clusters_count", "rows_per_cluster", "join_name", "elapsed_time", "result")
-      .mkString(DELIMITER) + "\n"
+    Seq(
+      "data_suite", "clusters_count", "rows_per_cluster", "join_name", "elapsed_time", "result",
+      "database_raw_rows_count", "database_final_rows_count",
+      "query_raw_rows_count", "query_final_rows_count",
+      "result_raw_rows_count", "result_final_rows_count",
+    )
+    .mkString(DELIMITER) + "\n"
   }
 
   def row(result: BenchmarkResult): String = {
-    Seq(
+    val coreFields = Seq(
       result.dataSuite,
       result.clustersCount,
       result.rowsPerCluster,
@@ -23,7 +30,22 @@ object CSV {
         case Success(_) => "success"
         case Failure(exception) => exception.getMessage.split("\n").head
       }
-    ).mkString(DELIMITER) + "\n"
+    )
+
+    val statistics = result.statistics match {
+      case Some(IntervalStatistics(database, query, result)) => Seq(
+        database.rawRowsCount,
+        database.finalRowsCount,
+        query.rawRowsCount,
+        query.finalRowsCount,
+        result.rawRowsCount,
+        result.finalRowsCount
+      ).map(_.toString)
+
+      case None => Seq.empty[String]
+    }
+
+    (coreFields ++ statistics).mkString(DELIMITER) + "\n"
   }
 
 }

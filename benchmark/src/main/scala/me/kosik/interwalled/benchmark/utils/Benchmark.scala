@@ -2,7 +2,8 @@ package me.kosik.interwalled.benchmark.utils
 
 import me.kosik.interwalled.benchmark.{TestData, Timer}
 import me.kosik.interwalled.domain.test.TestResultRow
-import me.kosik.interwalled.spark.join.IntervalJoin
+import me.kosik.interwalled.spark.join.api.IntervalJoin
+import me.kosik.interwalled.spark.join.api.model.IntervalJoin.Input
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
@@ -16,13 +17,21 @@ trait Benchmark {
     val fn = (testData: TestData) => {
       import testData.database.sparkSession.implicits._
 
-      joinImplementation
-        .join(testData.database, testData.query)
-        .as[TestResultRow]
+      joinImplementation(false)
+        .join(Input(testData.database, testData.query))
+        .data.as[TestResultRow]
     }
 
-    BenchmarkCallback(this.toString, fn)
+    val statistics = (testData: TestData) => {
+      import testData.database.sparkSession.implicits._
+
+      joinImplementation(true)
+        .join(Input(testData.database, testData.query))
+        .statistics
+    }
+
+    BenchmarkCallback(this.toString, fn, statistics)
   }
 
-  def joinImplementation: IntervalJoin
+  def joinImplementation(gatherStatistics: Boolean): IntervalJoin
 }

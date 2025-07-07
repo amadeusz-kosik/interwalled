@@ -3,6 +3,8 @@ package me.kosik.interwalled.spark.join
 import com.holdenkarau.spark.testing.{DataFrameSuiteBase, DatasetSuiteBase}
 import me.kosik.interwalled.domain.benchmark.ActiveBenchmarks.TestDataSizes
 import me.kosik.interwalled.domain.{Interval, IntervalsPair}
+import me.kosik.interwalled.spark.join.api.IntervalJoin
+import me.kosik.interwalled.spark.join.api.model.IntervalJoin.Input
 import org.apache.spark.sql.{DataFrame, Dataset}
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -56,7 +58,7 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
       val rhs = loadInput("query").as[Interval[String]]
 
       val expected = loadResult("result")
-      val actual = intervalJoin.join(lhs, rhs)
+      val actual = intervalJoin.join(Input(lhs, rhs)).data
 
       assertDataEqual(expected = expected, actual = actual)
     }

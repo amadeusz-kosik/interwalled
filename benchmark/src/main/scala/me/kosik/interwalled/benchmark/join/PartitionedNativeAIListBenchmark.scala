@@ -1,12 +1,13 @@
 package me.kosik.interwalled.benchmark.join
 
 import me.kosik.interwalled.benchmark.utils.Benchmark
-import me.kosik.interwalled.spark.join.{IntervalJoin, PartitionedNativeAIListIntervalJoin, PartitionedNativeAIListIntervalJoinConfig}
+import me.kosik.interwalled.spark.join.api.IntervalJoin
+import me.kosik.interwalled.spark.join.{PartitionedNativeAIListIntervalJoin, PartitionedNativeAIListIntervalJoinConfig}
 
 class PartitionedNativeAIListBenchmark(bucketSplit: Long, maximumComponentsCount: Int) extends Benchmark {
 
-  override def joinImplementation: IntervalJoin =
-    new PartitionedNativeAIListIntervalJoin(PartitionedNativeAIListIntervalJoinConfig(
+  override def joinImplementation(gatherStatistics: Boolean): IntervalJoin =
+    new PartitionedNativeAIListIntervalJoin(gatherStatistics, PartitionedNativeAIListIntervalJoinConfig(
       bucketSplit,
       maximumComponentsCount
     ))
