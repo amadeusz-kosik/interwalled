@@ -18,55 +18,49 @@ object Main extends App {
   logger.info(f"Running environment: $env.")
   logger.info(f"Running arguments: ${args.mkString("Array(", ", ", ")")}.")
 
-  val Array(dataSuite, clustersCount, clustersSize, benchmarkName) = args.take(4)
-  val benchmarkArgs = args.drop(4)
+  val Array(dataSuite, benchmarkName, outputCSVPath) = args.take(3)
 
   private val benchmark: BenchmarkCallback = benchmarkName match {
-    case "broadcast-ailist" =>
-      BroadcastAIListBenchmark.prepareBenchmark
+    case "bucketed-rdd-ailist-1000" =>
+      new BucketedRDDAIListBenchmark(1000).prepareBenchmark
 
-    case "native-ailist" =>
-      NativeAIListBenchmark.prepareBenchmark
+    case "driver-ailist" =>
+      DriverAIListBenchmark.prepareBenchmark
 
-    case "partitioned-ailist" =>
-      new PartitionedAIListBenchmark(benchmarkArgs(0).toInt).prepareBenchmark
+    case "native-ailist-1000" =>
+      new NativeAIListBenchmark(1000).prepareBenchmark
 
-    case "partitioned-native-ailist-benchmark" =>
-      new PartitionedNativeAIListBenchmark(benchmarkArgs(0).toInt, benchmarkArgs(1).toInt).prepareBenchmark
-
-    case "spark-native-bucketing" =>
-      new SparkNativeBucketingBenchmark(benchmarkArgs(0).toInt).prepareBenchmark
+    // FixMe
   }
 
   // --------------------------------------------------------------------
 
   private implicit val spark: SparkSession =
-    env.buildSparkSession(s"InterwalledBenchmark - ${benchmark.description} - ${dataSuite} - ${clustersCount} - ${clustersSize}")
+    env.buildSparkSession(s"InterwalledBenchmark - ${benchmark.description} - ${dataSuite}")
 
   private val csvWriter: Writer = {
-    val csvPathStr = f"./jupyter-lab/data/${benchmark.description}-${dataSuite}-${clustersCount}-${clustersSize}.csv"
-    val csvPath = Path.of(csvPathStr)
-
-    if(! Files.exists(csvPath)) {
-      val writer = new PrintWriter(csvPathStr)
+    if(! Files.exists(Path.of(outputCSVPath))) {
+      val writer = new PrintWriter(outputCSVPath)
       writer.write(CSV.header)
       writer.flush()
 
       writer
     } else {
-      val stream = new FileOutputStream(new File(csvPathStr), true)
+      val stream = new FileOutputStream(new File(outputCSVPath), true)
       val writer = new PrintWriter(stream)
 
       writer
     }
   }
 
-  BenchmarkRunner.run(
-    benchmark,
+  val testData = TestData.load(
     env.dataDirectory,
-    clustersCount.toInt,
-    clustersSize.toLong,
-    dataSuite,
+    dataSuite
+  )
+
+  BenchmarkRunner.run(
+    testData,
+    benchmark,
     csvWriter,
     env.timeoutAfter
   )

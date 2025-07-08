@@ -97,7 +97,7 @@ function local_run_benchmark() {
   cluster_size="$3"
   benchmark="$4"
 
-  java_command=" $JAVA $LOCAL_JAVA_OPTS -jar $BENCHMARK_JAR_PATH $data_suite $cluster_count $cluster_size $benchmark"
+  java_command=" $JAVA $LOCAL_JAVA_OPTS -jar $BENCHMARK_JAR_PATH $data_suite $cluster_count $cluster_size $benchmark $ARG_CSV_PATH"
   echo "Running for benchmark $benchmark for $data_suite: $java_command"
 
   export INTERWALLED_TIMEOUT_AFTER="${ARG_TIMEOUT}"
@@ -209,16 +209,18 @@ ARG_GENERATE=0
 ARG_RUN=0
 ARG_PULL_LOGS=""
 ARG_TIMEOUT=""
+ARG_CSV_PATH=""
 
-while getopts "he:bgrl:t:" optchar; do
+while getopts "he:bgrl:t:c:" optchar; do
   case "${optchar}" in
 
     e) ARG_ENV="${OPTARG}" ;;
     b) ARG_BUILD=1 ;;
     g) ARG_GENERATE=1 ;;
     r) ARG_RUN=1 ;;
-    l) ARG_PULL_LOGS="${OPTARG}" ;;
-    t) ARG_TIMEOUT="${OPTARG}" ;;
+    l) ARG_PULL_LOGS="${OPTARG}"  ;;
+    t) ARG_TIMEOUT="${OPTARG}"    ;;
+    c) ARG_CSV_PATH="${OPTARG}"   ;;
 
     *)
       echo "Incorrect parameters." >&2

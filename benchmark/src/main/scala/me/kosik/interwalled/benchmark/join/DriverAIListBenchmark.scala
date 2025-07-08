@@ -5,12 +5,12 @@ import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.implementation.DriverAIListIntervalJoin
 
 
-object BroadcastAIListBenchmark extends Benchmark {
+object DriverAIListBenchmark extends Benchmark {
 
-  override def joinImplementation(gatherStatistics: Boolean): IntervalJoin =
-    new DriverAIListIntervalJoin(gatherStatistics)
+  override def joinImplementation: IntervalJoin =
+    DriverAIListIntervalJoin
 
   override def toString: String =
-    "broadcast-ailist-benchmark"
+    "driver-ailist-benchmark"
 }
 

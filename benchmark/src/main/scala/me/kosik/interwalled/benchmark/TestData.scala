@@ -6,33 +6,25 @@ import org.apache.spark.sql.{Dataset, SparkSession}
 
 case class TestData(
   suite: String,
-  clustersCount: Int,
-  rowsPerCluster: Long,
   database: Dataset[Interval[String]],
   query: Dataset[Interval[String]]
 ) {
-  override def toString: String = s"TestData($suite, $rowsPerCluster, $clustersCount)"
+  override def toString: String = s"TestData($suite)"
 
   def sparkSession: SparkSession =
     database.sparkSession
 }
 
+object TestData {
 
-case class TestDataBuilder(pathPrefix: String, suite: String, clustersCount: Int, rowsPerCluster: Long) {
-  def apply(spark: SparkSession): TestData = TestData(
+  def load(pathPrefix: String, suite: String)(implicit sparkSession: SparkSession): TestData = TestData(
     suite,
-    clustersCount,
-    rowsPerCluster,
-    load(s"$pathPrefix/$suite/$rowsPerCluster/$clustersCount/database.parquet", spark),
-    load(s"$pathPrefix/$suite/$rowsPerCluster/$clustersCount/query.parquet", spark)
+    load(s"$pathPrefix/$suite/database.parquet"),
+    load(s"$pathPrefix/$suite/query.parquet")
   )
 
-  override def toString: String = s"TestData($suite, $rowsPerCluster, $clustersCount)"
-
-  private def load(path: String, spark: SparkSession): Dataset[Interval[String]] = {
-    import spark.implicits._
-
-    spark.read.parquet(path)
-      .as[Interval[String]]
+  private def load(path: String)(implicit sparkSession: SparkSession): Dataset[Interval[String]] = {
+    import sparkSession.implicits._
+    sparkSession.read.parquet(path).as[Interval[String]]
   }
 }

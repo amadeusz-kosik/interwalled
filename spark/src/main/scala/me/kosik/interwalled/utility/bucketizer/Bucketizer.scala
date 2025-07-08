@@ -8,7 +8,12 @@ import scala.annotation.nowarn
 import scala.reflect.runtime.universe._
 
 
-class Bucketizer(config: Option[BucketingConfig]) {
+trait Bucketizer {
+  def bucketize[T : TypeTag](input: Dataset[Interval[T]]): Dataset[BucketedInterval[T]]
+  def deduplicate[T : TypeTag](input: Dataset[IntervalsPair[T]]): Dataset[IntervalsPair[T]]
+}
+
+class SimpleBucketizer(config: BucketingConfig) {
   import IntervalColumns.{BUCKET, FROM, KEY, TO}
 
   private lazy val bucketize: UserDefinedFunction =
@@ -18,29 +23,17 @@ class Bucketizer(config: Option[BucketingConfig]) {
     @nowarn implicit val iTT = typeTag[BucketedInterval[T]]
     implicit val iEncoder: Encoder[BucketedInterval[T]] = Encoders.product[BucketedInterval[T]]
 
-    config match {
-      case Some(bucketizerConfig) =>
-        val bucketScale = bucketizerConfig.bucketScale
+    val bucketScale = config.bucketScale
 
-        input
-          .withColumn(BUCKET,
-            F.explode(bucketize(input.col(FROM), input.col(TO), F.lit(bucketScale)))
-          )
-          .repartition(F.col(BUCKET), F.col(KEY))
-          .as[BucketedInterval[T]]
-
-      case None =>
-        input
-          .withColumn(BUCKET, F.lit(0))
-          .as[BucketedInterval[T]]
-    }
+    input
+      .withColumn(BUCKET,
+        F.explode(bucketize(input.col(FROM), input.col(TO), F.lit(bucketScale)))
+      )
+      .repartition(F.col(BUCKET), F.col(KEY))
+      .as[BucketedInterval[T]]
   }
 
-  def deduplicate(input: DataFrame): DataFrame = config match {
-    case Some(_) =>
-      input.distinct()
-
-    case None =>
-      input
+  def deduplicate[T : TypeTag](input: Dataset[IntervalsPair[T]]): Dataset[IntervalsPair[T]] = {
+    input.distinct()
   }
 }

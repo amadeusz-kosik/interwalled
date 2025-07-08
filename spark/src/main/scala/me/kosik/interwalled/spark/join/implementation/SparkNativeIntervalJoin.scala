@@ -3,14 +3,17 @@ package me.kosik.interwalled.spark.join.implementation
 import me.kosik.interwalled.domain.{IntervalColumns, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.Input
-import me.kosik.interwalled.utility.bucketizer.{BucketingConfig, Bucketizer}
+import me.kosik.interwalled.spark.join.implementation.DriverAIListIntervalJoin.bucketizer
+import me.kosik.interwalled.utility.bucketizer.{BucketingConfig, Bucketizer, SimpleBucketizer}
 import org.apache.spark.sql.{DataFrame, Dataset, functions => F}
 
 import scala.reflect.runtime.universe._
 
 
 class SparkNativeIntervalJoin(bucketingConfig: Option[BucketingConfig]) extends IntervalJoin {
-  private val bucketizer = new Bucketizer(bucketingConfig)
+  private val bucketizer = bucketingConfig match {
+    case Some(config) => new SimpleBucketizer(config)
+  }
 
   override protected def prepareInput[T : TypeTag](input: Input[T]): PreparedInput[T] =
     (bucketizer.bucketize(input.lhsData), bucketizer.bucketize(input.rhsData))
@@ -52,8 +55,8 @@ class SparkNativeIntervalJoin(bucketingConfig: Option[BucketingConfig]) extends 
   override protected def finalizeResult[T : TypeTag](joinedResultRaw: DataFrame): Dataset[IntervalsPair[T]] = {
     import joinedResultRaw.sparkSession.implicits._
 
-    bucketizer
-      .deduplicate(joinedResultRaw)
+    joinedResultRaw
       .as[IntervalsPair[T]]
+      .transform(bucketizer.deduplicate)
   }
 }

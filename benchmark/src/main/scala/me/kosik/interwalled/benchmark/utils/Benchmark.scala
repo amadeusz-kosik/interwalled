@@ -17,21 +17,19 @@ trait Benchmark {
     val fn = (testData: TestData) => {
       import testData.database.sparkSession.implicits._
 
-      joinImplementation(false)
+      joinImplementation
         .join(Input(testData.database, testData.query))
         .data.as[TestResultRow]
     }
 
     val statistics = (testData: TestData) => {
-      import testData.database.sparkSession.implicits._
-
-      joinImplementation(true)
-        .join(Input(testData.database, testData.query))
+      joinImplementation
+        .join(Input(testData.database, testData.query), gatherStatistics = true)
         .statistics
     }
 
     BenchmarkCallback(this.toString, fn, statistics)
   }
 
-  def joinImplementation(gatherStatistics: Boolean): IntervalJoin
+  def joinImplementation: IntervalJoin
 }

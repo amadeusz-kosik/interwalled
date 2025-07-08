@@ -1,6 +1,6 @@
 package me.kosik.interwalled.benchmark.utils
 
-import me.kosik.interwalled.benchmark.{TestDataBuilder, Timer}
+import me.kosik.interwalled.benchmark.{TestData, Timer}
 import org.apache.spark.sql.SparkSession
 import org.slf4j.LoggerFactory
 
@@ -10,32 +10,17 @@ import scala.concurrent.duration.Duration
 import scala.util.{Failure, Success}
 
 
-object BenchmarkRunner {
+object BenchmarkRunner { // FIXME this object is a mess
   private val logger = LoggerFactory.getLogger(getClass)
 
   def run(
-    benchmarkCallback: BenchmarkCallback,
-    testDataDirectory: String,
-    testDataClustersCount: Int,
-    testDataClustersSize: Long,
-    testDataSuite: String,
-    outputWriter: Writer,
-    timeoutAfter: Duration
-  )(implicit sparkSession: SparkSession): Unit = {
-    // FixMe remove this adapter
-    val testDataBuilder = TestDataBuilder(testDataDirectory, testDataSuite, testDataClustersCount, testDataClustersSize)
-    run(testDataBuilder, benchmarkCallback, outputWriter, timeoutAfter)
-  }
-
-  def run(
-    testDatabuilder: TestDataBuilder,
+    testData: TestData,
     benchmarkCallback: BenchmarkCallback,
     outputWriter: Writer,
     timeoutAfter: Duration
   )(implicit sparkSession: SparkSession): Unit = {
 
-    val appName = f"${benchmarkCallback.description} on $testDatabuilder"
-    val testData = testDatabuilder(sparkSession)
+    val appName = f"${benchmarkCallback.description} on $testData"
 
     logger.info(s"Running benchmark - $appName")
     implicit val executionContext: ExecutionContext =
@@ -68,8 +53,6 @@ object BenchmarkRunner {
 
         val benchmarkResult = BenchmarkResult(
           testData.suite,
-          testData.clustersCount,
-          testData.rowsPerCluster,
           benchmarkCallback.description,
           elapsedTime,
           result,

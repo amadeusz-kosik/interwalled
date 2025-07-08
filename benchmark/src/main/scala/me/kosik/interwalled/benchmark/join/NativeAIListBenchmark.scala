@@ -1,15 +1,16 @@
 package me.kosik.interwalled.benchmark.join
 
 import me.kosik.interwalled.benchmark.utils.Benchmark
-import me.kosik.interwalled.spark.join.NativeAIListIntervalJoin
 import me.kosik.interwalled.spark.join.api.IntervalJoin
+import me.kosik.interwalled.spark.join.config.AIListConfig
+import me.kosik.interwalled.spark.join.implementation.NativeAIListIntervalJoin
 
-object NativeAIListBenchmark extends Benchmark {
+class NativeAIListBenchmark(maximumComponentsCount: Int) extends Benchmark {
 
-  override def joinImplementation(gatherStatistics: Boolean): IntervalJoin =
-    new NativeAIListIntervalJoin(gatherStatistics)
+  override def joinImplementation: IntervalJoin =
+    new NativeAIListIntervalJoin(AIListConfig(maximumComponentsCount = maximumComponentsCount), None)
 
   override def toString: String =
-    "native-ailist-benchmark-v2"
+    f"native-ailist-benchmark-$maximumComponentsCount"
 }
 

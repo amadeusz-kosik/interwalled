@@ -11,7 +11,7 @@ object CSV {
 
   def header: String = {
     Seq(
-      "data_suite", "clusters_count", "rows_per_cluster", "join_name", "elapsed_time", "result",
+      "data_suite", "join_name", "elapsed_time", "result",
       "database_raw_rows_count", "database_final_rows_count",
       "query_raw_rows_count", "query_final_rows_count",
       "result_raw_rows_count", "result_final_rows_count",
@@ -22,8 +22,6 @@ object CSV {
   def row(result: BenchmarkResult): String = {
     val coreFields = Seq(
       result.dataSuite,
-      result.clustersCount,
-      result.rowsPerCluster,
       result.joinName,
       result.elapsedTime.milliseconds,
       result.result match {
