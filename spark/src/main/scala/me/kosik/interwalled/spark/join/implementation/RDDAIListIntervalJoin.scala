@@ -14,7 +14,7 @@ import scala.reflect.runtime.universe._
 
 
 class RDDAIListIntervalJoin(bucketingConfig: Option[BucketingConfig]) extends IntervalJoin {
-  private val bucketizer = DummyBucketizer
+  private val bucketizer = Bucketizer(bucketingConfig)
 
   override protected def prepareInput[T : TypeTag](input: Input[T]): PreparedInput[T] =
     (bucketizer.bucketize(input.lhsData), bucketizer.bucketize(input.rhsData))

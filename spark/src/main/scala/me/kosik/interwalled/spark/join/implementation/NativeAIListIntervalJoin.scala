@@ -5,7 +5,7 @@ import me.kosik.interwalled.domain.{Interval, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.Input
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.config.AIListConfig
-import me.kosik.interwalled.utility.bucketizer.{BucketingConfig, DummyBucketizer}
+import me.kosik.interwalled.utility.bucketizer.{BucketingConfig, Bucketizer, DummyBucketizer}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Dataset, functions => F}
 import org.apache.spark.sql.expressions.Window
@@ -15,7 +15,7 @@ import scala.reflect.runtime.universe._
 
 
 class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: Option[BucketingConfig]) extends IntervalJoin {
-  private val bucketizer = DummyBucketizer
+  private val bucketizer = Bucketizer(bucketingConfig)
 
   override protected def prepareInput[T : TypeTag](input: Input[T]): PreparedInput[T] =
     (bucketizer.bucketize(input.lhsData), bucketizer.bucketize(input.rhsData))

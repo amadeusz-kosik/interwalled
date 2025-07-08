@@ -1,13 +1,11 @@
 package me.kosik.interwalled.spark.join.implementation
 
 import me.kosik.interwalled.ailist.{AIList, AIListBuilder}
-import me.kosik.interwalled.domain.{Interval, IntervalsPair}
-import me.kosik.interwalled.spark.join.api.{IntervalJoin}
-import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{Input, Result}
-import me.kosik.interwalled.spark.join.api.model.IntervalStatistics
-import me.kosik.interwalled.spark.join.api.model.IntervalStatistics.{InputStats, ResultStats}
-import me.kosik.interwalled.utility.bucketizer.{BucketingConfig, Bucketizer, DummyBucketizer}
-import org.apache.spark.sql.{DataFrame, Dataset, Encoder, Encoders, SparkSession}
+import me.kosik.interwalled.domain.IntervalsPair
+import me.kosik.interwalled.spark.join.api.IntervalJoin
+import me.kosik.interwalled.spark.join.api.model.IntervalJoin.Input
+import me.kosik.interwalled.utility.bucketizer.DummyBucketizer
+import org.apache.spark.sql._
 
 import scala.annotation.nowarn
 import scala.collection.JavaConverters._

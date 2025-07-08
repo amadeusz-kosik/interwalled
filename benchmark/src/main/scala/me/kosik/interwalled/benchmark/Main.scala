@@ -22,7 +22,7 @@ object Main extends App {
 
   private val benchmark: BenchmarkCallback = benchmarkName match {
     case "bucketed-rdd-ailist-1000" =>
-      new BucketedRDDAIListBenchmark(1000).prepareBenchmark
+      new RDDAIListBenchmark(1000).prepareBenchmark
 
     case "driver-ailist" =>
       DriverAIListBenchmark.prepareBenchmark

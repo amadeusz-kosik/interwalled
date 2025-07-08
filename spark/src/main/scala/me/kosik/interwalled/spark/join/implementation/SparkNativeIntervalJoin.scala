@@ -11,9 +11,7 @@ import scala.reflect.runtime.universe._
 
 
 class SparkNativeIntervalJoin(bucketingConfig: Option[BucketingConfig]) extends IntervalJoin {
-  private val bucketizer = bucketingConfig match {
-    case Some(config) => new SimpleBucketizer(config)
-  }
+  private val bucketizer = Bucketizer(bucketingConfig)
 
   override protected def prepareInput[T : TypeTag](input: Input[T]): PreparedInput[T] =
     (bucketizer.bucketize(input.lhsData), bucketizer.bucketize(input.rhsData))

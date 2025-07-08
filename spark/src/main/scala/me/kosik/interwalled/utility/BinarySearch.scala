@@ -2,6 +2,8 @@ package me.kosik.interwalled.utility
 
 import org.apache.spark.sql.Row
 
+import scala.annotation.tailrec
+
 object BinarySearch {
   import me.kosik.interwalled.domain.IntervalColumns.{FROM, TO}
   private val MAX_E = "_ailist_max_end"
@@ -12,6 +14,7 @@ object BinarySearch {
   def findFirstGreaterEqual(needle: Long, haystack: Array[Row]): Option[Int] =
     findFirstGreaterEqual(needle: Long, haystack: Array[Row], 0, haystack.length - 1)
 
+  @tailrec
   private def findFirstGreaterEqual(needle: Long, haystack: Array[Row], leftBound: Int, rightBound: Int): Option[Int] = {
     if(haystack(leftBound).getAs[Long](MAX_E) >= needle)
       Some(leftBound)
