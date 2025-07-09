@@ -6,10 +6,10 @@ import me.kosik.interwalled.spark.join.implementation.RDDAIListIntervalJoin
 import me.kosik.interwalled.utility.bucketizer.BucketScale
 
 
-class RDDAIListBenchmark(bucketScale: Long) extends Benchmark {
+class RDDAIListBenchmark(bucketScale: Option[Long]) extends Benchmark {
 
   override def joinImplementation: IntervalJoin =
-    new RDDAIListIntervalJoin(Some(BucketScale(bucketScale)))
+    new RDDAIListIntervalJoin(bucketScale.map(BucketScale))
 
   override def toString: String =
     s"bucketed-rdd-ailist-benchmark-$bucketScale"

@@ -22,13 +22,16 @@ object CSV {
   def row(result: BenchmarkResult): String = {
     val coreFields = Seq(
       result.dataSuite,
-      result.joinName,
-      result.elapsedTime.milliseconds,
-      result.result match {
-        case Success(_) => "success"
-        case Failure(exception) => exception.getMessage.split("\n").head
-      }
+      result.joinName
     )
+
+    val resultFields = result.result match {
+      case Success(elapsedTime) =>
+        Seq(elapsedTime, "success")
+
+      case Failure(exception) =>
+        Seq("", exception.getMessage.split("\n").head)
+    }
 
     val statistics = result.statistics match {
       case Some(IntervalStatistics(database, query, result)) => Seq(
@@ -43,7 +46,7 @@ object CSV {
       case None => Seq.empty[String]
     }
 
-    (coreFields ++ statistics).mkString(DELIMITER) + "\n"
+    (coreFields ++ resultFields ++ statistics).mkString(DELIMITER) + "\n"
   }
 
 }

@@ -21,22 +21,29 @@ object Main extends App {
   val Array(dataSuite, benchmarkName, outputCSVPath) = args.take(3)
 
   private val benchmark: BenchmarkCallback = benchmarkName match {
+    case "bucketed-native-ailist-1000-1000" =>
+      new NativeAIListBenchmark(1000, Some(1000)).prepareBenchmark
+
     case "bucketed-rdd-ailist-1000" =>
-      new RDDAIListBenchmark(1000).prepareBenchmark
+      new RDDAIListBenchmark(Some(1000)).prepareBenchmark
+
+    case "bucketed-spark-native-1000" =>
+      new SparkNativeBenchmark(Some(1000)).prepareBenchmark
 
     case "driver-ailist" =>
       DriverAIListBenchmark.prepareBenchmark
 
     case "native-ailist-1000" =>
-      new NativeAIListBenchmark(1000).prepareBenchmark
+      new NativeAIListBenchmark(1000, None).prepareBenchmark
 
-    // FixMe
+    case "spark-native" =>
+      new SparkNativeBenchmark(None).prepareBenchmark
   }
 
   // --------------------------------------------------------------------
 
   private implicit val spark: SparkSession =
-    env.buildSparkSession(s"InterwalledBenchmark - ${benchmark.description} - ${dataSuite}")
+    env.buildSparkSession(s"InterwalledBenchmark - ${benchmark.description} - $dataSuite")
 
   private val csvWriter: Writer = {
     if(! Files.exists(Path.of(outputCSVPath))) {

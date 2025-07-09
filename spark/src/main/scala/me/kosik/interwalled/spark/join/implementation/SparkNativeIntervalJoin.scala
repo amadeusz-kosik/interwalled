@@ -3,8 +3,7 @@ package me.kosik.interwalled.spark.join.implementation
 import me.kosik.interwalled.domain.{IntervalColumns, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.Input
-import me.kosik.interwalled.spark.join.implementation.DriverAIListIntervalJoin.bucketizer
-import me.kosik.interwalled.utility.bucketizer.{BucketingConfig, Bucketizer, SimpleBucketizer}
+import me.kosik.interwalled.utility.bucketizer.{BucketingConfig, Bucketizer}
 import org.apache.spark.sql.{DataFrame, Dataset, functions => F}
 
 import scala.reflect.runtime.universe._

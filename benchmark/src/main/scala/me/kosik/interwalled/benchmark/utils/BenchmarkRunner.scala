@@ -1,16 +1,15 @@
 package me.kosik.interwalled.benchmark.utils
 
 import me.kosik.interwalled.benchmark.{TestData, Timer}
-import org.apache.spark.sql.SparkSession
 import org.slf4j.LoggerFactory
 
 import java.io.Writer
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.Duration
-import scala.util.{Failure, Success}
+import scala.util.{Failure, Success, Try}
 
 
-object BenchmarkRunner { // FIXME this object is a mess
+object BenchmarkRunner {
   private val logger = LoggerFactory.getLogger(getClass)
 
   def run(
@@ -18,7 +17,7 @@ object BenchmarkRunner { // FIXME this object is a mess
     benchmarkCallback: BenchmarkCallback,
     outputWriter: Writer,
     timeoutAfter: Duration
-  )(implicit sparkSession: SparkSession): Unit = {
+  ): Unit = {
 
     val appName = f"${benchmarkCallback.description} on $testData"
 
@@ -29,46 +28,44 @@ object BenchmarkRunner { // FIXME this object is a mess
     import scala.concurrent._
     val benchmarkTimer = Timer.start()
 
-    val doContinueBenchmark: Boolean = Await.result(
-      Future {
-        val resultDataset = benchmarkCallback.fn(testData)
-        // Force Spark to compute the data
-        // Discard the result to not pollute benchmarks with output I/O
-        resultDataset.foreach(_ => ())
-      } transform {
-        case fail @ Failure(_: TimeoutException) =>
-          Success((fail, false))
+    val resultPromise = Future {
+      // Force Spark to compute the data.
+      // Discard the result to not pollute benchmarks with output I/O.
+      // Interrupt if job takes too long to complete.
 
-        case fail @ Failure(_: Exception) =>
-          Success((fail, false))
+      val resultDataset = benchmarkCallback.fn(testData)
+      resultDataset.foreach(_ => ())
+    }
 
-        case success @ Success(_) =>
-          Success((success, true))
-
-      } transform { case Success((result, doContinue)) =>
+    val benchmarkResult = Try { Await.result(resultPromise, timeoutAfter) } match {
+      case Success(_) =>
         val elapsedTime = benchmarkTimer.millisElapsed()
+        val statistics  = benchmarkCallback.statistics(testData)
 
-        // Second phase: statistics
-        val statistics = benchmarkCallback.statistics(testData)
-
-        val benchmarkResult = BenchmarkResult(
+        BenchmarkResult(
           testData.suite,
           benchmarkCallback.description,
-          elapsedTime,
-          result,
+          Success(elapsedTime),
           statistics
         )
 
-        outputWriter.write(CSV.row(benchmarkResult))
-        outputWriter.flush()
+      case Failure(fail) =>
+        BenchmarkResult(
+          testData.suite,
+          benchmarkCallback.description,
+          Failure(fail),
+          None
+        )
+    }
 
-        Success(doContinue)
-      }, timeoutAfter)
+    outputWriter.write(CSV.row(benchmarkResult))
+    outputWriter.flush()
 
-      if(! doContinueBenchmark) {
-        logger.info("No point in carry out timed out benchmark for larger dataset, aborting.")
-        testData.sparkSession.stop()
-        sys.exit(4)
-      }
+    if(benchmarkResult.result.isFailure) {
+      logger.info("No point in carry out timed out benchmark for larger dataset, aborting.")
+
+      testData.sparkSession.stop()
+      sys.exit(4)
+    }
   }
 }

@@ -25,9 +25,6 @@ trait IntervalJoin extends Logging with Serializable {
     @nowarn implicit val iTT = typeTag[Interval[T]]
     implicit val iEncoder: Encoder[Interval[T]] = Encoders.product[Interval[T]]
 
-//    @nowarn implicit val ipTT = typeTag[IntervalsPair[T]]
-//    implicit val ipEncoder: Encoder[IntervalsPair[T]] = Encoders.product[IntervalsPair[T]]
-
     val (lhsInputRaw,       rhsInputRaw)      = (input.lhsData, input.rhsData)
     val (lhsInputPrepared,  rhsInputPrepared) = prepareInput(input)
 
@@ -48,5 +45,4 @@ trait IntervalJoin extends Logging with Serializable {
   protected def prepareInput[T : TypeTag](input: Input[T]): PreparedInput[T]
   protected def doJoin[T : TypeTag](lhsInputPrepared: BucketedIntervals[T], rhsInputPrepared: BucketedIntervals[T]): DataFrame
   protected def finalizeResult[T : TypeTag](joinedResultRaw: DataFrame): Dataset[IntervalsPair[T]]
-
 }

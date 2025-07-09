@@ -9,7 +9,6 @@ import scala.util.Try
 case class BenchmarkResult(
   dataSuite: String,
   joinName: String,
-  elapsedTime: TimerResult,
-  result: Try[Unit],
+  result: Try[TimerResult],
   statistics: Option[IntervalStatistics]
 )
