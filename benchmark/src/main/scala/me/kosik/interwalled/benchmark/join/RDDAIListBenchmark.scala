@@ -11,7 +11,9 @@ class RDDAIListBenchmark(bucketScale: Option[Long]) extends Benchmark {
   override def joinImplementation: IntervalJoin =
     new RDDAIListIntervalJoin(bucketScale.map(BucketScale))
 
-  override def toString: String =
-    s"bucketed-rdd-ailist-benchmark-$bucketScale"
+  override def toString: String = bucketScale match {
+    case Some(scale)  => f"bucketed-rdd-ailist-benchmark-$scale"
+    case None         => "rdd-ailist-benchmark"
+  }
 }
 

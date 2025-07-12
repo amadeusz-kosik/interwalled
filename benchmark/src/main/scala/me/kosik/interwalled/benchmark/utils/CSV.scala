@@ -27,7 +27,7 @@ object CSV {
 
     val resultFields = result.result match {
       case Success(elapsedTime) =>
-        Seq(elapsedTime, "success")
+        Seq(elapsedTime.milliseconds, "success")
 
       case Failure(exception) =>
         Seq("", exception.getMessage.split("\n").head)

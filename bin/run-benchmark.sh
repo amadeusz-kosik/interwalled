@@ -36,16 +36,33 @@ SPARK_WORKER_HOSTS=(
 
 # Available benchmarks and data suites.
 BENCHMARKS=(
-  "broadcast-ailist"
-  "partitioned-native-ailist-benchmark     100 8"
-  "partitioned-native-ailist-benchmark    1000 8"
-  "partitioned-native-ailist-benchmark   10000 8"
-  "partitioned-native-ailist-benchmark  100000 8"
+  "bucketed-native-ailist                 100    4"
+  "bucketed-native-ailist                1000    4"
+  "bucketed-native-ailist               10000    4"
+  "bucketed-native-ailist              100000    4"
+  "bucketed-native-ailist                 100    8"
+  "bucketed-native-ailist                1000    8"
+  "bucketed-native-ailist               10000    8"
+  "bucketed-native-ailist              100000    8"
+  "bucketed-native-ailist                 100   16"
+  "bucketed-native-ailist                1000   16"
+  "bucketed-native-ailist               10000   16"
+  "bucketed-native-ailist              100000   16"
+  "bucketed-rdd-ailist                    100"
+  "bucketed-rdd-ailist                   1000"
+  "bucketed-rdd-ailist                  10000"
+  "bucketed-rdd-ailist                 100000"
+  "bucketed-spark-native                  100"
+  "bucketed-spark-native                 1000"
+  "bucketed-spark-native                10000"
+  "bucketed-spark-native               100000"
+  "driver-ailist"
+  "native-ailist                                 4"
+  "native-ailist                                 8"
+  "spark-native"
 )
 
-CLUSTERS_COUNTS=(
-  "1"
-)
+CLUSTERS_COUNT="1"
 
 CLUSTER_SIZES=(
      "10000"  #  10K
@@ -81,6 +98,7 @@ function build() {
 }
 
 # Local: runs
+# ---------------------------------------------------------------------------------------------------------------------
 
 function local_run_generator()  {
   java_command="$JAVA $LOCAL_JAVA_OPTS -jar $GENERATOR_JAR_PATH false false"
@@ -92,30 +110,27 @@ function local_run_generator()  {
 }
 
 function local_run_benchmark() {
-  data_suite="$1"
-  cluster_count="$2"
-  cluster_size="$3"
-  benchmark="$4"
+  test_data="$1"
+  benchmark="$2"
 
-  java_command=" $JAVA $LOCAL_JAVA_OPTS -jar $BENCHMARK_JAR_PATH $data_suite $cluster_count $cluster_size $benchmark $ARG_CSV_PATH"
-  echo "Running for benchmark $benchmark for $data_suite: $java_command"
+  java_command=" $JAVA $LOCAL_JAVA_OPTS -jar $BENCHMARK_JAR_PATH $test_data $ARG_CSV_PATH $benchmark"
+  echo "Running for benchmark $benchmark for $test_data: $java_command"
 
   export INTERWALLED_TIMEOUT_AFTER="${ARG_TIMEOUT}"
   $java_command
 }
 
 function local_run_benchmarks() {
-#  set +e
+  set +e
 
-  for cluster_count in "${CLUSTERS_COUNTS[@]}"; do
-    for cluster_size in "${CLUSTER_SIZES[@]}"; do
-      for data_suite in "${DATA_SUITES[@]}"; do
-        for benchmark in "${BENCHMARKS[@]}"; do
-          local_run_benchmark "$data_suite" "$cluster_count" "$cluster_size" "$benchmark"
-        done
+  for cluster_size in "${CLUSTER_SIZES[@]}"; do
+    for data_suite in "${DATA_SUITES[@]}"; do
+      for benchmark in "${BENCHMARKS[@]}"; do
+        local_run_benchmark "$data_suite/$cluster_size/$CLUSTERS_COUNT" "$benchmark"
       done
     done
   done
+
 }
 
 # SSH: uploads
@@ -146,8 +161,6 @@ function ssh_run_generator() {
 
 function ssh_run_benchmark() {
   data_suite="$1"
-  clusters_count="$2"
-  clusters_size="$3"
   benchmark="$4"
 
   for spark_worker_host in "${SPARK_WORKER_HOSTS[@]}"; do
@@ -162,16 +175,14 @@ function ssh_run_benchmark() {
     "bash -l -c 'INTERWALLED_TIMEOUT_AFTER=\"${ARG_TIMEOUT}\" spark-submit " \
       "--master spark://$SPARK_SSH_HOST:7077 "  \
       "--conf spark.standalone.submit.waitAppCompletion=true " \
-      "~/workdir/$BENCHMARK_JAR $data_suite $clusters_count $cluster_size $benchmark'"
+      "~/workdir/$BENCHMARK_JAR $data_suite $cluster_size $benchmark'"
 }
 
 function ssh_run_benchmarks() {
-  for cluster_count in "${CLUSTERS_COUNTS[@]}"; do
-    for cluster_size in "${CLUSTER_SIZES[@]}"; do
-      for data_suite in "${DATA_SUITES[@]}"; do
-        for benchmark in "${BENCHMARKS[@]}"; do
-          ssh_run_benchmark "$data_suite" "$cluster_count" "$cluster_size" "$benchmark"
-        done
+  for cluster_size in "${CLUSTER_SIZES[@]}"; do
+    for data_suite in "${DATA_SUITES[@]}"; do
+      for benchmark in "${BENCHMARKS[@]}"; do
+        ssh_run_benchmark "$data_suite" "$cluster_size" "$benchmark"
       done
     done
   done

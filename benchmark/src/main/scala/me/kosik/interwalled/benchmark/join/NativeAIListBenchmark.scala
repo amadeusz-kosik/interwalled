@@ -11,7 +11,9 @@ class NativeAIListBenchmark(maximumComponentsCount: Int, bucketScale: Option[Lon
   override def joinImplementation: IntervalJoin =
     new NativeAIListIntervalJoin(AIListConfig(maximumComponentsCount = maximumComponentsCount), bucketScale.map(BucketScale))
 
-  override def toString: String =
-    f"native-ailist-benchmark-$maximumComponentsCount-$bucketScale"
+  override def toString: String = bucketScale match {
+    case Some(scale)  => f"bucketed-native-ailist-benchmark-$maximumComponentsCount-$scale"
+    case None         => f"native-ailist-benchmark-$maximumComponentsCount"
+  }
 }
 

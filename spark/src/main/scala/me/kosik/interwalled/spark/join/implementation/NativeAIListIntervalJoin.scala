@@ -102,6 +102,8 @@ class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: Option[Buc
 
     if(maxIterations == 0) {
       sourceDF
+        .withColumn(_COMPONENT, F.lit(maxIterations))
+        .transform(calculateMaxEnd)
     } else {
       val sourceInputLookaheadWindow = Window
         .partitionBy(KEY, BUCKET)
@@ -114,7 +116,7 @@ class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: Option[Buc
         .withColumn("_ailist_lookahead_overlapping_count", F.size(F.col("_ailist_lookahead_overlapping")))
         .withColumn("_ailist_lookahead_overlapping_keeper", F.col("_ailist_lookahead_overlapping_count") < F.lit(config.intervalsCountToTriggerExtraction))
 
-      val keepersDF   = preparedDF
+      val keepersDF  = preparedDF
         .filter(F.col("_ailist_lookahead_overlapping_keeper") === true)
         .withColumn(_COMPONENT, F.lit(maxIterations))
         .drop(

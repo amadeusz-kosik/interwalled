@@ -50,6 +50,8 @@ object BenchmarkRunner {
         )
 
       case Failure(fail) =>
+        logger.error(s"Benchmark failed: ${benchmarkCallback.description}", fail)
+
         BenchmarkResult(
           testData.suite,
           benchmarkCallback.description,

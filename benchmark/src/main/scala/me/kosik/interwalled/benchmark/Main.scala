@@ -18,23 +18,24 @@ object Main extends App {
   logger.info(f"Running environment: $env.")
   logger.info(f"Running arguments: ${args.mkString("Array(", ", ", ")")}.")
 
-  val Array(dataSuite, benchmarkName, outputCSVPath) = args.take(3)
+  val Array(dataSuite, outputCSVPath, benchmarkName) = args.take(3)
+  val joinArguments = args.drop(3)
 
   private val benchmark: BenchmarkCallback = benchmarkName match {
-    case "bucketed-native-ailist-1000-1000" =>
-      new NativeAIListBenchmark(1000, Some(1000)).prepareBenchmark
+    case "bucketed-native-ailist" =>
+      new NativeAIListBenchmark(joinArguments(0).toInt, Some(joinArguments(1).toLong)).prepareBenchmark
 
-    case "bucketed-rdd-ailist-1000" =>
-      new RDDAIListBenchmark(Some(1000)).prepareBenchmark
+    case "bucketed-rdd-ailist" =>
+      new RDDAIListBenchmark(Some(joinArguments(0).toLong)).prepareBenchmark
 
-    case "bucketed-spark-native-1000" =>
-      new SparkNativeBenchmark(Some(1000)).prepareBenchmark
+    case "bucketed-spark-native" =>
+      new SparkNativeBenchmark(Some(joinArguments(0).toLong)).prepareBenchmark
 
     case "driver-ailist" =>
       DriverAIListBenchmark.prepareBenchmark
 
-    case "native-ailist-1000" =>
-      new NativeAIListBenchmark(1000, None).prepareBenchmark
+    case "native-ailist" =>
+      new NativeAIListBenchmark(joinArguments(0).toInt, None).prepareBenchmark
 
     case "spark-native" =>
       new SparkNativeBenchmark(None).prepareBenchmark
