@@ -7,14 +7,14 @@ import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.config.AIListConfig
 import me.kosik.interwalled.utility.bucketizer.{BucketingConfig, Bucketizer}
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{DataFrame, Dataset, functions => F}
+import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession, functions => F}
 import org.apache.spark.sql.expressions.Window
 
 import scala.annotation.tailrec
 import scala.reflect.runtime.universe._
 
 
-class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: Option[BucketingConfig]) extends IntervalJoin {
+abstract class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: Option[BucketingConfig]) extends IntervalJoin {
   private val bucketizer = Bucketizer(bucketingConfig)
 
   override protected def prepareInput[T : TypeTag](input: Input[T]): PreparedInput[T] =
@@ -44,12 +44,19 @@ class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: Option[Buc
         .map(row => (row.getAs[String](KEY), row.getAs[Long](BUCKET)) -> row)
     }
 
-    val joinQuery = {
-      rhsInputPrepared
-        .toDF()
-        .rdd
-        .map(row => (row.getAs[String](KEY), row.getAs[Long](BUCKET)) -> row)
-    }
+    val joinQuery =rhsInputPrepared
+      .toDF()
+      .rdd
+      .map(row => (row.getAs[String](KEY), row.getAs[Long](BUCKET)) -> row)
+
+    val joinResult = computeJoin(lhsInputPrepared.sparkSession, joinDatabase, joinQuery)
+
+    joinResult
+  }
+
+  private def computeJoin[T: TypeTag](sparkSession: SparkSession, joinDatabase: RDD[((String, Long), Row)], joinQuery: RDD[((String, Long), Row)]): DataFrame = {
+    import IntervalColumns._
+    import sparkSession.implicits._
 
     val joinResultRDD: RDD[IntervalsPair[T]] = (joinDatabase cogroup joinQuery).flatMap { case ((key, _), (aiList, queries)) =>
       queries flatMap { query =>
@@ -81,70 +88,52 @@ class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: Option[Buc
       }
     }
 
-    val joinResult = lhsInputPrepared.sparkSession
+    val joinResult = sparkSession
       .createDataset(joinResultRDD)
       .toDF
 
     joinResult
   }
 
-  override protected def finalizeResult[T : TypeTag](joinedResultRaw: DataFrame): Dataset[IntervalsPair[T]] = {
-    import joinedResultRaw.sparkSession.implicits._
+  protected def iterate(sourceDF: DataFrame, accumulatorDF: DataFrame, maxIterations: Int): DataFrame
 
-    joinedResultRaw
-      .as[IntervalsPair[T]]
-      .transform(bucketizer.deduplicate)
-  }
-
-  @tailrec
-  private def iterate(sourceDF: DataFrame, accumulatorDF: DataFrame, maxIterations: Int): DataFrame = {
+  protected def _iterate(sourceDF: DataFrame, maxIterations: Int): (DataFrame, DataFrame) = {
     import IntervalColumns._
 
-    if(maxIterations == 0) {
-      sourceDF
-        .withColumn(_COMPONENT, F.lit(maxIterations))
-        .transform(calculateMaxEnd)
-    } else {
-      val sourceInputLookaheadWindow = Window
-        .partitionBy(KEY, BUCKET)
-        .orderBy(FROM, TO)
-        .rowsBetween(1, config.intervalsCountToCheckLookahead)
+    val sourceInputLookaheadWindow = Window
+      .partitionBy(KEY, BUCKET)
+      .orderBy(FROM, TO)
+      .rowsBetween(1, config.intervalsCountToCheckLookahead)
 
-      val preparedDF = sourceDF
-        .withColumn("_ailist_lookahead", F.collect_list(TO).over(sourceInputLookaheadWindow))
-        .withColumn("_ailist_lookahead_overlapping", F.filter(F.col("_ailist_lookahead"), _ <= F.col(TO)))
-        .withColumn("_ailist_lookahead_overlapping_count", F.size(F.col("_ailist_lookahead_overlapping")))
-        .withColumn("_ailist_lookahead_overlapping_keeper", F.col("_ailist_lookahead_overlapping_count") < F.lit(config.intervalsCountToTriggerExtraction))
+    val preparedDF = sourceDF
+      .withColumn("_ailist_lookahead", F.collect_list(TO).over(sourceInputLookaheadWindow))
+      .withColumn("_ailist_lookahead_overlapping", F.filter(F.col("_ailist_lookahead"), _ <= F.col(TO)))
+      .withColumn("_ailist_lookahead_overlapping_count", F.size(F.col("_ailist_lookahead_overlapping")))
+      .withColumn("_ailist_lookahead_overlapping_keeper", F.col("_ailist_lookahead_overlapping_count") < F.lit(config.intervalsCountToTriggerExtraction))
 
-      val keepersDF  = preparedDF
-        .filter(F.col("_ailist_lookahead_overlapping_keeper") === true)
-        .withColumn(_COMPONENT, F.lit(maxIterations))
-        .drop(
-          "_ailist_lookahead",
-          "_ailist_lookahead_overlapping",
-          "_ailist_lookahead_overlapping_count",
-          "_ailist_lookahead_overlapping_keeper"
-        )
-        .transform(calculateMaxEnd)
-        .unionByName(accumulatorDF)
+    val extractedDF  = preparedDF
+      .filter(F.col("_ailist_lookahead_overlapping_keeper") === true)
+      .withColumn(_COMPONENT, F.lit(maxIterations))
+      .drop(
+        "_ailist_lookahead",
+        "_ailist_lookahead_overlapping",
+        "_ailist_lookahead_overlapping_count",
+        "_ailist_lookahead_overlapping_keeper"
+      )
 
-      val extractedDF = preparedDF
-        .filter(F.col("_ailist_lookahead_overlapping_keeper") === false)
-        .drop(
-          "_ailist_lookahead",
-          "_ailist_lookahead_overlapping",
-          "_ailist_lookahead_overlapping_count",
-          "_ailist_lookahead_overlapping_keeper"
-        )
+    val leftoversDF = preparedDF
+      .filter(F.col("_ailist_lookahead_overlapping_keeper") === false)
+      .drop(
+        "_ailist_lookahead",
+        "_ailist_lookahead_overlapping",
+        "_ailist_lookahead_overlapping_count",
+        "_ailist_lookahead_overlapping_keeper"
+      )
 
-      if(extractedDF.isEmpty)
-        keepersDF
-      else
-        iterate(extractedDF, keepersDF, maxIterations - 1)
-    }
+    (extractedDF, leftoversDF)
   }
 
-  private def calculateMaxEnd(dataFrame: DataFrame): DataFrame = {
+  protected def calculateMaxEnd(dataFrame: DataFrame): DataFrame = {
     import IntervalColumns._
 
     val maxEndWindow = Window
@@ -154,5 +143,13 @@ class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: Option[Buc
 
     dataFrame
       .withColumn(_MAX_E, F.max(TO).over(maxEndWindow))
+  }
+
+  override protected def finalizeResult[T : TypeTag](joinedResultRaw: DataFrame): Dataset[IntervalsPair[T]] = {
+    import joinedResultRaw.sparkSession.implicits._
+
+    joinedResultRaw
+      .as[IntervalsPair[T]]
+      .transform(bucketizer.deduplicate)
   }
 }
