@@ -84,8 +84,9 @@ public class AIListIterator<T> implements Iterator<Interval<T>>
         if(rightmostIntervalIndex == -1) {
             checkNextComponent();
         } else {
-            currentIntervalIndex = rightmostIntervalIndex;
-            currentInterval = parentAIList.getInterval(currentIntervalIndex);
+            // Point +1 since findNextInterval() will look one step to the left.
+            currentIntervalIndex = rightmostIntervalIndex + 1;
+            findNextInterval();
         }
     }
 
