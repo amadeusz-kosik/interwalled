@@ -22,8 +22,11 @@ object Main extends App {
   val joinArguments = args.drop(3)
 
   private val benchmark: BenchmarkCallback = benchmarkName match {
-    case "bucketed-native-ailist" =>
-      new NativeAIListBenchmark(joinArguments(0).toInt, Some(joinArguments(1).toLong)).prepareBenchmark
+    case "bucketed-cached-native-ailist" =>
+      new CachedNativeAIListBenchmark(joinArguments(0).toInt, Some(joinArguments(1).toLong)).prepareBenchmark
+
+    case "bucketed-checkpointed-native-ailist" =>
+      new CachedNativeAIListBenchmark(joinArguments(0).toInt, Some(joinArguments(1).toLong)).prepareBenchmark
 
     case "bucketed-rdd-ailist" =>
       new RDDAIListBenchmark(Some(joinArguments(0).toLong)).prepareBenchmark
@@ -34,8 +37,11 @@ object Main extends App {
     case "driver-ailist" =>
       DriverAIListBenchmark.prepareBenchmark
 
-    case "native-ailist" =>
-      new NativeAIListBenchmark(joinArguments(0).toInt, None).prepareBenchmark
+    case "cached-native-ailist" =>
+      new CachedNativeAIListBenchmark(joinArguments(0).toInt, None).prepareBenchmark
+
+    case "checkpointed-native-ailist" =>
+      new CheckpointedNativeAIListBenchmark(joinArguments(0).toInt, None).prepareBenchmark
 
     case "spark-native" =>
       new SparkNativeBenchmark(None).prepareBenchmark

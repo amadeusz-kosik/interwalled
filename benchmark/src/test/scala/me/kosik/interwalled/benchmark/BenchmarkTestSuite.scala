@@ -1,7 +1,7 @@
 package me.kosik.interwalled.benchmark
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
-import me.kosik.interwalled.benchmark.join.{DriverAIListBenchmark, NativeAIListBenchmark, RDDAIListBenchmark, SparkNativeBenchmark}
+import me.kosik.interwalled.benchmark.join.{DriverAIListBenchmark, CachedNativeAIListBenchmark, RDDAIListBenchmark, SparkNativeBenchmark}
 import me.kosik.interwalled.benchmark.utils.BenchmarkRunner
 import me.kosik.interwalled.main.MainEnv
 import org.apache.spark.sql.SparkSession
@@ -19,14 +19,14 @@ class BenchmarkTestSuite extends AnyFunSuite with DataFrameSuiteBase {
   private lazy val benchmarks = Array(
     DriverAIListBenchmark.prepareBenchmark,
 
-    new NativeAIListBenchmark( 1, None      ).prepareBenchmark,
-    new NativeAIListBenchmark( 4, None      ).prepareBenchmark,
-    new NativeAIListBenchmark( 8, None      ).prepareBenchmark,
-    new NativeAIListBenchmark(16, None      ).prepareBenchmark,
-    new NativeAIListBenchmark( 1, Some(1000)).prepareBenchmark,
-    new NativeAIListBenchmark( 4, Some(1000)).prepareBenchmark,
-    new NativeAIListBenchmark( 8, Some(1000)).prepareBenchmark,
-    new NativeAIListBenchmark(16, Some(1000)).prepareBenchmark,
+    new CachedNativeAIListBenchmark( 1, None      ).prepareBenchmark,
+    new CachedNativeAIListBenchmark( 4, None      ).prepareBenchmark,
+    new CachedNativeAIListBenchmark( 8, None      ).prepareBenchmark,
+    new CachedNativeAIListBenchmark(16, None      ).prepareBenchmark,
+    new CachedNativeAIListBenchmark( 1, Some(1000)).prepareBenchmark,
+    new CachedNativeAIListBenchmark( 4, Some(1000)).prepareBenchmark,
+    new CachedNativeAIListBenchmark( 8, Some(1000)).prepareBenchmark,
+    new CachedNativeAIListBenchmark(16, Some(1000)).prepareBenchmark,
 
     new RDDAIListBenchmark(None).prepareBenchmark,
     new RDDAIListBenchmark(Some(1000)).prepareBenchmark,

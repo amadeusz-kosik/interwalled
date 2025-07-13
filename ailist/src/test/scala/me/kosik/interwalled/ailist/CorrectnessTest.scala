@@ -81,4 +81,15 @@ class CorrectnessTest extends AnyFunSuite with Matchers {
 
     assertEqual(expected, actual)
   }
+
+  test("Data validation: sparse-16 sample.") {
+    val lhs = (1 to   6) map { i => Interval("CH1", i * 16, i * 16, "L")}
+    val rhs = (1 to 100) map { i => Interval("CH1", i, i, "R")}
+
+    val aiList = buildList(lhs)
+    val actual = buildResult(aiList, rhs)
+    val expected = buildExpected(lhs, rhs)
+
+    assertEqual(expected, actual)
+  }
 }

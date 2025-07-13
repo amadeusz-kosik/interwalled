@@ -13,8 +13,15 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
 
   val inputSizes: Array[(Int, Long)] = TestDataSizes.baseline.take(1)
 
-  def inputSuites: Array[String] =
-    Array("all-to-one", "one-to-all", "one-to-one", "spanning-4", "spanning-16")
+  def inputSuites: Array[String] = Array(
+    "all-to-one",
+    "continuous-16",
+    "one-to-all",
+    "one-to-one",
+    "spanning-4",
+    "spanning-16",
+    "sparse-16"
+  )
 
   def intervalJoin: IntervalJoin
 
@@ -60,8 +67,8 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
       val expected = loadResult("result")
       val actual = intervalJoin.join(Input(lhs, rhs)).data
 
+      Array(expected, actual).foreach(ds => ds.filter(_.lhs.from < 100).filter(_.rhs.from < 100).show(1000, truncate = false))
       assertDataEqual(expected = expected, actual = actual)
     }
-
   }}
 }
