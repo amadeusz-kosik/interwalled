@@ -20,20 +20,20 @@ object CSV {
   }
 
   def row(result: BenchmarkResult): String = {
-    val coreFields = Seq(
+    val coreFields: Seq[String] = Seq(
       result.dataSuite,
       result.joinName
     )
 
-    val resultFields = result.result match {
+    val resultFields: Seq[String] = result.result match {
       case Success(elapsedTime) =>
-        Seq(elapsedTime.milliseconds, "success")
+        Seq(elapsedTime.milliseconds.toString, "success")
 
       case Failure(exception) =>
         Seq("", exception.getMessage.split("\n").head)
     }
 
-    val statistics = result.statistics match {
+    val statistics: Seq[String] = result.statistics match {
       case Some(IntervalStatistics(database, query, result)) => Seq(
         database.rawRowsCount,
         database.finalRowsCount,

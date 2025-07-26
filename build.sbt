@@ -63,17 +63,17 @@ lazy val root = (project in file("."))
 
 ailist / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test
 
-benchmark / mainClass in (Compile, run) := Some("me.kosik.interwalled.benchmark.Main")
+benchmark / Compile / run / mainClass := Some("me.kosik.interwalled.benchmark.Main")
 benchmark / parallelExecution in Test := false
 benchmark / libraryDependencies += "org.apache.spark"  %% "spark-core"          % SparkVersion
 benchmark / libraryDependencies += "org.apache.spark"  %% "spark-sql"           % SparkVersion
 benchmark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"  % f"${SparkVersion}_${SparkTestingBaseVersion}" % "test"
 
-spark / parallelExecution in Test := false
+spark / Test / parallelExecution := false
 spark / libraryDependencies += "org.apache.spark"  %% "spark-core"          % SparkVersion                                  % "provided"
 spark / libraryDependencies += "org.apache.spark"  %% "spark-sql"           % SparkVersion                                  % "provided"
 spark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"  % f"${SparkVersion}_${SparkTestingBaseVersion}" % "test"
 
-testDataGenerator / mainClass in (Compile, run) := Some("me.kosik.interwalled.test.data.generator.Main")
+testDataGenerator / Compile / run / mainClass := Some("me.kosik.interwalled.test.data.generator.Main")
 testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-core" % SparkVersion
 testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-sql"  % SparkVersion
