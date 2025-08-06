@@ -54,11 +54,11 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameS
       import spark.implicits._
 
       def loadInput(datasetName: String): Dataset[Interval[String]] =
-        spark.read.parquet(s"data/$inputSuite/$rowsPerCluster/$clustersCount/$datasetName.parquet")
+        spark.read.parquet(s"data/edge/$inputSuite/$rowsPerCluster/$clustersCount/$datasetName.parquet")
           .as[Interval[String]]
 
       def loadResult(datasetName: String): Dataset[IntervalsPair[String]] =
-        spark.read.parquet(s"data/$inputSuite/$rowsPerCluster/$clustersCount/$datasetName.parquet")
+        spark.read.parquet(s"data/edge/$inputSuite/$rowsPerCluster/$clustersCount/$datasetName.parquet")
           .as[IntervalsPair[String]]
 
       val lhs = loadInput("database").as[Interval[String]]

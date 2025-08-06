@@ -1,6 +1,7 @@
 package me.kosik.interwalled.benchmark.utils
 
-import me.kosik.interwalled.benchmark.{TestData, Timer}
+import me.kosik.interwalled.benchmark.data.TestData
+import me.kosik.interwalled.benchmark.utils.csv.{CSVFormatter, CSVWriter}
 import org.slf4j.LoggerFactory
 
 import java.io.Writer
@@ -15,7 +16,7 @@ object BenchmarkRunner {
   def run(
     testData: TestData,
     benchmarkCallback: BenchmarkCallback,
-    outputWriter: Writer,
+    outputWriter: CSVWriter,
     timeoutAfter: Duration
   ): Unit = {
 
@@ -60,8 +61,7 @@ object BenchmarkRunner {
         )
     }
 
-    outputWriter.write(CSV.row(benchmarkResult))
-    outputWriter.flush()
+    outputWriter.write(benchmarkResult)
 
     if(benchmarkResult.result.isFailure) {
       logger.info("No point in carry out timed out benchmark for larger dataset, aborting.")

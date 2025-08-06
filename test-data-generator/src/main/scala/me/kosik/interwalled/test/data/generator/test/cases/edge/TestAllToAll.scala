@@ -1,6 +1,7 @@
-package me.kosik.interwalled.test.data.generator.test.cases
+package me.kosik.interwalled.test.data.generator.test.cases.edge
 
 import me.kosik.interwalled.domain.test.{TestDataRow, TestResultRow}
+import me.kosik.interwalled.test.data.generator.test.cases.{TestCase, TestDataGenerator}
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 

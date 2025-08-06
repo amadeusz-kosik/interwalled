@@ -1,25 +1,27 @@
 package me.kosik.interwalled.benchmark.utils
 
-import me.kosik.interwalled.benchmark.TestData
+import me.kosik.interwalled.benchmark.data.TestData
 import me.kosik.interwalled.domain.test.TestResultRow
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.Input
+import org.apache.spark.sql.SparkSession
 
 
 trait Benchmark {
 
   def prepareBenchmark: BenchmarkCallback = {
     val fn = (testData: TestData) => {
-      import testData.database.sparkSession.implicits._
+      val sparkSession: SparkSession = testData.sparkSession
+      import sparkSession.implicits._
 
       joinImplementation
-        .join(Input(testData.database, testData.query))
+        .join(Input(testData.database.dataset, testData.query.dataset))
         .data.as[TestResultRow]
     }
 
     val statistics = (testData: TestData) => {
       joinImplementation
-        .join(Input(testData.database, testData.query), gatherStatistics = true)
+        .join(Input(testData.database.dataset, testData.query.dataset), gatherStatistics = true)
         .statistics
     }
 

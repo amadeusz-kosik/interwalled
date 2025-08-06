@@ -1,11 +1,12 @@
-package me.kosik.interwalled.benchmark.utils
+package me.kosik.interwalled.benchmark.utils.csv
 
+import me.kosik.interwalled.benchmark.utils.BenchmarkResult
 import me.kosik.interwalled.spark.join.api.model.IntervalStatistics
 
 import scala.util.{Failure, Success}
 
 
-object CSV {
+object CSVFormatter {
 
   private val DELIMITER = ","
 

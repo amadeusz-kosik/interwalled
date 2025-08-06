@@ -25,3 +25,6 @@ out/
 .bsp/
 
 .env/
+
+### Jupyter Notebook ###
+.ipynb_checkpoints/

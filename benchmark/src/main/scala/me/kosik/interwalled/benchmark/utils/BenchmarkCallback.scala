@@ -1,6 +1,6 @@
 package me.kosik.interwalled.benchmark.utils
 
-import me.kosik.interwalled.benchmark.TestData
+import me.kosik.interwalled.benchmark.data.TestData
 import me.kosik.interwalled.domain.test.TestResultRow
 import me.kosik.interwalled.spark.join.api.model.IntervalStatistics
 import org.apache.spark.sql.Dataset

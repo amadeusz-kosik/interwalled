@@ -1,9 +1,9 @@
-package me.kosik.interwalled.test.data.generator.test.cases
+package me.kosik.interwalled.test.data.generator.test.cases.edge
 
 import me.kosik.interwalled.domain.IntervalColumns
 import me.kosik.interwalled.domain.test.{TestDataRow, TestResultRow}
-import org.apache.spark.sql.{Dataset, SparkSession}
-import org.apache.spark.sql.{functions => F}
+import me.kosik.interwalled.test.data.generator.test.cases.{TestCase, TestDataGenerator}
+import org.apache.spark.sql.{Dataset, SparkSession, functions => F}
 
 
 case class TestContinuous(clustersCount: Int, rowsPerCluster: Long, rowsPerJoin: Int) extends TestCase {
@@ -34,8 +34,8 @@ case class TestContinuous(clustersCount: Int, rowsPerCluster: Long, rowsPerJoin:
     TestDataGenerator.generateLinear(clustersCount, rowsPerCluster)
 
   override def generateResult(implicit spark: SparkSession): Option[Dataset[TestResultRow]] = Some {
-    import spark.implicits._
     import IntervalColumns._
+    import spark.implicits._
 
     val lhs = generateLHS
     val rhs = generateRHS

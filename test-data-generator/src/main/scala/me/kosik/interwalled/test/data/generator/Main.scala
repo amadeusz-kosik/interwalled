@@ -2,7 +2,8 @@ package me.kosik.interwalled.test.data.generator
 
 import me.kosik.interwalled.domain.benchmark.ActiveBenchmarks
 import me.kosik.interwalled.main.MainEnv
-import me.kosik.interwalled.test.data.generator.test.cases._
+import me.kosik.interwalled.test.data.generator.test.cases.TestCase
+import me.kosik.interwalled.test.data.generator.test.cases.edge._
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.slf4j.LoggerFactory
 

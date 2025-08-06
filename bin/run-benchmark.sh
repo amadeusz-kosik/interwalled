@@ -36,26 +36,26 @@ SPARK_WORKER_HOSTS=(
 
 # Available benchmarks and data suites.
 BENCHMARKS=(
-  "bucketed-native-ailist                 100    4"
-  "bucketed-native-ailist                1000    4"
-  "bucketed-native-ailist               10000    4"
-  "bucketed-native-ailist              100000    4"
-  "bucketed-native-ailist                 100    8"
-  "bucketed-native-ailist                1000    8"
-  "bucketed-native-ailist               10000    8"
-  "bucketed-native-ailist              100000    8"
-  "bucketed-native-ailist                 100   16"
-  "bucketed-native-ailist                1000   16"
-  "bucketed-native-ailist               10000   16"
-  "bucketed-native-ailist              100000   16"
-  "bucketed-rdd-ailist                    100"
-  "bucketed-rdd-ailist                   1000"
-  "bucketed-rdd-ailist                  10000"
-  "bucketed-rdd-ailist                 100000"
-  "bucketed-spark-native                  100"
-  "bucketed-spark-native                 1000"
-  "bucketed-spark-native                10000"
-  "bucketed-spark-native               100000"
+#  "bucketed-native-ailist                 100    4"
+#  "bucketed-native-ailist                1000    4"
+#  "bucketed-native-ailist               10000    4"
+#  "bucketed-native-ailist              100000    4"
+#  "bucketed-native-ailist                 100    8"
+#  "bucketed-native-ailist                1000    8"
+#  "bucketed-native-ailist               10000    8"
+#  "bucketed-native-ailist              100000    8"
+#  "bucketed-native-ailist                 100   16"
+#  "bucketed-native-ailist                1000   16"
+#  "bucketed-native-ailist               10000   16"
+#  "bucketed-native-ailist              100000   16"
+#  "bucketed-rdd-ailist                    100"
+#  "bucketed-rdd-ailist                   1000"
+#  "bucketed-rdd-ailist                  10000"
+#  "bucketed-rdd-ailist                 100000"
+#  "bucketed-spark-native                  100"
+#  "bucketed-spark-native                 1000"
+#  "bucketed-spark-native                10000"
+#  "bucketed-spark-native               100000"
   "driver-ailist"
   "native-ailist                                 4"
   "native-ailist                                 8"
@@ -66,9 +66,9 @@ CLUSTERS_COUNT="1"
 
 CLUSTER_SIZES=(
      "10000"  #  10K
-     "25000"
-     "50000"
-     "75000"
+#     "25000"
+#     "50000"
+#     "75000"
 #    "100000" # 100K
 #    "250000"
 #    "500000"
@@ -110,106 +110,113 @@ function local_run_generator()  {
 }
 
 function local_run_benchmark() {
-  test_data="$1"
-  benchmark="$2"
+  data_suite="$1"
+  dataset_database="$2"
+  dataset_query="$3"
+  benchmark="$4"
 
-  java_command=" $JAVA $LOCAL_JAVA_OPTS -jar $BENCHMARK_JAR_PATH $test_data $ARG_CSV_PATH $benchmark"
-  echo "Running for benchmark $benchmark for $test_data: $java_command"
+  java_command=" $JAVA $LOCAL_JAVA_OPTS -jar $BENCHMARK_JAR_PATH $data_suite $dataset_database $dataset_query $ARG_CSV_PATH $benchmark"
+  echo "Running for benchmark $benchmark for $data_suite: $java_command"
 
   export INTERWALLED_TIMEOUT_AFTER="${ARG_TIMEOUT}"
   $java_command
 }
 
 function local_run_benchmarks() {
-  set +e
+  if [[ "$ARG_BUILD" -eq 1 ]];      then
+    set +e
+  fi
 
   for cluster_size in "${CLUSTER_SIZES[@]}"; do
-    for data_suite in "${DATA_SUITES[@]}"; do
-      for benchmark in "${BENCHMARKS[@]}"; do
-        local_run_benchmark "$data_suite/$cluster_size/$CLUSTERS_COUNT" "$benchmark"
-      done
+  for data_suite in "${DATA_SUITES[@]}"; do
+
+    for benchmark in "${BENCHMARKS[@]}"; do
+      data_path_prefix="edge/$data_suite/$cluster_size/$CLUSTERS_COUNT"
+      local_run_benchmark "$data_suite" "$data_path_prefix/database.parquet" "$data_path_prefix/query.parquet" "$benchmark"
     done
+
+  done
   done
 
 }
 
-# SSH: uploads
-
-function ssh_upload_generator() {
-  echo "Uploading test data generator JAR to the cluster node ($SPARK_SSH_HOST)."
-  scp -i "$SPARK_SSH_KEY"               \
-    "$GENERATOR_JAR_PATH"               \
-    "$SPARK_SSH_USER@$SPARK_SSH_HOST:workdir/$GENERATOR_JAR"
-}
-
-function ssh_upload_benchmark() {
-  echo "Uploading benchmark JAR to the cluster node ($SPARK_SSH_HOST)."
-  scp -i "$SPARK_SSH_KEY"               \
-    "$BENCHMARK_JAR_PATH"               \
-    "$SPARK_SSH_USER@$SPARK_SSH_HOST:workdir/$BENCHMARK_JAR"
-}
-
-# SSH: runs
-
-function ssh_run_generator() {
-  echo "Running test data generator."
-
-  ssh -i "$SPARK_SSH_KEY"               \
-    "$SPARK_SSH_USER@$SPARK_SSH_HOST"   \
-    "bash -l -c 'spark-submit ~/workdir/$GENERATOR_JAR spark://$SPARK_SSH_HOST:7077 4G TestDataGenerator true false'"
-}
-
-function ssh_run_benchmark() {
-  data_suite="$1"
-  benchmark="$4"
-
-  for spark_worker_host in "${SPARK_WORKER_HOSTS[@]}"; do
-      ssh -i "$SPARK_SSH_KEY"               \
-        "$SPARK_SSH_USER@$spark_worker_host"   \
-        "bash -l -c 'rm -fr /home/spark/bundle/work/*'"
-  done
-
-  echo "Running for benchmark $benchmark for $data_suite."
-  ssh -i "$SPARK_SSH_KEY"               \
-    "$SPARK_SSH_USER@$SPARK_SSH_HOST"   \
-    "bash -l -c 'INTERWALLED_TIMEOUT_AFTER=\"${ARG_TIMEOUT}\" spark-submit " \
-      "--master spark://$SPARK_SSH_HOST:7077 "  \
-      "--conf spark.standalone.submit.waitAppCompletion=true " \
-      "~/workdir/$BENCHMARK_JAR $data_suite $cluster_size $benchmark'"
-}
-
-function ssh_run_benchmarks() {
-  for cluster_size in "${CLUSTER_SIZES[@]}"; do
-    for data_suite in "${DATA_SUITES[@]}"; do
-      for benchmark in "${BENCHMARKS[@]}"; do
-        ssh_run_benchmark "$data_suite" "$cluster_size" "$benchmark"
-      done
-    done
-  done
-}
-
-function ssh_pull_logs() {
-  BENCHMARK_NAME="$1"
-  BENCHMARK_RESULTS_DIR="$REPO_DIR/jupyter-lab/data"
-
-  BENCHMARK_RESULTS_SOURCE_PATH="jupyter-lab/data"
-  BENCHMARK_RESULTS_TARGET_FILE="$BENCHMARK_RESULTS_DIR/benchmark-$BENCHMARK_NAME.csv"
-
-  echo "Target CSV file: $BENCHMARK_RESULTS_TARGET_FILE."
-
-  echo "Printing CSV header."
-  ssh -i "$SPARK_SSH_KEY"               \
-      "$SPARK_SSH_USER@$SPARK_SSH_HOST"   \
-      "ls \"$BENCHMARK_RESULTS_SOURCE_PATH\" | head -n 1 | xargs -I{} head -n 1 \"$BENCHMARK_RESULTS_SOURCE_PATH/{}\"" \
-      > "$BENCHMARK_RESULTS_TARGET_FILE"
-
-  echo "Printing CSV body."
-  ssh -i "$SPARK_SSH_KEY"               \
-      "$SPARK_SSH_USER@$SPARK_SSH_HOST"   \
-      "ls \"$BENCHMARK_RESULTS_SOURCE_PATH\" | xargs -I{} tail -n +2 \"$BENCHMARK_RESULTS_SOURCE_PATH/{}\"" \
-      >> "$BENCHMARK_RESULTS_TARGET_FILE"
-
-}
+## SSH: uploads
+#
+#function ssh_upload_generator() {
+#  echo "Uploading test data generator JAR to the cluster node ($SPARK_SSH_HOST)."
+#  scp -i "$SPARK_SSH_KEY"               \
+#    "$GENERATOR_JAR_PATH"               \
+#    "$SPARK_SSH_USER@$SPARK_SSH_HOST:workdir/$GENERATOR_JAR"
+#}
+#
+#function ssh_upload_benchmark() {
+#  echo "Uploading benchmark JAR to the cluster node ($SPARK_SSH_HOST)."
+#  scp -i "$SPARK_SSH_KEY"               \
+#    "$BENCHMARK_JAR_PATH"               \
+#    "$SPARK_SSH_USER@$SPARK_SSH_HOST:workdir/$BENCHMARK_JAR"
+#}
+#
+## SSH: runs
+#
+#function ssh_run_generator() {
+#  echo "Running test data generator."
+#
+#  ssh -i "$SPARK_SSH_KEY"               \
+#    "$SPARK_SSH_USER@$SPARK_SSH_HOST"   \
+#    "bash -l -c 'spark-submit ~/workdir/$GENERATOR_JAR spark://$SPARK_SSH_HOST:7077 4G TestDataGenerator true false'"
+#}
+#
+#function ssh_run_benchmark() {
+#  data_suite="$1"
+#  benchmark="$4"
+#
+#  for spark_worker_host in "${SPARK_WORKER_HOSTS[@]}"; do
+#      ssh -i "$SPARK_SSH_KEY"               \
+#        "$SPARK_SSH_USER@$spark_worker_host"   \
+#        "bash -l -c 'rm -fr /home/spark/bundle/work/*'"
+#  done
+#
+#  echo "Running for benchmark $benchmark for $data_suite."
+#  ssh -i "$SPARK_SSH_KEY"               \
+#    "$SPARK_SSH_USER@$SPARK_SSH_HOST"   \
+#    "bash -l -c 'INTERWALLED_TIMEOUT_AFTER=\"${ARG_TIMEOUT}\" spark-submit " \
+#      "--master spark://$SPARK_SSH_HOST:7077 "  \
+#      "--conf spark.standalone.submit.waitAppCompletion=true " \
+#      "~/workdir/$BENCHMARK_JAR $data_suite $cluster_size $benchmark'"
+#}
+#
+#function ssh_run_benchmarks() {
+#  for cluster_size in "${CLUSTER_SIZES[@]}"; do
+#    for data_suite in "${DATA_SUITES[@]}"; do
+#      for benchmark in "${BENCHMARKS[@]}"; do
+#        ssh_run_benchmark "$data_suite" "$cluster_size" "$benchmark"
+#      done
+#    done
+#  done
+#}
+#
+#function ssh_pull_logs() {
+#  BENCHMARK_NAME="$1"
+#  BENCHMARK_RESULTS_DIR="$REPO_DIR/jupyter-lab/data"
+#
+#  BENCHMARK_RESULTS_SOURCE_PATH="jupyter-lab/data"
+#  BENCHMARK_RESULTS_TARGET_FILE="$BENCHMARK_RESULTS_DIR/benchmark-$BENCHMARK_NAME.csv"
+#
+#  echo "Target CSV file: $BENCHMARK_RESULTS_TARGET_FILE."
+#
+#  echo "Printing CSV header."
+#  ssh -i "$SPARK_SSH_KEY"               \
+#      "$SPARK_SSH_USER@$SPARK_SSH_HOST"   \
+#      "ls \"$BENCHMARK_RESULTS_SOURCE_PATH\" | head -n 1 | xargs -I{} head -n 1 \"$BENCHMARK_RESULTS_SOURCE_PATH/{}\"" \
+#      > "$BENCHMARK_RESULTS_TARGET_FILE"
+#
+#  echo "Printing CSV body."
+#  ssh -i "$SPARK_SSH_KEY"               \
+#      "$SPARK_SSH_USER@$SPARK_SSH_HOST"   \
+#      "ls \"$BENCHMARK_RESULTS_SOURCE_PATH\" | xargs -I{} tail -n +2 \"$BENCHMARK_RESULTS_SOURCE_PATH/{}\"" \
+#      >> "$BENCHMARK_RESULTS_TARGET_FILE"
+#
+#}
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -221,8 +228,9 @@ ARG_RUN=0
 ARG_PULL_LOGS=""
 ARG_TIMEOUT=""
 ARG_CSV_PATH=""
+ARG_CARRY_ON=0
 
-while getopts "he:bgrl:t:c:" optchar; do
+while getopts "he:bgrl:t:c:f" optchar; do
   case "${optchar}" in
 
     e) ARG_ENV="${OPTARG}" ;;
@@ -232,6 +240,7 @@ while getopts "he:bgrl:t:c:" optchar; do
     l) ARG_PULL_LOGS="${OPTARG}"  ;;
     t) ARG_TIMEOUT="${OPTARG}"    ;;
     c) ARG_CSV_PATH="${OPTARG}"   ;;
+    f) ARG_CARRY_ON=1             ;;
 
     *)
       echo "Incorrect parameters." >&2

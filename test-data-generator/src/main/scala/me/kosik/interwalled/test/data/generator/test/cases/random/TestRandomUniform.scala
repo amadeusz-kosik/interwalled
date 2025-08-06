@@ -1,10 +1,10 @@
-package me.kosik.interwalled.test.data.generator.test.cases
+package me.kosik.interwalled.test.data.generator.test.cases.random
 
 import me.kosik.interwalled.domain.IntervalColumns
 import me.kosik.interwalled.domain.test.{TestDataRow, TestResultRow}
+import me.kosik.interwalled.test.data.generator.test.cases.{TestCase, TestDataGenerator}
 import org.apache.spark.sql.types.DataTypes
-import org.apache.spark.sql.{Dataset, SparkSession}
-import org.apache.spark.sql.{functions => F}
+import org.apache.spark.sql.{Dataset, SparkSession, functions => F}
 
 
 case class TestRandomUniform(clustersCount: Int, linearLength: Int, rowsPerCluster: Long) extends TestCase {

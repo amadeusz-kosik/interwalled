@@ -1,4 +1,4 @@
-package me.kosik.interwalled.benchmark.join
+package me.kosik.interwalled.benchmark.join.algorithms
 
 import me.kosik.interwalled.benchmark.utils.Benchmark
 import me.kosik.interwalled.spark.join.api.IntervalJoin
