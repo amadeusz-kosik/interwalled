@@ -75,5 +75,6 @@ spark / libraryDependencies += "org.apache.spark"  %% "spark-sql"           % Sp
 spark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"  % f"${SparkVersion}_${SparkTestingBaseVersion}" % "test"
 
 testDataGenerator / Compile / run / mainClass := Some("me.kosik.interwalled.test.data.generator.Main")
-testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-core" % SparkVersion
-testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-sql"  % SparkVersion
+testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-core"   % SparkVersion
+testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-mllib"  % SparkVersion
+testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-sql"    % SparkVersion

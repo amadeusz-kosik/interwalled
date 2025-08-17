@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="sbt 1" modules="interwalled,interwalled.ailist,interwalled.domain,interwalled.spark" />
-    <profile name="sbt 2" modules="interwalled.benchmark,interwalled.test-data-generator">
+    <option name="separateProdTestSources" value="true" />
+    <profile name="sbt 1" modules="interwalled,interwalled.ailist,interwalled.ailist.main,interwalled.ailist.test,interwalled.benchmark,interwalled.domain,interwalled.domain.main,interwalled.domain.test,interwalled.main,interwalled.spark,interwalled.spark.main,interwalled.spark.test,interwalled.test,interwalled.test-data-generator" />
+    <profile name="sbt 2" modules="interwalled.benchmark.main,interwalled.benchmark.test,interwalled.test-data-generator.main,interwalled.test-data-generator.test">
       <option name="deprecationWarnings" value="true" />
       <option name="uncheckedWarnings" value="true" />
       <parameters>

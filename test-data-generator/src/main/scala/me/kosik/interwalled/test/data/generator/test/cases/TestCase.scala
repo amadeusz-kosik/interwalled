@@ -1,15 +1,26 @@
 package me.kosik.interwalled.test.data.generator.test.cases
 
-import me.kosik.interwalled.domain.test.{TestDataRow, TestResultRow}
-import org.apache.spark.sql.{Dataset, SparkSession}
+import me.kosik.interwalled.domain.IntervalColumns
+import me.kosik.interwalled.domain.test.TestDataRow
+import me.kosik.interwalled.test.data.generator.data.types.RawTestDataRow
+import org.apache.spark.sql.{Dataset, SparkSession, functions => F}
 
 
 trait TestCase {
   def testCaseName: String
 
-  def generateLHS(implicit spark: SparkSession): Dataset[TestDataRow]
+  def generate()(implicit sparkSession: SparkSession): Dataset[TestDataRow] =
+    buildDataset(_generate())
 
-  def generateRHS(implicit spark: SparkSession): Dataset[TestDataRow]
+  protected def _generate()(implicit sparkSession: SparkSession): Dataset[RawTestDataRow]
 
-  def generateResult(implicit spark: SparkSession): Option[Dataset[TestResultRow]]
+  private def buildDataset(data: Dataset[RawTestDataRow])(implicit sparkSession: SparkSession): Dataset[TestDataRow] = {
+    import IntervalColumns._
+    import sparkSession.implicits._
+
+    data
+      .withColumn(KEY,   F.lit(testCaseName))
+      .withColumn(VALUE, F.concat_ws("-", F.col(KEY), F.col(FROM), F.col(TO)))
+      .as[TestDataRow]
+  }
 }
