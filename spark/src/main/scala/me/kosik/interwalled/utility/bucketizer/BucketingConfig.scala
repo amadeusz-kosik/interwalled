@@ -1,15 +1,16 @@
 package me.kosik.interwalled.utility.bucketizer
 
-import org.apache.spark.sql.Dataset
 
 sealed trait BucketingConfig {
-  def bucketScale: Long
+  def bucketScale(datasetCount: => Long): Long
 }
 
 case class BucketScale(scale: Long) extends BucketingConfig {
-  override def bucketScale: Long = scale
+  override def toString: String = s"scale-$scale"
+  override def bucketScale(datasetCount: => Long): Long = scale
 }
 
-case class BucketCount(count: Long, referenceDataset: Dataset[_]) extends BucketingConfig {
-  override def bucketScale: Long = referenceDataset.count() / count
+case class BucketCount(count: Long) extends BucketingConfig {
+  override def toString: String = s"count-$count"
+  override def bucketScale(datasetCount: => Long): Long = math.max(1L, datasetCount / count)
 }

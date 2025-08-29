@@ -1,0 +1,32 @@
+data_suite,join_name,elapsed_time,result,database_raw_rows_count,database_final_rows_count,query_raw_rows_count,query_final_rows_count,result_raw_rows_count,result_final_rows_count
+databio-s-1-2,bucketized-scale-16-rdd-ailist,7935,success,198621,198621,438694,7019104,54343,54343
+databio-s-2-7,bucketized-scale-16-rdd-ailist,11950,success,438694,438694,1194285,19108560,274265,274265
+databio-s-1-0,bucketized-scale-16-rdd-ailist,18227,success,198621,198621,2350965,37615440,321138,321138
+databio-m-7-0,bucketized-scale-16-rdd-ailist,17962,success,1194285,1194285,2350965,37615440,2764180,2764180
+databio-m-7-3,bucketized-scale-16-rdd-ailist,17431,success,1194285,1194285,1956864,31309824,4410920,4410920
+databio-l-0-8,bucketized-scale-16-rdd-ailist,59928,success,2350965,2350965,9944559,159112944,164214460,164214460
+databio-l-4-8,bucketized-scale-16-rdd-ailist,68125,success,7684066,7684066,9944559,159112944,227869010,227869010
+databio-l-7-8,bucketized-scale-16-rdd-ailist,61737,success,1194285,1194285,9944559,159112944,307298579,307298579
+databio-xl-3-0,bucketized-scale-16-rdd-ailist,139073,success
+one-to-none-1000,bucketized-scale-16-rdd-ailist,4192,success,501,501,500,8000,0,0
+one-to-none-5000,bucketized-scale-16-rdd-ailist,4405,success,2501,2501,2500,40000,0,0
+one-to-none-10000,bucketized-scale-16-rdd-ailist,4700,success,5001,5001,5000,80000,0,0
+one-to-none-50000,bucketized-scale-16-rdd-ailist,5052,success,25001,25001,25000,400000,0,0
+one-to-none-100000,bucketized-scale-16-rdd-ailist,5419,success,50001,50001,50000,800000,0,0
+one-to-none-500000,bucketized-scale-16-rdd-ailist,8174,success,250001,250001,250000,4000000,0,0
+one-to-none-1000000,bucketized-scale-16-rdd-ailist,11431,success,500001,500001,500000,8000000,0,0
+one-to-none-5000000,bucketized-scale-16-rdd-ailist,33904,success,2500001,2500001,2500000,40000000,0,0
+one-to-none-10000000,bucketized-scale-16-rdd-ailist,,Job aborted due to stage failure: Task 10 in stage 14.0 failed 1 times, most recent failure: Lost task 10.0 in stage 14.0 (TID 84) (192.168.97.3 executor 0): java.lang.OutOfMemoryError: Java heap space
+one-to-none-50000000,bucketized-scale-16-rdd-ailist,,Job aborted due to stage failure: Task 9 in stage 14.0 failed 1 times, most recent failure: Lost task 9.0 in stage 14.0 (TID 83) (192.168.97.5 executor 1): java.lang.OutOfMemoryError: Java heap space
+one-to-none-100000000,bucketized-scale-16-rdd-ailist,,Job aborted due to stage failure: Task 0 in stage 10.0 failed 1 times, most recent failure: Lost task 0.0 in stage 10.0 (TID 44) (192.168.97.6 executor 4): java.lang.OutOfMemoryError: Java heap space
+one-to-one-1000,bucketized-scale-16-rdd-ailist,4390,success,1000,1000,1000,16000,999,999
+one-to-one-5000,bucketized-scale-16-rdd-ailist,4713,success,5000,5000,5000,80000,4999,4999
+one-to-one-10000,bucketized-scale-16-rdd-ailist,5000,success,10000,10000,10000,160000,9999,9999
+one-to-one-50000,bucketized-scale-16-rdd-ailist,5830,success,50000,50000,50000,800000,50000,50000
+one-to-one-100000,bucketized-scale-16-rdd-ailist,6629,success,100000,100000,100000,1600000,100000,100000
+one-to-one-500000,bucketized-scale-16-rdd-ailist,11292,success,500000,500000,500000,8000000,499999,499999
+one-to-one-1000000,bucketized-scale-16-rdd-ailist,18237,success,1000000,1000000,1000000,16000000,999999,999999
+one-to-one-5000000,bucketized-scale-16-rdd-ailist,,Job aborted due to stage failure: Task 3 in stage 14.0 failed 1 times, most recent failure: Lost task 3.0 in stage 14.0 (TID 77) (192.168.97.6 executor 4): ExecutorLostFailure (executor 4 exited caused by one of the running tasks) Reason: Command exited with code 52
+one-to-one-10000000,bucketized-scale-16-rdd-ailist,,Job aborted due to stage failure: Task 12 in stage 14.0 failed 1 times, most recent failure: Lost task 12.0 in stage 14.0 (TID 86) (192.168.97.3 executor 0): java.lang.OutOfMemoryError: Java heap space
+one-to-one-50000000,bucketized-scale-16-rdd-ailist,,Job aborted due to stage failure: Task 2 in stage 13.0 failed 1 times, most recent failure: Lost task 2.0 in stage 13.0 (TID 50) (192.168.97.7 executor 3): java.lang.OutOfMemoryError: Java heap space
+one-to-one-100000000,bucketized-scale-16-rdd-ailist,,Job aborted due to stage failure: Task 0 in stage 10.0 failed 1 times, most recent failure: Lost task 0.0 in stage 10.0 (TID 44) (192.168.97.7 executor 3): ExecutorLostFailure (executor 3 exited caused by one of the running tasks) Reason: Command exited with code 52

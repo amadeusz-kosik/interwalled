@@ -1,32 +1,54 @@
 package me.kosik.interwalled.benchmark.utils
 
-import me.kosik.interwalled.benchmark.data.TestData
-import me.kosik.interwalled.benchmark.utils.csv.{CSVFormatter, CSVWriter}
-import org.slf4j.LoggerFactory
+import me.kosik.interwalled.benchmark.app.MainEnv
+import me.kosik.interwalled.benchmark.test.suite.TestDataSuiteReader
+import me.kosik.interwalled.domain.Interval
+import me.kosik.interwalled.spark.join.api.IntervalJoin
+import me.kosik.interwalled.spark.join.api.model.{IntervalJoin, IntervalStatistics}
 
-import java.io.Writer
-import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
 
 object BenchmarkRunner {
-  private val logger = LoggerFactory.getLogger(getClass)
 
-  def run(
-    testData: TestData,
-    benchmarkCallback: BenchmarkCallback,
-    outputWriter: CSVWriter,
-    timeoutAfter: Duration
-  ): Unit = {
+  def run(request: BenchmarkRequest, env: MainEnv): BenchmarkResult = {
+    val database  = TestDataSuiteReader.readDatabase(request.dataSuite, env)
+    val query     = TestDataSuiteReader.readQuery(request.dataSuite, env)
 
-    val appName = f"${benchmarkCallback.description} on $testData"
+    // FIXME
+    val benchmarkInputData = {
+      import env.sparkSession.implicits._
+      IntervalJoin.Input(database.as[Interval[String]], query.as[Interval[String]])
+    }
 
-    logger.info(s"Running benchmark - $appName")
-    implicit val executionContext: ExecutionContext =
-      scala.concurrent.ExecutionContext.Implicits.global
+    runBenchmark(benchmarkInputData, request.join, env.timeoutAfter)
+      .map { timeElapsed =>
+        val statistics = gatherStatistics(benchmarkInputData, request.join)
+        (timeElapsed, statistics)
+      } match {
+        case Success((timeElapsed, statistics)) =>
+          BenchmarkResult(
+            request.dataSuite,
+            request.join,
+            Success(timeElapsed),
+            statistics
+          )
 
-    import scala.concurrent._
+        case Failure(exception) =>
+          BenchmarkResult(
+            request.dataSuite,
+            request.join,
+            Failure[TimerResult](exception),
+            None
+          )
+      }
+  }
+
+  private def runBenchmark(inputData: IntervalJoin.Input[String], join: IntervalJoin, timeout: Duration): Try[TimerResult] = {
+    implicit val executionContext: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
+
     val benchmarkTimer = Timer.start()
 
     val resultPromise = Future {
@@ -34,40 +56,17 @@ object BenchmarkRunner {
       // Discard the result to not pollute benchmarks with output I/O.
       // Interrupt if job takes too long to complete.
 
-      val resultDataset = benchmarkCallback.fn(testData)
+      val resultDataset = join.join(inputData).data
       resultDataset.foreach(_ => ())
     }
 
-    val benchmarkResult = Try { Await.result(resultPromise, timeoutAfter) } match {
-      case Success(_) =>
-        val elapsedTime = benchmarkTimer.millisElapsed()
-        val statistics  = benchmarkCallback.statistics(testData)
+    Try(Await.result(resultPromise, timeout))
+      .map(_ => benchmarkTimer.millisElapsed())
+  }
 
-        BenchmarkResult(
-          testData.suite,
-          benchmarkCallback.description,
-          Success(elapsedTime),
-          statistics
-        )
-
-      case Failure(fail) =>
-        logger.error(s"Benchmark failed: ${benchmarkCallback.description}", fail)
-
-        BenchmarkResult(
-          testData.suite,
-          benchmarkCallback.description,
-          Failure(fail),
-          None
-        )
-    }
-
-    outputWriter.write(benchmarkResult)
-
-    if(benchmarkResult.result.isFailure) {
-      logger.info("No point in carry out timed out benchmark for larger dataset, aborting.")
-
-      testData.sparkSession.stop()
-      sys.exit(4)
-    }
+  private def gatherStatistics(inputData: IntervalJoin.Input[String], join: IntervalJoin): Option[IntervalStatistics] = {
+    Try(join.join(inputData, gatherStatistics = true))
+      .toOption
+      .flatMap(_.statistics)
   }
 }

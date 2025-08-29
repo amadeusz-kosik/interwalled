@@ -13,10 +13,15 @@ import scala.reflect.runtime.universe._
 
 
 class RDDAIListIntervalJoin(bucketingConfig: Option[BucketingConfig]) extends IntervalJoin {
-  private val bucketizer = Bucketizer(bucketingConfig)
+  private val bucketizer = Bucketizer.salting(bucketingConfig)
+
+  override def toString: String = {
+    val bucketPrefix = bucketingConfig.map(bc => s"bucketized-$bc-").getOrElse("")
+    f"${bucketPrefix}rdd-ailist"
+  }
 
   override protected def prepareInput[T : TypeTag](input: Input[T]): PreparedInput[T] =
-    (bucketizer.bucketize(input.lhsData), bucketizer.bucketize(input.rhsData))
+    (bucketizer.bucketize(input.lhsData, input.rhsData))
 
   protected def doJoin[T : TypeTag](lhsInputPrepared: BucketedIntervals[T], rhsInputPrepared: BucketedIntervals[T]): DataFrame = {
     import lhsInputPrepared.sparkSession.implicits._
@@ -30,8 +35,6 @@ class RDDAIListIntervalJoin(bucketingConfig: Option[BucketingConfig]) extends In
     val joinedRDD = aiListsLHS
       .cogroup(aiListsRHS)
       .flatMap { case ((bucket, key), (lhsAIListsIterator, rhsIntervalsIterator)) =>
-        logDebug(s"Computing bucket $bucket : $key.")
-
         val aiLists = lhsAIListsIterator
           .toSeq
 
@@ -43,7 +46,7 @@ class RDDAIListIntervalJoin(bucketingConfig: Option[BucketingConfig]) extends In
           aiList        <- aiLists
           rhsInterval   <- rhsIntervals
           lhsInterval   <- aiList.overlapping(rhsInterval).asScala
-        } yield IntervalsPair(rhsInterval.key, lhsInterval, rhsInterval)
+        } yield IntervalsPair(key, lhsInterval, rhsInterval)
 
         logDebug(s"Intervals pairs computed for $bucket.")
         intervalsPairs

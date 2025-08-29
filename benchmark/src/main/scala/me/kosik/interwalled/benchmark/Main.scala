@@ -1,44 +1,35 @@
 package me.kosik.interwalled.benchmark
 
-import me.kosik.interwalled.benchmark.data.{TestData, TestDataLoader}
-import me.kosik.interwalled.benchmark.join._
-import me.kosik.interwalled.benchmark.utils.csv.CSVWriter
-import me.kosik.interwalled.benchmark.utils.{BenchmarkCallback, BenchmarkRunner}
-import me.kosik.interwalled.main.MainEnv
-import org.apache.spark.sql.SparkSession
+import me.kosik.interwalled.benchmark.app.{Benchmark, MainEnv, TestDataGenerator}
 import org.slf4j.LoggerFactory
-
 
 object Main extends App {
 
   val logger = LoggerFactory.getLogger(getClass)
-  private val env = MainEnv.build()
 
-  logger.info(f"Running environment: $env.")
-  logger.info(f"Running arguments: ${args.mkString("Array(", ", ", ")")}.")
+  args.headOption match {
+    case Some("benchmark") =>
+      val env = MainEnv.build("Interwalled - benchmark")
 
-  private val Array(dataSuite, databasePath, queryPath, outputCSVPath, joinStrategy) = args.take(5)
-  private val joinArguments: Array[String] = args.drop(5)
+      logger.info(f"Running environment: $env.")
+      logger.info(f"Running arguments: ${args.mkString("Array(", ", ", ")")}.")
 
-  private val benchmark: BenchmarkCallback =
-    JoinStrategy
-      .getByName(joinStrategy, joinArguments)
-      .getOrElse(sys.exit(4))
+      Benchmark.run(args.tail, env)
 
-  // --------------------------------------------------------------------
+    case Some("test-data-generator") =>
+      val env = MainEnv.build("Interwalled - test data generator")
 
-  private implicit val spark: SparkSession =
-    env.buildSparkSession(s"Interwalled benchmark - ${benchmark.description} - $dataSuite")
+      logger.info(f"Running environment: $env.")
+      logger.info(f"Running arguments: ${args.mkString("Array(", ", ", ")")}.")
 
-  private val csvWriter: CSVWriter =
-    CSVWriter.open(outputCSVPath)
+      TestDataGenerator.run(env)
 
-  private val testData: TestData =
-    TestDataLoader.load(dataSuite, f"${env.dataDirectory}/$databasePath", f"${env.dataDirectory}/$queryPath")
+    case None =>
+      System.err.println("This app requires at least one argument.")
+      System.exit(1)
 
-  BenchmarkRunner
-    .run(testData, benchmark, csvWriter, env.timeoutAfter)
-
-  csvWriter.close()
+    case unknown =>
+      System.err.println(s"Unknown argument: $unknown. Use one of: benchmark, test-data-generator.")
+      System.exit(1)
+  }
 }
-

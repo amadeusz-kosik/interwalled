@@ -1,0 +1,32 @@
+data_suite,join_name,elapsed_time,result,database_raw_rows_count,database_final_rows_count,query_raw_rows_count,query_final_rows_count,result_raw_rows_count,result_final_rows_count
+databio-s-1-2,bucketized-scale-32-rdd-ailist,23310,success,198621,6355872,438694,14038208,54343,54343
+databio-s-2-7,bucketized-scale-32-rdd-ailist,33391,success,438694,14038208,1194285,38217120,274265,274265
+databio-s-1-0,bucketized-scale-32-rdd-ailist,46340,success,198621,6355872,2350965,75230880,321138,321138
+databio-m-7-0,bucketized-scale-32-rdd-ailist,52967,success,1194285,38217120,2350965,75230880,2764180,2764180
+databio-m-7-3,bucketized-scale-32-rdd-ailist,47459,success,1194285,38217120,1956864,62619648,4410923,4410923
+databio-l-0-8,bucketized-scale-32-rdd-ailist,185213,success,2350965,75230880,9944559,318225888,164214598,164214598
+databio-l-4-8,bucketized-scale-32-rdd-ailist,304645,success,7684066,245890112,9944559,318225888,227869133,227869133
+databio-l-7-8,bucketized-scale-32-rdd-ailist,145832,success,1194285,38217120,9944559,318225888,307298583,307298583
+databio-xl-3-0,bucketized-scale-32-rdd-ailist,82325,success,1956864,62619648,2350965,75230880,1087801330,1087801330
+one-to-none-1000,bucketized-scale-32-rdd-ailist,4405,success,501,16032,500,16000,0,0
+one-to-none-5000,bucketized-scale-32-rdd-ailist,5062,success,2501,80032,2500,80000,0,0
+one-to-none-10000,bucketized-scale-32-rdd-ailist,6071,success,5001,160032,5000,160000,0,0
+one-to-none-50000,bucketized-scale-32-rdd-ailist,9662,success,25001,800032,25000,800000,0,0
+one-to-none-100000,bucketized-scale-32-rdd-ailist,11030,success,50001,1600032,50000,1600000,0,0
+one-to-none-500000,bucketized-scale-32-rdd-ailist,20012,success,250001,8000032,250000,8000000,0,0
+one-to-none-1000000,bucketized-scale-32-rdd-ailist,29442,success,500001,16000032,500000,16000000,0,0
+one-to-none-5000000,bucketized-scale-32-rdd-ailist,122238,success,2500001,80000032,2500000,80000000,0,0
+one-to-none-10000000,bucketized-scale-32-rdd-ailist,203984,success,5000001,160000032,5000000,160000000,0,0
+one-to-none-50000000,bucketized-scale-32-rdd-ailist,,Job aborted due to stage failure: Task 6 in stage 10.0 failed 1 times, most recent failure: Lost task 6.0 in stage 10.0 (TID 54) (192.168.97.4 executor 4): java.lang.OutOfMemoryError: Java heap space
+one-to-none-100000000,bucketized-scale-32-rdd-ailist,,Job aborted due to stage failure: Task 1 in stage 13.0 failed 1 times, most recent failure: Lost task 1.0 in stage 13.0 (TID 49) (192.168.97.3 executor 0): java.lang.OutOfMemoryError: Java heap space
+one-to-one-1000,bucketized-scale-32-rdd-ailist,4750,success,1000,32000,1000,32000,999,999
+one-to-one-5000,bucketized-scale-32-rdd-ailist,5979,success,5000,160000,5000,160000,4999,4999
+one-to-one-10000,bucketized-scale-32-rdd-ailist,7585,success,10000,320000,10000,320000,9999,9999
+one-to-one-50000,bucketized-scale-32-rdd-ailist,10094,success,50000,1600000,50000,1600000,49999,49999
+one-to-one-100000,bucketized-scale-32-rdd-ailist,12633,success,100000,3200000,100000,3200000,99999,99999
+one-to-one-500000,bucketized-scale-32-rdd-ailist,30586,success,500000,16000000,500000,16000000,499999,499999
+one-to-one-1000000,bucketized-scale-32-rdd-ailist,53331,success,1000000,32000000,1000000,32000000,999999,999999
+one-to-one-5000000,bucketized-scale-32-rdd-ailist,252482,success,5000000,160000000,5000000,160000000,4999999,4999999
+one-to-one-10000000,bucketized-scale-32-rdd-ailist,,Job aborted due to stage failure: Task 21 in stage 14.0 failed 1 times, most recent failure: Lost task 21.0 in stage 14.0 (TID 410) (192.168.97.7 executor 1): java.lang.OutOfMemoryError: Java heap space
+one-to-one-50000000,bucketized-scale-32-rdd-ailist,,Job aborted due to stage failure: Task 1 in stage 10.0 failed 1 times, most recent failure: Lost task 1.0 in stage 10.0 (TID 45) (192.168.97.5 executor 3): java.lang.OutOfMemoryError: Java heap space: failed reallocation of scalar replaced objects
+one-to-one-100000000,bucketized-scale-32-rdd-ailist,,Futures timed out after [30 minutes]

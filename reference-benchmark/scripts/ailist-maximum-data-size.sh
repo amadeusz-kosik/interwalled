@@ -1,4 +1,4 @@
-
+c
 IWB_DATA_PATH="/Users/iw-user/Git/FEIT/Interwalled/interwalled-data-generator/data/maximum-size-of-input"
 
 docker run -it -m  4g -v $IWB_DATA_PATH:/mnt/data iw-user-ailist:0.1   ailist /mnt/data/input-80M.bed /mnt/data/input-80M.bed /dev/null

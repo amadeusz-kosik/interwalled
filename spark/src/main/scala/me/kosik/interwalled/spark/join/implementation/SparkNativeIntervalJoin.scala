@@ -12,8 +12,13 @@ import scala.reflect.runtime.universe._
 class SparkNativeIntervalJoin(bucketingConfig: Option[BucketingConfig]) extends IntervalJoin {
   private val bucketizer = Bucketizer(bucketingConfig)
 
+  override def toString: String = {
+    val bucketPrefix = bucketingConfig.map(bc => s"bucketized-${bc}-").getOrElse("")
+    f"${bucketPrefix}spark-native"
+  }
+
   override protected def prepareInput[T : TypeTag](input: Input[T]): PreparedInput[T] =
-    (bucketizer.bucketize(input.lhsData), bucketizer.bucketize(input.rhsData))
+    (bucketizer.bucketize(input.lhsData, input.rhsData))
 
   protected def doJoin[T : TypeTag](lhsInputPrepared: BucketedIntervals[T], rhsInputPrepared:  BucketedIntervals[T]): DataFrame = {
     lhsInputPrepared

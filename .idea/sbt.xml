@@ -13,7 +13,6 @@
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/project" />
             <option value="$PROJECT_DIR$/spark" />
-            <option value="$PROJECT_DIR$/test-data-generator" />
           </set>
         </option>
         <option name="sbtVersion" value="1.10.5" />

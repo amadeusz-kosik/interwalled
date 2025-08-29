@@ -22,8 +22,8 @@ object CSVFormatter {
 
   def row(result: BenchmarkResult): String = {
     val coreFields: Seq[String] = Seq(
-      result.dataSuite,
-      result.joinName
+      result.dataSuite.suite,
+      result.join.toString
     )
 
     val resultFields: Seq[String] = result.result match {

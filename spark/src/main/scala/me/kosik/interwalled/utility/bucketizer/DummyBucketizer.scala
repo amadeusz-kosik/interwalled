@@ -9,15 +9,16 @@ import scala.reflect.runtime.universe._
 
 object DummyBucketizer extends Bucketizer with Serializable {
 
-  override def bucketize[T : TypeTag](input: Dataset[Interval[T]]): Dataset[BucketedInterval[T]] = {
+  override def bucketize[T : TypeTag](lhs: Dataset[Interval[T]], rhs: Dataset[Interval[T]]): (Dataset[BucketedInterval[T]], Dataset[BucketedInterval[T]]) = {
     import IntervalColumns._
 
     @nowarn implicit val iTT = typeTag[BucketedInterval[T]]
     implicit val iEncoder: Encoder[BucketedInterval[T]] = Encoders.product[BucketedInterval[T]]
 
-    input
-      .withColumn(BUCKET, F.lit(0))
-      .as[BucketedInterval[T]]
+    (
+      lhs.withColumn(BUCKET, F.lit(0L)).as[BucketedInterval[T]],
+      rhs.withColumn(BUCKET, F.lit(0L)).as[BucketedInterval[T]]
+    )
   }
 
   override def deduplicate[T : TypeTag](input: Dataset[IntervalsPair[T]]): Dataset[IntervalsPair[T]] = {

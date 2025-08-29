@@ -46,18 +46,8 @@ lazy val benchmark = (project in file("benchmark"))
   )
   .dependsOn(ailist, domain, spark)
 
-lazy val testDataGenerator = (project in file("test-data-generator"))
-  .settings(
-    name := "test-data-generator",
-    scalacOptions ++= Seq("-deprecation", "-unchecked", "-Xlint", "-Xdisable-assertions"),
-    assembly / assemblyJarName := "interwalled-test-data-generator.jar",
-    assembly / mainClass := Some("me.kosik.interwalled.test.data.generator.Main"),
-    assembly / assemblyMergeStrategy := sparkJobAssemblyMergeStrategy
-  )
-  .dependsOn(domain, spark)
-
 lazy val root = (project in file("."))
-  .aggregate(domain, ailist, spark, benchmark, testDataGenerator)
+  .aggregate(domain, ailist, spark, benchmark)
   .settings(name := "interwalled")
 
 
@@ -65,16 +55,12 @@ ailist / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test
 
 benchmark / Compile / run / mainClass := Some("me.kosik.interwalled.benchmark.Main")
 benchmark / parallelExecution in Test := false
-benchmark / libraryDependencies += "org.apache.spark"  %% "spark-core"          % SparkVersion
-benchmark / libraryDependencies += "org.apache.spark"  %% "spark-sql"           % SparkVersion
+benchmark / libraryDependencies += "org.apache.spark"  %% "spark-core"          % SparkVersion                                  % "provided"
+benchmark / libraryDependencies += "org.apache.spark"  %% "spark-mllib"         % SparkVersion                                  % "provided"
+benchmark / libraryDependencies += "org.apache.spark"  %% "spark-sql"           % SparkVersion                                  % "provided"
 benchmark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"  % f"${SparkVersion}_${SparkTestingBaseVersion}" % "test"
 
 spark / Test / parallelExecution := false
-spark / libraryDependencies += "org.apache.spark"  %% "spark-core"          % SparkVersion                                  % "provided"
-spark / libraryDependencies += "org.apache.spark"  %% "spark-sql"           % SparkVersion                                  % "provided"
-spark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"  % f"${SparkVersion}_${SparkTestingBaseVersion}" % "test"
-
-testDataGenerator / Compile / run / mainClass := Some("me.kosik.interwalled.test.data.generator.Main")
-testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-core"   % SparkVersion
-testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-mllib"  % SparkVersion
-testDataGenerator / libraryDependencies += "org.apache.spark" %% "spark-sql"    % SparkVersion
+spark / libraryDependencies += "org.apache.spark"  %% "spark-core"              % SparkVersion                                  % "provided"
+spark / libraryDependencies += "org.apache.spark"  %% "spark-sql"               % SparkVersion                                  % "provided"
+spark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"      % f"${SparkVersion}_${SparkTestingBaseVersion}" % "test"

@@ -1,0 +1,32 @@
+data_suite,join_name,elapsed_time,result,database_raw_rows_count,database_final_rows_count,query_raw_rows_count,query_final_rows_count,result_raw_rows_count,result_final_rows_count
+databio-s-1-2,bucketized-scale-4-rdd-ailist,5731,success,198621,198621,438694,1754776,54343,54343
+databio-s-2-7,bucketized-scale-4-rdd-ailist,6585,success,438694,438694,1194285,4777140,274254,274254
+databio-s-1-0,bucketized-scale-4-rdd-ailist,7963,success,198621,198621,2350965,9403860,321138,321138
+databio-m-7-0,bucketized-scale-4-rdd-ailist,8751,success,1194285,1194285,2350965,9403860,2764145,2764145
+databio-m-7-3,bucketized-scale-4-rdd-ailist,9435,success,1194285,1194285,1956864,7827456,4410862,4410862
+databio-l-0-8,bucketized-scale-4-rdd-ailist,29229,success,2350965,2350965,9944559,39778236,164214199,164214199
+databio-l-4-8,bucketized-scale-4-rdd-ailist,82203,success,7684066,7684066,9944559,39778236,227867915,227867915
+databio-l-7-8,bucketized-scale-4-rdd-ailist,28912,success,1194285,1194285,9944559,39778236,307298479,307298479
+databio-xl-3-0,bucketized-scale-4-rdd-ailist,,java.lang.OutOfMemoryError: Java heap space
+one-to-none-1000,bucketized-scale-4-rdd-ailist,4434,success,501,501,500,2000,0,0
+one-to-none-5000,bucketized-scale-4-rdd-ailist,4329,success,2501,2501,2500,10000,0,0
+one-to-none-10000,bucketized-scale-4-rdd-ailist,4386,success,5001,5001,5000,20000,0,0
+one-to-none-50000,bucketized-scale-4-rdd-ailist,4539,success,25001,25001,25000,100000,0,0
+one-to-none-100000,bucketized-scale-4-rdd-ailist,4960,success,50001,50001,50000,200000,0,0
+one-to-none-500000,bucketized-scale-4-rdd-ailist,5780,success,250001,250001,250000,1000000,0,0
+one-to-none-1000000,bucketized-scale-4-rdd-ailist,6748,success,500001,500001,500000,2000000,0,0
+one-to-none-5000000,bucketized-scale-4-rdd-ailist,16117,success,2500001,2500001,2500000,10000000,0,0
+one-to-none-10000000,bucketized-scale-4-rdd-ailist,26894,success,5000001,5000001,5000000,20000000,0,0
+one-to-none-50000000,bucketized-scale-4-rdd-ailist,,Command exited with code 52
+one-to-none-100000000,bucketized-scale-4-rdd-ailist,,Executor heartbeat timed out after 148149 ms
+one-to-one-1000,bucketized-scale-4-rdd-ailist,4581,success,1000,1000,1000,4000,999,999
+one-to-one-5000,bucketized-scale-4-rdd-ailist,4370,success,5000,5000,5000,20000,4999,4999
+one-to-one-10000,bucketized-scale-4-rdd-ailist,4498,success,10000,10000,10000,40000,9999,9999
+one-to-one-50000,bucketized-scale-4-rdd-ailist,4946,success,50000,50000,50000,200000,49999,49999
+one-to-one-100000,bucketized-scale-4-rdd-ailist,5328,success,100000,100000,100000,400000,99999,99999
+one-to-one-500000,bucketized-scale-4-rdd-ailist,8074,success,500000,500000,500000,2000000,500000,500000
+one-to-one-1000000,bucketized-scale-4-rdd-ailist,10908,success,1000000,1000000,1000000,4000000,999999,999999
+one-to-one-5000000,bucketized-scale-4-rdd-ailist,76130,success,5000000,5000000,5000000,20000000,4999999,4999999
+one-to-one-10000000,bucketized-scale-4-rdd-ailist,,java.lang.OutOfMemoryError: Java heap space
+one-to-one-50000000,bucketized-scale-4-rdd-ailist,,java.lang.OutOfMemoryError: Java heap space
+one-to-one-100000000,bucketized-scale-4-rdd-ailist,,java.lang.OutOfMemoryError: Java heap space

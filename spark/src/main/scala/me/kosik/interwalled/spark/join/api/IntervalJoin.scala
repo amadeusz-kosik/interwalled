@@ -1,11 +1,11 @@
 package me.kosik.interwalled.spark.join.api
 
-import me.kosik.interwalled.domain.{BucketedInterval, Interval, IntervalColumns, IntervalsPair}
+import me.kosik.interwalled.domain.{BucketedInterval, Interval, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{Input, Result}
 import me.kosik.interwalled.spark.join.api.model.IntervalStatistics
 import me.kosik.interwalled.spark.join.api.model.IntervalStatistics.{InputStats, ResultStats}
 import org.apache.spark.internal.Logging
-import org.apache.spark.sql.{DataFrame, Dataset, Encoder, Encoders, SparkSession, functions => F}
+import org.apache.spark.sql._
 
 import scala.annotation.nowarn
 import scala.reflect.runtime.universe._
@@ -15,6 +15,11 @@ trait IntervalJoin extends Logging with Serializable {
 
   protected type BucketedIntervals[T] = Dataset[BucketedInterval[T]]
   protected type PreparedInput[T] = (BucketedIntervals[T], BucketedIntervals[T])
+
+  override def toString: String = {
+    throw new NotImplementedError("Classes inheriting from IntervalJoin trait are expected to implement custom version" +
+      " of toString method.")
+  }
 
   def join[T : TypeTag](input: Input[T]): Result[T] =
     join(input, gatherStatistics = false)
@@ -33,8 +38,8 @@ trait IntervalJoin extends Logging with Serializable {
 
     val statistics = {
       if(gatherStatistics) Some(IntervalStatistics(
-        database  = InputStats(lhsInputRaw.count(),       rhsInputRaw.count()),
-        query     = InputStats(lhsInputPrepared.count(),  rhsInputPrepared.count()),
+        database  = InputStats(lhsInputRaw.count(),       lhsInputPrepared.count()),
+        query     = InputStats(rhsInputRaw.count(),       rhsInputPrepared.count()),
         result    = ResultStats(joinedResultRaw.count(),  joinedResultFinal.count())
       )) else None
     }

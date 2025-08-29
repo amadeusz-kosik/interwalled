@@ -4,4 +4,7 @@ case class AIListConfig(
   maximumComponentsCount:             Int  = 10,
   intervalsCountToCheckLookahead:     Int  = 20,
   intervalsCountToTriggerExtraction:  Int  = 10
-)
+) {
+  def toShortString: String =
+    f"$maximumComponentsCount-$intervalsCountToCheckLookahead-$intervalsCountToTriggerExtraction"
+}

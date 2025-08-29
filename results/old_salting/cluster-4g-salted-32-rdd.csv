@@ -1,0 +1,32 @@
+data_suite,join_name,elapsed_time,result,database_raw_rows_count,database_final_rows_count,query_raw_rows_count,query_final_rows_count,result_raw_rows_count,result_final_rows_count
+databio-s-1-2,bucketized-scale-32-rdd-ailist,11717,success,198621,198621,438694,14038208,54343,54343
+databio-s-2-7,bucketized-scale-32-rdd-ailist,20318,success,438694,438694,1194285,38217120,274263,274263
+databio-s-1-0,bucketized-scale-32-rdd-ailist,27912,success,198621,198621,2350965,75230880,321138,321138
+databio-m-7-0,bucketized-scale-32-rdd-ailist,29243,success,1194285,1194285,2350965,75230880,2764183,2764183
+databio-m-7-3,bucketized-scale-32-rdd-ailist,25443,success,1194285,1194285,1956864,62619648,4410923,4410923
+databio-l-0-8,bucketized-scale-32-rdd-ailist,114491,success,2350965,2350965,9944559,318225888,164214613,164214613
+databio-l-4-8,bucketized-scale-32-rdd-ailist,132598,success,7684066,7684066,9944559,318225888,227869181,227869181
+databio-l-7-8,bucketized-scale-32-rdd-ailist,101916,success,1194285,1194285,9944559,318225888,307298586,307298586
+databio-xl-3-0,bucketized-scale-32-rdd-ailist,53909,success,1956864,1956864,2350965,75230880,1087801778,1087801778
+one-to-none-1000,bucketized-scale-32-rdd-ailist,4827,success,501,501,500,16000,0,0
+one-to-none-5000,bucketized-scale-32-rdd-ailist,4688,success,2501,2501,2500,80000,0,0
+one-to-none-10000,bucketized-scale-32-rdd-ailist,5024,success,5001,5001,5000,160000,0,0
+one-to-none-50000,bucketized-scale-32-rdd-ailist,5685,success,25001,25001,25000,800000,0,0
+one-to-none-100000,bucketized-scale-32-rdd-ailist,6374,success,50001,50001,50000,1600000,0,0
+one-to-none-500000,bucketized-scale-32-rdd-ailist,10803,success,250001,250001,250000,8000000,0,0
+one-to-none-1000000,bucketized-scale-32-rdd-ailist,16018,success,500001,500001,500000,16000000,0,0
+one-to-none-5000000,bucketized-scale-32-rdd-ailist,59742,success,2500001,2500001,2500000,80000000,0,0
+one-to-none-10000000,bucketized-scale-32-rdd-ailist,126738,success
+one-to-none-50000000,bucketized-scale-32-rdd-ailist,,java.lang.OutOfMemoryError: Java heap space
+one-to-none-100000000,bucketized-scale-32-rdd-ailist,,java.lang.OutOfMemoryError: Java heap space
+one-to-one-1000,bucketized-scale-32-rdd-ailist,4735,success,1000,1000,1000,32000,999,999
+one-to-one-5000,bucketized-scale-32-rdd-ailist,5221,success,5000,5000,5000,160000,4999,4999
+one-to-one-10000,bucketized-scale-32-rdd-ailist,5850,success,10000,10000,10000,320000,10000,10000
+one-to-one-50000,bucketized-scale-32-rdd-ailist,7399,success,50000,50000,50000,1600000,50000,50000
+one-to-one-100000,bucketized-scale-32-rdd-ailist,8039,success,100000,100000,100000,3200000,99999,99999
+one-to-one-500000,bucketized-scale-32-rdd-ailist,17391,success,500000,500000,500000,16000000,499999,499999
+one-to-one-1000000,bucketized-scale-32-rdd-ailist,25509,success,1000000,1000000,1000000,32000000,999999,999999
+one-to-one-5000000,bucketized-scale-32-rdd-ailist,,java.lang.OutOfMemoryError: Java heap space
+one-to-one-10000000,bucketized-scale-32-rdd-ailist,,java.lang.OutOfMemoryError: Java heap space
+one-to-one-50000000,bucketized-scale-32-rdd-ailist,,java.lang.OutOfMemoryError: Java heap space
+one-to-one-100000000,bucketized-scale-32-rdd-ailist,,java.lang.OutOfMemoryError: Java heap space

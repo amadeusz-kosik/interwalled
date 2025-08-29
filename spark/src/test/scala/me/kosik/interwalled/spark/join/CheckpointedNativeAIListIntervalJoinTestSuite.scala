@@ -8,7 +8,7 @@ class CheckpointedNativeAIListIntervalJoinTestSuite extends AbstractIntervalJoin
 
   override def intervalJoin: IntervalJoin = {
     val config = AIListConfig()
-    new CheckpointedNativeAIListIntervalJoin("Temporary/interwalled-chkpt", config, None)
+    new CheckpointedNativeAIListIntervalJoin("temporary/interwalled-chkpt", config, None)
   }
 }
 

@@ -15,8 +15,12 @@ import scala.reflect.runtime.universe._
 object DriverAIListIntervalJoin extends IntervalJoin {
   private val bucketizer = DummyBucketizer
 
+  override def toString: String = {
+    "driver-ailist"
+  }
+
   override protected def prepareInput[T : TypeTag](input: Input[T]): PreparedInput[T] =
-    (bucketizer.bucketize(input.lhsData), bucketizer.bucketize(input.rhsData))
+    (bucketizer.bucketize(input.lhsData, input.rhsData))
 
   protected def doJoin[T : TypeTag](lhsInputPrepared: BucketedIntervals[T], rhsInputPrepared:  BucketedIntervals[T]): DataFrame ={
     implicit val spark: SparkSession = lhsInputPrepared.sparkSession

@@ -10,10 +10,8 @@ export JAVA="/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home/bin/
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home"
 export PATH="$JAVA_HOME/bin:$PATH"
 
-GENERATOR_JAR="interwalled-test-data-generator.jar"
-GENERATOR_JAR_PATH="$REPO_DIR/test-data-generator/target/scala-2.12/$GENERATOR_JAR"
-BENCHMARK_JAR="interwalled-benchmark.jar"
-BENCHMARK_JAR_PATH="$REPO_DIR/benchmark/target/scala-2.12/$BENCHMARK_JAR"
+JAR="interwalled-benchmark.jar"
+JAR_PATH="/mnt/jar/$JAR"
 
 # Local run configuration
 LOCAL_JAVA_OPTS=""
@@ -23,85 +21,85 @@ LOCAL_JAVA_OPTS="$LOCAL_JAVA_OPTS --add-opens java.base/java.lang=ALL-UNNAMED"
 LOCAL_JAVA_OPTS="$LOCAL_JAVA_OPTS -Dfile.encoding=UTF-8"
 LOCAL_JAVA_OPTS="$LOCAL_JAVA_OPTS "
 
-# Remote run configuration
-SPARK_SSH_HOST="hp-elitedesk-01"
-SPARK_SSH_USER="spark"
-SPARK_SSH_KEY="$REPO_DIR/ansible/roles/spark/templates/hp-spark.ssh.private"
+LOCAL_SPARK_SUBMIT_OPTS=""
+LOCAL_SPARK_SUBMIT_OPTS="$LOCAL_SPARK_SUBMIT_OPTS --master spark://localhost:7077"
+LOCAL_SPARK_SUBMIT_OPTS="$LOCAL_SPARK_SUBMIT_OPTS --deploy-mode cluster"
+LOCAL_SPARK_SUBMIT_OPTS="$LOCAL_SPARK_SUBMIT_OPTS --driver-memory 4G"
+LOCAL_SPARK_SUBMIT_OPTS="$LOCAL_SPARK_SUBMIT_OPTS --executor-memory 4G"
+LOCAL_SPARK_SUBMIT_OPTS="$LOCAL_SPARK_SUBMIT_OPTS --executor-cores 4"
 
-SPARK_WORKER_HOSTS=(
-  "hp-elitedesk-02"
-  "hp-elitedesk-03"
-  "hp-elitedesk-04"
-)
 
 # Available benchmarks and data suites.
 BENCHMARKS=(
-#  "bucketed-native-ailist                 100    4"
-#  "bucketed-native-ailist                1000    4"
-#  "bucketed-native-ailist               10000    4"
-#  "bucketed-native-ailist              100000    4"
-#  "bucketed-native-ailist                 100    8"
-#  "bucketed-native-ailist                1000    8"
-#  "bucketed-native-ailist               10000    8"
-#  "bucketed-native-ailist              100000    8"
-#  "bucketed-native-ailist                 100   16"
-#  "bucketed-native-ailist                1000   16"
-#  "bucketed-native-ailist               10000   16"
-#  "bucketed-native-ailist              100000   16"
-#  "bucketed-rdd-ailist                    100"
-#  "bucketed-rdd-ailist                   1000"
-#  "bucketed-rdd-ailist                  10000"
-#  "bucketed-rdd-ailist                 100000"
-#  "bucketed-spark-native                  100"
-#  "bucketed-spark-native                 1000"
-#  "bucketed-spark-native                10000"
-#  "bucketed-spark-native               100000"
-  "driver-ailist"
-  "native-ailist                                 4"
-  "native-ailist                                 8"
-  "spark-native"
-)
-
-CLUSTERS_COUNT="1"
-
-CLUSTER_SIZES=(
-     "10000"  #  10K
-#     "25000"
-#     "50000"
-#     "75000"
-#    "100000" # 100K
-#    "250000"
-#    "500000"
-#    "750000"
-#   "1000000"
-#   "2500000"
-#   "5000000"
-#  "10000000"
-#  "25000000"
-#  "50000000"
+#  # Already benchmarked
+#  "driver-ailist"
+#  "bucketized-scale-2-rdd-ailist"
+#  "bucketized-scale-4-rdd-ailist"
+#  "bucketized-scale-8-rdd-ailist"
+#  "bucketized-scale-16-rdd-ailist"
+  "bucketized-scale-32-rdd-ailist"
+# Waiting
+#  "cached-native-ailist-10-20-10"
+#  "cached-native-ailist-10-80-40"
+#  "cached-native-ailist-10-320-160"
+#  "bucketized-count-100-rdd-ailist"
+#  "bucketized-count-1000-rdd-ailist"
+#  "bucketized-count-10000-rdd-ailist"
+#  "bucketized-count-100000-rdd-ailist"
+#  "bucketized-count-1000000-rdd-ailist"
+#  "rdd-ailist"
+#  "bucketized-count-10-spark-native"
+#  "bucketized-count-100-spark-native"
+#  "bucketized-count-1000-spark-native"
+#  "bucketized-count-10000-spark-native"
+#  "bucketized-count-100000-spark-native"
+#  "spark-native"
 )
 
 DATA_SUITES=(
-  "one-to-one"
-  "one-to-all"
-  "all-to-one"
-  "all-to-all"
-  "spanning-4"
-  "spanning-16"
-  "continuous-16"
-  "sparse-16"
+#  "databio-s-1-2"    # Expected output count:        54 343
+#  "databio-s-2-7"    # Expected output count:       274 266
+#  "databio-s-1-0"    # Expected output count:       321 138
+#  "databio-m-7-0"    # Expected output count:     2 764 185
+#  "databio-m-7-3"    # Expected output count:     4 410 928
+#  "databio-l-0-8"    # Expected output count:   164 214 743
+#  "databio-l-4-8"    # Expected output count:   227 869 400
+#  "databio-l-7-8"    # Expected output count:   307 298 107
+#  "databio-xl-3-0"   # Expected output count: 1 087 646 273
+  "one-to-none-1000"
+  "one-to-none-5000"
+  "one-to-none-10000"
+  "one-to-none-50000"
+  "one-to-none-100000"
+  "one-to-none-500000"
+  "one-to-none-1000000"
+  "one-to-none-5000000"
+  "one-to-none-10000000"
+  "one-to-none-50000000"
+  "one-to-none-100000000"
+  "one-to-one-1000"
+  "one-to-one-5000"
+  "one-to-one-10000"
+  "one-to-one-50000"
+  "one-to-one-100000"
+  "one-to-one-500000"
+  "one-to-one-1000000"
+  "one-to-one-5000000"
+  "one-to-one-10000000"
+  "one-to-one-50000000"
+  "one-to-one-100000000"
 )
 
 function build() {
   echo "Building JAR archive."
-  sbt clean compile benchmark/assembly testDataGenerator/assembly
+  sbt clean compile benchmark/assembly
 }
 
 # Local: runs
 # ---------------------------------------------------------------------------------------------------------------------
 
 function local_run_generator()  {
-  java_command="$JAVA $LOCAL_JAVA_OPTS -jar $GENERATOR_JAR_PATH false false"
+  java_command="$JAVA $LOCAL_JAVA_OPTS -jar $JAR_PATH test-data-generator"
 
   echo "Running test data generator."
   echo "$java_command"
@@ -111,33 +109,33 @@ function local_run_generator()  {
 
 function local_run_benchmark() {
   data_suite="$1"
-  dataset_database="$2"
-  dataset_query="$3"
-  benchmark="$4"
+  benchmark="$2"
 
-  java_command=" $JAVA $LOCAL_JAVA_OPTS -jar $BENCHMARK_JAR_PATH $data_suite $dataset_database $dataset_query $ARG_CSV_PATH $benchmark"
-  echo "Running for benchmark $benchmark for $data_suite: $java_command"
+#  java_command="$JAVA $LOCAL_JAVA_OPTS -jar $JAR_PATH benchmark $data_suite $benchmark"
+#  java_command="$SPARK_HOME/bin/spark-submit $LOCAL_SPARK_SUBMIT_OPTS --class me.kosik.interwalled.benchmark.Main $JAR_PATH benchmark $data_suite $benchmark"
+#  echo "Running for benchmark $benchmark for $data_suite:"
+#  echo "$java_command"
+#
+#  export INTERWALLED_TIMEOUT_AFTER="${ARG_TIMEOUT}"
+#
+  set +x
+  if [[ "$ARG_CARRY_ON" -eq 1 ]]; then set +e; fi
+  export IW_DATA="$1"
+  export IW_BENCHMARK="$2"
+  cd "./docker" && docker compose up spark-driver && cd ../
 
-  export INTERWALLED_TIMEOUT_AFTER="${ARG_TIMEOUT}"
-  $java_command
+#  rm -fr temporary/checkpoint/*
+#
+#  $java_command
+  set -e
 }
 
 function local_run_benchmarks() {
-  if [[ "$ARG_BUILD" -eq 1 ]];      then
-    set +e
-  fi
-
-  for cluster_size in "${CLUSTER_SIZES[@]}"; do
   for data_suite in "${DATA_SUITES[@]}"; do
-
     for benchmark in "${BENCHMARKS[@]}"; do
-      data_path_prefix="edge/$data_suite/$cluster_size/$CLUSTERS_COUNT"
-      local_run_benchmark "$data_suite" "$data_path_prefix/database.parquet" "$data_path_prefix/query.parquet" "$benchmark"
+      local_run_benchmark "$data_suite" "$benchmark"
     done
-
   done
-  done
-
 }
 
 ## SSH: uploads
@@ -239,7 +237,7 @@ while getopts "he:bgrl:t:c:f" optchar; do
     r) ARG_RUN=1 ;;
     l) ARG_PULL_LOGS="${OPTARG}"  ;;
     t) ARG_TIMEOUT="${OPTARG}"    ;;
-    c) ARG_CSV_PATH="${OPTARG}"   ;;
+#    c) ARG_CSV_PATH="${OPTARG}"   ;;
     f) ARG_CARRY_ON=1             ;;
 
     *)
@@ -265,8 +263,7 @@ elif [[ "$ARG_ENV" = "ssh" ]]; then
 
   if [[ "$ARG_BUILD" -eq 1 ]];      then
     build
-    ssh_upload_generator
-    ssh_upload_benchmark
+    ssh_upload
   fi
 
   if [[ "$ARG_GENERATE" -eq 1 ]];   then ssh_run_generator;   fi

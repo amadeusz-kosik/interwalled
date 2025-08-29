@@ -1,0 +1,10 @@
+data_suite,join_name,elapsed_time,result,database_raw_rows_count,database_final_rows_count,query_raw_rows_count,query_final_rows_count,result_raw_rows_count,result_final_rows_count
+databio-s-1-2,driver-ailist,1731,success,198621,438694,198621,438694,54343,54343
+databio-s-2-7,driver-ailist,2722,success,438694,1194285,438694,1194285,274249,274249
+databio-s-1-0,driver-ailist,1929,success,198621,2350965,198621,2350965,321138,321138
+databio-m-7-0,driver-ailist,4960,success,1194285,2350965,1194285,2350965,2764069,2764069
+databio-m-7-3,driver-ailist,4854,success,1194285,1956864,1194285,1956864,4410796,4410796
+databio-l-0-8,driver-ailist,26325,success,2350965,9944559,2350965,9944559,164213743,164213743
+databio-l-4-8,driver-ailist,,Futures timed out after [30 minutes]
+databio-l-7-8,driver-ailist,8403,success,1194285,9944559,1194285,9944559,307298107,307298107
+databio-xl-3-0,driver-ailist,29228,success,1956864,2350965,1956864,2350965,1087646273,1087646273
