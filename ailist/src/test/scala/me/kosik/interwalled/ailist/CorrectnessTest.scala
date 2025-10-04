@@ -12,8 +12,8 @@ class CorrectnessTest extends AnyFunSuite with Matchers {
    *  were put into the list: no duplication, no data loss. */
 
   test("Data validation: no overlapping intervals") {
-    val lhs = (1 to 1000) map { i => Interval("CH1", i +    0, i +    0, i)}
-    val rhs = (1 to 1000) map { i => Interval("CH1", i + 1003, i + 1003, i)}
+    val lhs = (1 to 1000) map { i => Interval("CH1", i +    0, i +    0, i.toString)}
+    val rhs = (1 to 1000) map { i => Interval("CH1", i + 1003, i + 1003, i.toString)}
 
     val aiList = buildList(lhs)
     val actual = buildResult(aiList, rhs)

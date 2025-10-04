@@ -1,33 +1,26 @@
 package me.kosik.interwalled.spark.join.implementation.ailist
 
 import me.kosik.interwalled.domain.{Interval, IntervalColumns, IntervalsPair}
-import me.kosik.interwalled.spark.join.api.IntervalJoin
-import me.kosik.interwalled.spark.join.api.model.IntervalJoin.Input
-import me.kosik.interwalled.spark.join.config.AIListConfig
-import me.kosik.interwalled.utility.bucketizer.{BucketingConfig, Bucketizer}
+import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
+import me.kosik.interwalled.spark.join.implementation.ExecutorIntervalJoin
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.expressions.Window
-import org.apache.spark.sql.types.DataTypes
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession, functions => F}
 
-import scala.reflect.runtime.universe._
 
+abstract class NativeAIListIntervalJoin(override val config: NativeAIListConfig) extends ExecutorIntervalJoin {
 
-abstract class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: Option[BucketingConfig]) extends IntervalJoin {
-  private val bucketizer = Bucketizer.salting(bucketingConfig)
-
-  override protected def prepareInput[T : TypeTag](input: Input[T]): PreparedInput[T] =
-    (bucketizer.bucketize(input.lhsData, input.rhsData))
-
-  override protected def doJoin[T: TypeTag](lhsInputPrepared: BucketedIntervals[T], rhsInputPrepared: BucketedIntervals[T]): DataFrame = {
+  override protected def doJoin(input: PreparedInput): Dataset[IntervalsPair] = {
     import IntervalColumns._
+    val lhsInputPrepared = input.lhsData
+    val rhsInputPrepared = input.rhsData
     import lhsInputPrepared.sparkSession.implicits._
 
     val joinDatabase = {
       val emptyDF = lhsInputPrepared.sparkSession
-        .emptyDataset[Interval[T]]
+        .emptyDataset[Interval]
         .toDF()
-        .withColumn(BUCKET, F.lit(0L))
+        .withColumn(BUCKET, F.lit(""))
         .withColumn(_COMPONENT, F.lit(0))
         .withColumn("_ailist_max_end", F.lit(0))
 
@@ -37,7 +30,7 @@ abstract class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: O
       val result = iterate(inputDF, emptyDF, 0)
         .repartition(F.col(IntervalColumns.KEY), F.col(BUCKET), F.col(_COMPONENT))
         .rdd
-        .map(row => (row.getAs[String](KEY), row.getAs[Long](BUCKET)) -> row)
+        .map(row => (row.getAs[String](KEY), row.getAs[String](BUCKET)) -> row)
 
       result
     }
@@ -45,17 +38,17 @@ abstract class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: O
     val joinQuery = rhsInputPrepared
       .toDF()
       .rdd
-      .map(row => (row.getAs[String](KEY), row.getAs[Long](BUCKET)) -> row)
+      .map(row => (row.getAs[String](KEY), row.getAs[String](BUCKET)) -> row)
 
-    val joinResult = computeJoin(lhsInputPrepared.sparkSession, joinDatabase, joinQuery)
-    joinResult
+    computeJoin(lhsInputPrepared.sparkSession, joinDatabase, joinQuery)
+      .as[IntervalsPair]
   }
 
-  private def computeJoin[T: TypeTag](sparkSession: SparkSession, joinDatabase: RDD[((String, Long), Row)], joinQuery: RDD[((String, Long), Row)]): DataFrame = {
+  private def computeJoin(sparkSession: SparkSession, joinDatabase: RDD[((String, String), Row)], joinQuery: RDD[((String, String), Row)]): DataFrame = {
     import IntervalColumns._
     import sparkSession.implicits._
 
-    val databaseWithComponent: RDD[((String, Long, Int), Row)] = joinDatabase
+    val databaseWithComponent: RDD[((String, String, Int), Row)] = joinDatabase
       .map { row =>
         val ((key: String, bucket), interval: Row) = row
         val component = interval.getAs[Int](_COMPONENT)
@@ -63,23 +56,22 @@ abstract class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: O
         (key, bucket, component) -> interval
       }
 
-    val queryWithComponent: RDD[((String, Long, Int), Row)] = {
+    val queryWithComponent: RDD[((String, String, Int), Row)] = {
       val componentsMap =
-        sparkSession.sparkContext.broadcast[Array[Int]]((0 to config.maximumComponentsCount).toArray)
+        sparkSession.sparkContext.broadcast[Array[Int]]((0 to config.aiListConfig.maximumComponentsCount).toArray)
 
       joinQuery.flatMap { row =>
-        val ((key: String, bucket: Long), interval: Row) = row
+        val ((key: String, bucket: String), interval: Row) = row
         componentsMap.value.map { component =>
           (key, bucket, component) -> interval
         }
       }
     }
 
-    val crossJoinProduct: RDD[((String, Long, Int), (Iterable[Row], Iterable[Row]))] =
+    val crossJoinProduct: RDD[((String, String, Int), (Iterable[Row], Iterable[Row]))] =
       databaseWithComponent.cogroup(queryWithComponent)
 
-    // FIXME: not grouped by component?
-    val joinResultRDD: RDD[IntervalsPair[T]] = crossJoinProduct.flatMap { case ((key, _, _), (aiList, queries)) =>
+    val joinResultRDD: RDD[IntervalsPair] = crossJoinProduct.flatMap { case ((key, _, _), (aiList, queries)) =>
       queries flatMap { query =>
         val queryFrom = query.getAs[Long](FROM)
         val queryTo = query.getAs[Long](TO)
@@ -94,14 +86,14 @@ abstract class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: O
             key,
             row.getAs[Long](FROM),
             row.getAs[Long](TO),
-            row.getAs[T](VALUE),
+            row.getAs(VALUE),
           )
 
           val rhsInterval = Interval(
             key,
             query.getAs[Long](FROM),
             query.getAs[Long](TO),
-            query.getAs[T](VALUE),
+            query.getAs(VALUE),
           )
 
           IntervalsPair(key, lhsInterval, rhsInterval)
@@ -124,13 +116,13 @@ abstract class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: O
     val sourceInputLookaheadWindow = Window
       .partitionBy(KEY, BUCKET)
       .orderBy(FROM, TO)
-      .rowsBetween(1, config.intervalsCountToCheckLookahead)
+      .rowsBetween(1, config.aiListConfig.intervalsCountToCheckLookahead)
 
     val preparedDF = sourceDF
-      .withColumn("_ailist_lookahead", F.collect_list(TO).over(sourceInputLookaheadWindow))
-      .withColumn("_ailist_lookahead_overlapping", F.filter(F.col("_ailist_lookahead"), _ <= F.col(TO)))
-      .withColumn("_ailist_lookahead_overlapping_count", F.size(F.col("_ailist_lookahead_overlapping")))
-      .withColumn("_ailist_lookahead_overlapping_keeper", F.col("_ailist_lookahead_overlapping_count") < F.lit(config.intervalsCountToTriggerExtraction))
+      .withColumn("_ailist_lookahead",                    F.collect_list(TO).over(sourceInputLookaheadWindow))
+      .withColumn("_ailist_lookahead_overlapping",        F.filter(F.col("_ailist_lookahead"), _ <= F.col(TO)))
+      .withColumn("_ailist_lookahead_overlapping_count",  F.size(F.col("_ailist_lookahead_overlapping")))
+      .withColumn("_ailist_lookahead_overlapping_keeper", F.col("_ailist_lookahead_overlapping_count") < F.lit(config.aiListConfig.intervalsCountToTriggerExtraction))
 
     val extractedDF  = preparedDF
       .filter(F.col("_ailist_lookahead_overlapping_keeper") === true)
@@ -164,13 +156,5 @@ abstract class NativeAIListIntervalJoin(config: AIListConfig, bucketingConfig: O
 
     dataFrame
       .withColumn(_MAX_E, F.max(TO).over(maxEndWindow))
-  }
-
-  override protected def finalizeResult[T : TypeTag](joinedResultRaw: DataFrame): Dataset[IntervalsPair[T]] = {
-    import joinedResultRaw.sparkSession.implicits._
-
-    joinedResultRaw
-      .as[IntervalsPair[T]]
-      .transform(bucketizer.deduplicate)
   }
 }

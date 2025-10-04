@@ -1,0 +1,56 @@
+data_suite,join_name,elapsed_time,result,result_rows_count
+odd-to-even-100000,checkpointed-native-ailist-10-20-10-64,51617,success,0
+odd-to-even-500000,checkpointed-native-ailist-10-20-10-64,1282590,success,0
+odd-to-even-1000000,checkpointed-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+odd-to-even-5000000,checkpointed-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+odd-to-even-10000000,checkpointed-native-ailist-10-20-10-64,,Job aborted due to stage failure: Master removed our application: KILLED
+odd-to-even-50000000,checkpointed-native-ailist-10-20-10-64,,Job aborted due to stage failure: Master removed our application: KILLED
+one-to-even-100000,checkpointed-native-ailist-10-20-10-64,110604,success,50001
+one-to-even-500000,checkpointed-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+one-to-even-1000000,checkpointed-native-ailist-10-20-10-64,,Job aborted due to stage failure: Master removed our application: KILLED
+one-to-even-5000000,checkpointed-native-ailist-10-20-10-64,,Job aborted due to stage failure: Master removed our application: KILLED
+one-to-long-continuous-100000,checkpointed-native-ailist-10-20-10-64,5989,success,100000
+one-to-long-continuous-500000,checkpointed-native-ailist-10-20-10-64,10807,success,500000
+one-to-long-continuous-1000000,checkpointed-native-ailist-10-20-10-64,16795,success,1000000
+one-to-long-continuous-5000000,checkpointed-native-ailist-10-20-10-64,112866,success,5000000
+one-to-long-continuous-10000000,checkpointed-native-ailist-10-20-10-64,322105,success,9894733
+one-to-long-continuous-50000000,checkpointed-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 14.0 failed 1 times; most recent failure: Lost task 0.0 in stage 14.0 (TID 82) (192.168.107.3 executor 1): java.lang.OutOfMemoryError: Java heap space
+one-to-long-overlap-100000,checkpointed-native-ailist-10-20-10-64,6804,success,190019
+one-to-long-overlap-500000,checkpointed-native-ailist-10-20-10-64,11503,success,990099
+one-to-long-overlap-1000000,checkpointed-native-ailist-10-20-10-64,20049,success,1990199
+one-to-long-overlap-5000000,checkpointed-native-ailist-10-20-10-64,167518,success,9990999
+one-to-long-overlap-10000000,checkpointed-native-ailist-10-20-10-64,467057,success
+one-to-long-overlap-50000000,checkpointed-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 14.0 failed 1 times; most recent failure: Lost task 0.0 in stage 14.0 (TID 82) (192.168.107.3 executor 0): java.lang.OutOfMemoryError: Java heap space
+one-to-one-100000,checkpointed-native-ailist-10-20-10-64,205261,success,100001
+one-to-one-500000,checkpointed-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-long-overlap-100000,checkpointed-native-ailist-10-20-10-64,5837,success,19018
+short-continuous-to-long-overlap-500000,checkpointed-native-ailist-10-20-10-64,6091,success,99098
+short-continuous-to-long-overlap-1000000,checkpointed-native-ailist-10-20-10-64,7070,success,199198
+short-continuous-to-long-overlap-5000000,checkpointed-native-ailist-10-20-10-64,21103,success,999998
+short-continuous-to-long-overlap-10000000,checkpointed-native-ailist-10-20-10-64,60603,success,2000998
+short-continuous-to-long-overlap-50000000,checkpointed-native-ailist-10-20-10-64,830593,success,10008998
+short-continuous-to-random-normal-short-100000,checkpointed-native-ailist-10-20-10-64,13375,success,95400
+short-continuous-to-random-normal-short-500000,checkpointed-native-ailist-10-20-10-64,294238,success,477600
+short-continuous-to-random-normal-short-1000000,checkpointed-native-ailist-10-20-10-64,1328691,success,964400
+short-continuous-to-random-normal-short-5000000,checkpointed-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-random-normal-short-10000000,checkpointed-native-ailist-10-20-10-64,,Job aborted due to stage failure: Master removed our application: KILLED
+short-continuous-to-random-normal-short-50000000,checkpointed-native-ailist-10-20-10-64,,None.get
+short-continuous-to-random-poisson-short-100000,checkpointed-native-ailist-10-20-10-64,1096205,success,20000000
+short-continuous-to-random-poisson-short-500000,checkpointed-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-random-poisson-short-1000000,checkpointed-native-ailist-10-20-10-64,,Job aborted due to stage failure: Master removed our application: KILLED
+short-continuous-to-random-uniform-short-100000,checkpointed-native-ailist-10-20-10-64,20657,success,197160
+short-continuous-to-random-uniform-short-500000,checkpointed-native-ailist-10-20-10-64,480094,success,1001560
+short-continuous-to-random-uniform-short-1000000,checkpointed-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-short-overlap-100000,checkpointed-native-ailist-10-20-10-64,8642,success,39997
+short-continuous-to-short-overlap-500000,checkpointed-native-ailist-10-20-10-64,101358,success,199997
+short-continuous-to-short-overlap-1000000,checkpointed-native-ailist-10-20-10-64,350271,success,399997
+short-continuous-to-short-overlap-5000000,checkpointed-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+databio-s-1-2,checkpointed-native-ailist-10-20-10-64,24732,success,54343
+databio-s-2-7,checkpointed-native-ailist-10-20-10-64,112590,success,274266
+databio-s-1-0,checkpointed-native-ailist-10-20-10-64,110999,success,321138
+databio-m-7-0,checkpointed-native-ailist-10-20-10-64,1003587,success,2764185
+databio-m-7-3,checkpointed-native-ailist-10-20-10-64,991050,success,4410928
+databio-l-0-8,checkpointed-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 4 in stage 95.0 failed 1 times; most recent failure: Lost task 4.0 in stage 95.0 (TID 481) (192.168.107.4 executor 0): java.lang.OutOfMemoryError: Java heap space
+databio-l-4-8,checkpointed-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 5 in stage 95.0 failed 1 times; most recent failure: Lost task 5.0 in stage 95.0 (TID 615) (192.168.107.4 executor 1): java.lang.OutOfMemoryError: Java heap space
+databio-l-7-8,checkpointed-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 12 in stage 113.0 failed 1 times; most recent failure: Lost task 12.0 in stage 113.0 (TID 1034) (192.168.107.3 executor 0): java.lang.OutOfMemoryError: Java heap space
+databio-xl-3-0,checkpointed-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 6 in stage 95.0 failed 1 times; most recent failure: Lost task 6.0 in stage 95.0 (TID 458) (192.168.107.4 executor 1): java.lang.OutOfMemoryError: Java heap space

@@ -4,14 +4,16 @@ package me.kosik.interwalled.benchmark.test.suite
 object TestDataSuites {
 
   private val sizes = Array(
-             1 * 1000L,
-             5 * 1000L,
+                  100L,
+                  500L,
+                 1000L,
+                 5000L,
             10 * 1000L,
             50 * 1000L,
            100 * 1000L,
            500 * 1000L,
-      1 * 1000 * 1000L,
-      5 * 1000 * 1000L,
+          1000 * 1000L,
+          5000 * 1000L,
      10 * 1000 * 1000L,
      50 * 1000 * 1000L,
     100 * 1000 * 1000L
@@ -25,9 +27,57 @@ object TestDataSuites {
       None
     ),
     TestDataSuite(
-      "one-to-none",
+      "one-to-even",
+      "test-data/single-point-continuous.parquet",
       "test-data/single-point-even.parquet",
+      None
+    ),
+    TestDataSuite(
+      "odd-to-even",
       "test-data/single-point-odd.parquet",
+      "test-data/single-point-even.parquet",
+      None
+    ),
+    TestDataSuite(
+      "one-to-long-continuous",
+      "test-data/single-point-continuous.parquet",
+      "test-data/long-continuous.parquet",
+      None
+    ),
+    TestDataSuite(
+      "one-to-long-overlap",
+      "test-data/single-point-continuous.parquet",
+      "test-data/long-overlap.parquet",
+      None
+    ),
+    TestDataSuite(
+      "short-continuous-to-short-overlap",
+      "test-data/short-continuous.parquet",
+      "test-data/short-overlap.parquet",
+      None
+    ),
+    TestDataSuite(
+      "short-continuous-to-long-overlap",
+      "test-data/short-continuous.parquet",
+      "test-data/long-overlap.parquet",
+      None
+    ),
+    TestDataSuite(
+      "short-continuous-to-random-normal-short",
+      "test-data/short-continuous.parquet",
+      "test-data/random-normal-short.parquet",
+      None
+    ),
+    TestDataSuite(
+      "short-continuous-to-random-poisson-short",
+      "test-data/short-continuous.parquet",
+      "test-data/random-poisson-short.parquet",
+      None
+    ),
+    TestDataSuite(
+      "short-continuous-to-random-uniform-short",
+      "test-data/short-continuous.parquet",
+      "test-data/random-uniform-short.parquet",
       None
     )
   )

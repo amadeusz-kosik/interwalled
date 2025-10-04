@@ -6,8 +6,8 @@ import me.kosik.interwalled.domain.Interval;
 
 public class BinarySearch {
 
-    public static <T> int findRightmost(
-            final ArrayList<Interval<T>> intervals,
+    public static  int findRightmost(
+            final ArrayList<Interval> intervals,
             final int leftBound,
             final int rightBound,
             final long queryEnd

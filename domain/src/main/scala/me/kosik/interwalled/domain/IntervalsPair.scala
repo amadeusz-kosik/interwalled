@@ -1,7 +1,7 @@
 package me.kosik.interwalled.domain
 
-case class IntervalsPair[T](
+case class IntervalsPair(
   key: String,
-  lhs: Interval[T],
-  rhs: Interval[T]
+  lhs: Interval,
+  rhs: Interval
 )

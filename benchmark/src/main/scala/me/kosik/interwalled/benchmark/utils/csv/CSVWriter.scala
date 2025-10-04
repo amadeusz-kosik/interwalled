@@ -1,15 +1,13 @@
 package me.kosik.interwalled.benchmark.utils.csv
 
-import me.kosik.interwalled.benchmark.utils.BenchmarkResult
-
 import java.io.{File, FileOutputStream, PrintWriter, Writer}
 import java.nio.file.{Files, Path}
 
 
-class CSVWriter(fileWriter: Writer) {
+class CSVWriter[T](formatter: CSVFormatter[T], fileWriter: Writer) {
 
-  def write(row: BenchmarkResult): Unit = {
-    fileWriter.write(CSVFormatter.row(row))
+  def write(row: T): Unit = {
+    fileWriter.write(formatter.row(row))
     fileWriter.flush()
   }
 
@@ -20,12 +18,12 @@ class CSVWriter(fileWriter: Writer) {
 
 object CSVWriter {
 
-  def open(csvFilePath: String): CSVWriter = open {
+  def forPath[T](formatter: CSVFormatter[T])(csvFilePath: String): CSVWriter[T] = forWritter[T](formatter) {
     val absolutePath = Path.of(csvFilePath).toAbsolutePath
 
     if(! Files.exists(absolutePath)) {
       val writer = new PrintWriter(absolutePath.toString)
-      writer.write(CSVFormatter.header)
+      writer.write(formatter.header)
       writer.flush()
 
       writer
@@ -37,5 +35,5 @@ object CSVWriter {
     }
   }
 
-  def open(writer: Writer): CSVWriter = new CSVWriter(writer)
+  def forWritter[T](formatter: CSVFormatter[T])(writer: Writer): CSVWriter[T] = new CSVWriter(formatter, writer)
 }

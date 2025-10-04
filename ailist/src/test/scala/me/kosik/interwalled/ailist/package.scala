@@ -11,22 +11,22 @@ package object ailist {
 
   object AIListTestHelper extends Matchers {
 
-    def buildList[T](intervals: Seq[Interval[T]], aiListConfig: AIListConfig = AIListConfig.DEFAULT): AIList[T] = {
-      val listBuilder = new AIListBuilder[T](aiListConfig)
+    def buildList(intervals: Seq[Interval], aiListConfig: AIListConfig = AIListConfig.DEFAULT): AIList = {
+      val listBuilder = new AIListBuilder(aiListConfig)
 
       intervals.foreach(interval => listBuilder.put(interval))
       listBuilder.build()
     }
 
-    def buildResult[T](aiList: AIList[T], otherList: Seq[Interval[T]]): JoinResult[T] = {
+    def buildResult(aiList: AIList, otherList: Seq[Interval]): JoinResult = {
       val intervalsPairs = otherList.flatMap { rightInterval =>
         aiList.overlapping(rightInterval).asScala.map(leftInterval => IntervalsPair(leftInterval, rightInterval))
       }
       JoinResult(intervalsPairs)
     }
 
-    def buildExpected[T](leftIntervals: Seq[Interval[T]], rightIntervals: Seq[Interval[T]]): JoinResult[T] = {
-      def isOverlapping(lhs: Interval[T], rhs: Interval[T]): Boolean = lhs.to >= rhs.from && rhs.to >= lhs.from
+    def buildExpected(leftIntervals: Seq[Interval], rightIntervals: Seq[Interval]): JoinResult = {
+      def isOverlapping(lhs: Interval, rhs: Interval): Boolean = lhs.to >= rhs.from && rhs.to >= lhs.from
 
       JoinResult(leftIntervals.flatMap { leftInterval =>
         rightIntervals
@@ -35,13 +35,13 @@ package object ailist {
       })
     }
 
-    def assertEqual[T](expected: JoinResult[T], actual: JoinResult[T]): Assertion = {
+    def assertEqual(expected: JoinResult, actual: JoinResult): Assertion = {
       actual.intervalPairs.length shouldEqual expected.intervalPairs.length
       actual.intervalPairs.toSet should contain theSameElementsAs expected.intervalPairs.toSet
     }
   }
 
-  case class IntervalsPair[T](leftInterval: Interval[T], rightInterval: Interval[T])
+  case class IntervalsPair(leftInterval: Interval, rightInterval: Interval)
 
-  case class JoinResult[T](intervalPairs: Seq[IntervalsPair[T]])
+  case class JoinResult(intervalPairs: Seq[IntervalsPair])
 }

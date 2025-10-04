@@ -1,53 +1,40 @@
 package me.kosik.interwalled.spark.join.api
 
-import me.kosik.interwalled.domain.{BucketedInterval, Interval, IntervalsPair}
-import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{Input, Result}
-import me.kosik.interwalled.spark.join.api.model.IntervalStatistics
-import me.kosik.interwalled.spark.join.api.model.IntervalStatistics.{InputStats, ResultStats}
+import me.kosik.interwalled.domain.IntervalsPair
+import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{Input, PreparedInput, Result}
+import me.kosik.interwalled.utility.stats.IntervalJoinRunStatsHelper
+import me.kosik.interwalled.utility.stats.model.IntervalJoinRunStats
 import org.apache.spark.internal.Logging
 import org.apache.spark.sql._
-
-import scala.annotation.nowarn
-import scala.reflect.runtime.universe._
 
 
 trait IntervalJoin extends Logging with Serializable {
 
-  protected type BucketedIntervals[T] = Dataset[BucketedInterval[T]]
-  protected type PreparedInput[T] = (BucketedIntervals[T], BucketedIntervals[T])
+  override def toString: String =
+    throw new NotImplementedError("Classes inheriting from IntervalJoin trait are expected to" +
+      " implement custom version of toString method.")
 
-  override def toString: String = {
-    throw new NotImplementedError("Classes inheriting from IntervalJoin trait are expected to implement custom version" +
-      " of toString method.")
-  }
-
-  def join[T : TypeTag](input: Input[T]): Result[T] =
+  def join(input: Input): Result =
     join(input, gatherStatistics = false)
 
-  def join[T : TypeTag](input: Input[T], gatherStatistics: Boolean): Result[T] = {
-    implicit val spark: SparkSession = input.lhsData.sparkSession
+  def join(input: Input, gatherStatistics: Boolean): Result = {
+    val prepared    = prepareInput(input.toPreparedInput)
+    val joined      = doJoin(prepared)
+    val finalized   = finalizeResult(joined)
 
-    @nowarn implicit val iTT = typeTag[Interval[T]]
-    implicit val iEncoder: Encoder[Interval[T]] = Encoders.product[Interval[T]]
-
-    val (lhsInputRaw,       rhsInputRaw)      = (input.lhsData, input.rhsData)
-    val (lhsInputPrepared,  rhsInputPrepared) = prepareInput(input)
-
-    val joinedResultRaw   = doJoin[T](lhsInputPrepared,  rhsInputPrepared)
-    val joinedResultFinal = finalizeResult[T](joinedResultRaw)
-
-    val statistics = {
-      if(gatherStatistics) Some(IntervalStatistics(
-        database  = InputStats(lhsInputRaw.count(),       lhsInputPrepared.count()),
-        query     = InputStats(rhsInputRaw.count(),       rhsInputPrepared.count()),
-        result    = ResultStats(joinedResultRaw.count(),  joinedResultFinal.count())
-      )) else None
+    val statistics: Option[IntervalJoinRunStats] = {
+      if(gatherStatistics)
+        Some(IntervalJoinRunStatsHelper.gatherStats(finalized))
+      else
+        None
     }
 
-    Result(joinedResultFinal, statistics)
+    Result(finalized, statistics)
   }
 
-  protected def prepareInput[T : TypeTag](input: Input[T]): PreparedInput[T]
-  protected def doJoin[T : TypeTag](lhsInputPrepared: BucketedIntervals[T], rhsInputPrepared: BucketedIntervals[T]): DataFrame
-  protected def finalizeResult[T : TypeTag](joinedResultRaw: DataFrame): Dataset[IntervalsPair[T]]
+  protected def prepareInput(input: PreparedInput): PreparedInput
+
+  protected def doJoin(input: PreparedInput): Dataset[IntervalsPair]
+
+  protected def finalizeResult(joinedResultRaw: Dataset[IntervalsPair]): Dataset[IntervalsPair]
 }

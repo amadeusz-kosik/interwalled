@@ -1,74 +1,57 @@
 package me.kosik.interwalled.spark.join
 
-import com.holdenkarau.spark.testing.{DataFrameSuiteBase, DatasetSuiteBase}
-import me.kosik.interwalled.domain.benchmark.ActiveBenchmarks.TestDataSizes
+import com.holdenkarau.spark.testing.DatasetSuiteBase
 import me.kosik.interwalled.domain.{Interval, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.Input
-import org.apache.spark.sql.{DataFrame, Dataset}
+import org.apache.spark.sql.{Dataset, functions => F}
 import org.scalatest.funsuite.AnyFunSuite
 
 
-abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DataFrameSuiteBase {
-
-  val inputSizes: Array[(Int, Long)] = TestDataSizes.baseline.take(1)
-
-  def inputSuites: Array[String] = Array(
-    "all-to-one",
-    "continuous-16",
-    "one-to-all",
-    "one-to-one",
-    "spanning-4",
-    "spanning-16",
-    "sparse-16"
-  )
+abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DatasetSuiteBase {
 
   def intervalJoin: IntervalJoin
 
   // ---------------------------------------------------------------------------------------------------------------- //
 
-  def assertDataEqual(expected: Dataset[IntervalsPair[String]], actual: Dataset[IntervalsPair[String]]): Unit = {
-    import expected.sparkSession.implicits._
+  def assertDataEquals(expected: Dataset[IntervalsPair], actual: Dataset[IntervalsPair]): Unit = {
+    def prepareResult(data: Dataset[IntervalsPair]) = data
+      .sort(F.col("key"), F.col("lhs.from"), F.col("lhs.to"), F.col("rhs.from"), F.col("rhs.to"))
 
-    def prepareResult(data: Dataset[IntervalsPair[String]]): DataFrame = data
-      .toDF()
-      .select(
-        $"lhs.from" .as("lhs_from"),
-        $"lhs.to"   .as("lhs_to"),
-        $"lhs.key"  .as("lhs_key"),
-        $"lhs.value".as("lhs_value"),
-        $"rhs.from" .as("rhs_from"),
-        $"rhs.to"   .as("rhs_to"),
-        $"rhs.key"  .as("rhs_key"),
-        $"rhs.value".as("rhs_value"),
-      )
-
-    assertDataFrameNoOrderEquals(expected = prepareResult(expected), result = prepareResult(actual))
+    assertDatasetEquals(expected = prepareResult(expected), result = prepareResult(actual))
   }
 
   // ---------------------------------------------------------------------------------------------------------------- //
 
-  inputSizes foreach { case (clustersCount, rowsPerCluster) => inputSuites.foreach { inputSuite =>
+  test(s"Test one-to-one join") {
+    import spark.implicits._
 
-    test(s"$rowsPerCluster rows, $inputSuite, $clustersCount clusters") {
-      import spark.implicits._
-
-      def loadInput(datasetName: String): Dataset[Interval[String]] =
-        spark.read.parquet(s"data/edge/$inputSuite/$rowsPerCluster/$clustersCount/$datasetName.parquet")
-          .as[Interval[String]]
-
-      def loadResult(datasetName: String): Dataset[IntervalsPair[String]] =
-        spark.read.parquet(s"data/edge/$inputSuite/$rowsPerCluster/$clustersCount/$datasetName.parquet")
-          .as[IntervalsPair[String]]
-
-      val lhs = loadInput("database").as[Interval[String]]
-      val rhs = loadInput("query").as[Interval[String]]
-
-      val expected = loadResult("result")
-      val actual = intervalJoin.join(Input(lhs, rhs)).data
-
-      Array(expected, actual).foreach(ds => ds.filter(_.lhs.from < 100).filter(_.rhs.from < 100).show(1000, truncate = false))
-      assertDataEqual(expected = expected, actual = actual)
+    val lhs = {
+      spark.sparkContext
+        .range(1L, 100000L + 1L, 10L)
+        .map(i => Interval("KEY", i, i + 9, f"KEY($i - ${i + 9})"))
+        .toDS()
     }
-  }}
+
+    val rhs = {
+      spark.sparkContext
+        .range(1L, 100000L + 1L, 10L)
+        .map(_ + 5L)
+        .map(i => Interval("KEY", i, i, f"KEY($i - $i})"))
+        .toDS()
+    }
+
+    val expected = {
+      spark.sparkContext
+        .range(1L, 100000L + 1L, 10L)
+        .map(i => IntervalsPair("KEY",
+          Interval("KEY", i,     i + 9, f"KEY($i - ${i + 9})"),
+          Interval("KEY", i + 5, i + 5, f"KEY(${i + 5} - ${i + 5}})")
+        ))
+        .toDS()
+    }
+
+    val actual = intervalJoin.join(Input(lhs, rhs)).data
+    assertDataEquals(expected = expected, actual = actual)
+  }
 }

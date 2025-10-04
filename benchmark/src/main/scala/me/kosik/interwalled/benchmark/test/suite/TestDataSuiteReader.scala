@@ -26,7 +26,14 @@ object TestDataSuiteReader {
       )
     },
     "test-data" -> { df =>
-      df
+      import IntervalColumns._
+
+      df.select(
+        F.lit("IW000").as(KEY),
+        F.col(FROM),
+        F.col(TO),
+        F.col(VALUE)
+      )
     }
   )
 
@@ -47,7 +54,6 @@ object TestDataSuiteReader {
           inputDataset
             .filter(F.col("from") <= limit)
             .filter(F.col("to")   <= limit)
-            .limit(limit.toInt)
 
         case None =>
           inputDataset

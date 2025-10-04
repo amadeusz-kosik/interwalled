@@ -1,27 +1,27 @@
 package me.kosik.interwalled.domain
 
-case class Interval[T](
-  key: String,
-  from: Long,
-  to: Long,
-  value: T
+case class Interval(
+  key:    String,
+  from:   Long,
+  to:     Long,
+  value:  String
 )
 
 
-case class BucketedInterval[T](
-  _bucket: Long,
-  key: String,
-  from: Long,
-  to: Long,
-  value: T
+case class BucketedInterval(
+  bucket:   String,
+  key:      String,
+  from:     Long,
+  to:       Long,
+  value:    String
 ) {
 
-  def toInterval: Interval[T] =
+  def toInterval: Interval =
     Interval(key, from, to, value)
 }
 
 object IntervalColumns {
-  val BUCKET : String = "_bucket"
+  val BUCKET : String = "bucket"
   val KEY    : String = "key"
   val FROM   : String = "from"
   val TO     : String = "to"

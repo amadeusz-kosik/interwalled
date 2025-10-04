@@ -1,0 +1,62 @@
+data_suite,join_name,elapsed_time,result,result_rows_count
+odd-to-even-100000,spark-native,16983,success,0
+odd-to-even-500000,spark-native,,Futures timed out after [30 minutes]
+odd-to-even-5000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+odd-to-even-10000000,spark-native,,Cannot call methods on a stopped SparkContext.
+one-to-even-100000,spark-native,30988,success,50001
+one-to-even-500000,spark-native,,Futures timed out after [30 minutes]
+one-to-even-1000000,spark-native,,Futures timed out after [30 minutes]
+one-to-even-5000000,spark-native,,Futures timed out after [30 minutes]
+one-to-even-10000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+one-to-long-continuous-100000,spark-native,2910,success,100000
+one-to-long-continuous-500000,spark-native,3675,success,500000
+one-to-long-continuous-1000000,spark-native,3554,success,1000000
+one-to-long-continuous-5000000,spark-native,11394,success,5000000
+one-to-long-continuous-10000000,spark-native,35574,success,10000000
+one-to-long-continuous-50000000,spark-native,1160327,success,50000000
+one-to-long-overlap-100000,spark-native,3118,success,190019
+one-to-long-overlap-500000,spark-native,3553,success,990099
+one-to-long-overlap-1000000,spark-native,4582,success,1990199
+one-to-long-overlap-5000000,spark-native,22703,success,9990999
+one-to-long-overlap-10000000,spark-native,134121,success,19991999
+one-to-long-overlap-50000000,spark-native,,Futures timed out after [30 minutes]
+one-to-one-100000,spark-native,68237,success,100001
+one-to-one-500000,spark-native,,Futures timed out after [30 minutes]
+one-to-one-1000000,spark-native,,Futures timed out after [30 minutes]
+one-to-one-5000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+one-to-one-50000000,spark-native,,Cannot call methods on a stopped SparkContext.
+short-continuous-to-long-overlap-100000,spark-native,3577,success,19018
+short-continuous-to-long-overlap-500000,spark-native,3119,success,99098
+short-continuous-to-long-overlap-1000000,spark-native,3363,success,199198
+short-continuous-to-long-overlap-5000000,spark-native,5218,success,999998
+short-continuous-to-long-overlap-10000000,spark-native,12984,success,2000998
+short-continuous-to-long-overlap-50000000,spark-native,399839,success,10008998
+short-continuous-to-random-normal-short-100000,spark-native,7300,success,95400
+short-continuous-to-random-normal-short-500000,spark-native,91667,success,477600
+short-continuous-to-random-normal-short-1000000,spark-native,444849,success,964400
+short-continuous-to-random-normal-short-5000000,spark-native,,Futures timed out after [30 minutes]
+short-continuous-to-random-normal-short-10000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+short-continuous-to-random-normal-short-50000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+short-continuous-to-random-poisson-short-100000,spark-native,368739,success,20000000
+short-continuous-to-random-poisson-short-500000,spark-native,1586706,success,20000000
+short-continuous-to-random-poisson-short-1000000,spark-native,,Futures timed out after [30 minutes]
+short-continuous-to-random-poisson-short-5000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+short-continuous-to-random-uniform-short-100000,spark-native,10205,success,197160
+short-continuous-to-random-uniform-short-500000,spark-native,133908,success,1001560
+short-continuous-to-random-uniform-short-1000000,spark-native,680075,success,2001360
+short-continuous-to-random-uniform-short-5000000,spark-native,,Futures timed out after [30 minutes]
+short-continuous-to-random-uniform-short-10000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+short-continuous-to-short-overlap-100000,spark-native,4694,success,39997
+short-continuous-to-short-overlap-500000,spark-native,55976,success,199997
+short-continuous-to-short-overlap-1000000,spark-native,177360,success,399997
+short-continuous-to-short-overlap-5000000,spark-native,,Futures timed out after [30 minutes]
+short-continuous-to-short-overlap-10000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+databio-s-1-2,spark-native,17532,success,54343
+databio-s-2-7,spark-native,67369,success,274266
+databio-s-1-0,spark-native,52346,success,321138
+databio-m-7-0,spark-native,526586,success,2764185
+databio-m-7-3,spark-native,674051,success,4410928
+databio-l-0-8,spark-native,,Futures timed out after [30 minutes]
+databio-l-4-8,spark-native,,Futures timed out after [30 minutes]
+databio-l-7-8,spark-native,1071158,success,307298602
+databio-xl-3-0,spark-native,,Futures timed out after [30 minutes]

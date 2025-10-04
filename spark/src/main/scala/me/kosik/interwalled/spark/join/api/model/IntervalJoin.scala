@@ -1,17 +1,39 @@
 package me.kosik.interwalled.spark.join.api.model
 
-import me.kosik.interwalled.domain.{Interval, IntervalsPair}
-import org.apache.spark.sql.Dataset
+import me.kosik.interwalled.domain.IntervalColumns.BUCKET
+import me.kosik.interwalled.domain.{BucketedInterval, Interval, IntervalsPair}
+import me.kosik.interwalled.utility.stats.model.IntervalJoinRunStats
+import org.apache.spark.sql.{Column, Dataset, functions => F}
 
 
 object IntervalJoin {
-  case class Input[T](
-    lhsData: Dataset[Interval[T]],
-    rhsData: Dataset[Interval[T]]
-  )
 
-  case class Result[T](
-    data: Dataset[IntervalsPair[T]],
-    statistics: Option[IntervalStatistics]
+  case class Input(
+    lhsData: Dataset[Interval],
+    rhsData: Dataset[Interval]
+  ) {
+    def toPreparedInput: PreparedInput = {
+      import lhsData.sparkSession.implicits._
+
+      PreparedInput(
+        lhsData.withColumn(BUCKET, F.lit("Bucket")).as[BucketedInterval],
+        rhsData.withColumn(BUCKET, F.lit("Bucket")).as[BucketedInterval]
+      )
+    }
+  }
+
+  case class PreparedInput(
+    lhsData: Dataset[BucketedInterval],
+    rhsData: Dataset[BucketedInterval]
+  ) {
+    def repartition(partitionExpressions: Column *): PreparedInput = this.copy(
+      lhsData = lhsData.repartition(partitionExpressions :_*),
+      rhsData = rhsData.repartition(partitionExpressions :_*)
+    )
+  }
+
+  case class Result(
+    data: Dataset[IntervalsPair],
+    statistics: Option[IntervalJoinRunStats]
   )
 }

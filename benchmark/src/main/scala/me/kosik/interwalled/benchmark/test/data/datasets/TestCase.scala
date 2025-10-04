@@ -19,7 +19,7 @@ trait TestCase extends Serializable {
     import sparkSession.implicits._
 
     data
-      .withColumn(KEY,   F.lit(testCaseName))
+      .withColumn(KEY,   F.lit("IW000"))
       .withColumn(VALUE, F.concat_ws("-", F.col(KEY), F.col(FROM), F.col(TO)))
       .as[TestDataRow]
   }

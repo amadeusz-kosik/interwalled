@@ -5,20 +5,20 @@ import me.kosik.interwalled.domain.Interval;
 
 import java.util.Iterator;
 
-public class AIListIterator<T> implements Iterator<Interval<T>>
+public class AIListIterator implements Iterator<Interval>
 {
     private final long queryStart;
     private final long queryEnd;
 
-    private final AIList<T> parentAIList;
+    private final AIList parentAIList;
     private final long parentAIListComponentsCount;
 
     private int currentComponentIndex = -1;
     private int currentIntervalIndex = -1;
 
-    private Interval<T> currentInterval;
+    private Interval currentInterval;
 
-    public AIListIterator(final long queryStart, final long queryEnd, final AIList<T> parentAIList)
+    public AIListIterator(final long queryStart, final long queryEnd, final AIList parentAIList)
     {
         this.queryStart = queryStart;
         this.queryEnd = queryEnd;
@@ -34,8 +34,8 @@ public class AIListIterator<T> implements Iterator<Interval<T>>
     }
 
     @Override
-    public Interval<T> next() {
-        Interval<T> currentReturn = currentInterval;
+    public Interval next() {
+        Interval currentReturn = currentInterval;
 
         if(currentInterval != null)
             findNextInterval();
@@ -104,7 +104,7 @@ public class AIListIterator<T> implements Iterator<Interval<T>>
         //  In fact, try picking _previous_ interval, as the algorithm goes from right to left.
         //  Do not go beyond the current component
         int _nextIntervalIndex = currentIntervalIndex - 1;
-        Interval<T> _nextInterval = null;
+        Interval _nextInterval = null;
 
         // Iterate from right to left
         while(_nextIntervalIndex >= currentComponentStartIndex) {

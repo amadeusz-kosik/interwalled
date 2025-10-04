@@ -1,50 +1,74 @@
 package me.kosik.interwalled.benchmark.join
 
+import me.kosik.interwalled.benchmark.preprocessing.PreprocessingStrategies
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.config.AIListConfig
-import me.kosik.interwalled.spark.join.implementation.ailist.{CachedNativeAIListIntervalJoin, CheckpointedNativeAIListIntervalJoin}
-import me.kosik.interwalled.spark.join.implementation.{DriverAIListIntervalJoin, RDDAIListIntervalJoin, SparkNativeIntervalJoin}
-import me.kosik.interwalled.utility.bucketizer.{BucketCount, BucketScale}
+import me.kosik.interwalled.spark.join.implementation.ailist.NativeAIListConfig
+import me.kosik.interwalled.spark.join.implementation.ailist.implementation.{CachedNativeAIListIntervalJoin, CheckpointedNativeAIListIntervalJoin}
+import me.kosik.interwalled.spark.join.implementation.driver.DriverAIListIntervalJoin
+import me.kosik.interwalled.spark.join.implementation.rdd.{RDDAIListConfig, RDDAIListIntervalJoin}
+import me.kosik.interwalled.spark.join.implementation.spark.native.{SparkNativeConfig, SparkNativeIntervalJoin}
+import me.kosik.interwalled.spark.join.preprocessor.PreprocessorConfig
 
 
 object JoinStrategies {
 
-  val values: Map[String, IntervalJoin] = {
-    val checkpointDir = "temporary/checkpoint/"
+  private val checkpointDir = "/mnt/temporary/checkpoint.parquet"
 
-    Array(
-      new CachedNativeAIListIntervalJoin(AIListConfig(10,  20, 10), None),
-      new CachedNativeAIListIntervalJoin(AIListConfig(10,  80, 40), None),
-      new CachedNativeAIListIntervalJoin(AIListConfig(10, 320, 160), None),
+  private val aiListConfigs    = for {
+    maximumComponentsCount              <- Array(10)
+    intervalsCountToCheckLookaheadRatio <- Array(2.0)
+    intervalsCountToTriggerExtraction   <- Array(10)
+    intervalsCountToCheckLookahead       = (intervalsCountToCheckLookaheadRatio * intervalsCountToTriggerExtraction).toInt
+    minimumComponentSize                <- Array(64)
+  } yield AIListConfig(maximumComponentsCount, intervalsCountToCheckLookahead, intervalsCountToTriggerExtraction, minimumComponentSize)
 
-      new CheckpointedNativeAIListIntervalJoin(checkpointDir, AIListConfig(10,  20, 10),  None),
-      new CheckpointedNativeAIListIntervalJoin(checkpointDir, AIListConfig(10,  80, 40),  None),
-      new CheckpointedNativeAIListIntervalJoin(checkpointDir, AIListConfig(10, 320, 160), None),
+  private val preprocessingConfigs = PreprocessingStrategies.preprocessorConfigs
 
-      new CheckpointedNativeAIListIntervalJoin(checkpointDir, AIListConfig(10, 20, 10), Some(BucketScale(2))),
-      new CheckpointedNativeAIListIntervalJoin(checkpointDir, AIListConfig(10, 20, 10), Some(BucketScale(4))),
-      new RDDAIListIntervalJoin(bucketingConfig = Some(BucketScale( 2))),
-      new RDDAIListIntervalJoin(bucketingConfig = Some(BucketScale( 4))),
-      new RDDAIListIntervalJoin(bucketingConfig = Some(BucketScale( 8))),
-      new RDDAIListIntervalJoin(bucketingConfig = Some(BucketScale(16))),
-      new RDDAIListIntervalJoin(bucketingConfig = Some(BucketScale(32))),
+  // -------------------------------------------------------------------------------------------------------------------
 
-      DriverAIListIntervalJoin
-
-//      new RDDAIListIntervalJoin(bucketingConfig = None),
-//      new RDDAIListIntervalJoin(bucketingConfig = Some(BucketCount(100L))),
-//      new RDDAIListIntervalJoin(bucketingConfig = Some(BucketCount(1000L))),
-//      new RDDAIListIntervalJoin(bucketingConfig = Some(BucketCount(10000L))),
-//      new RDDAIListIntervalJoin(bucketingConfig = Some(BucketCount(100000L))),
-//      new RDDAIListIntervalJoin(bucketingConfig = Some(BucketCount(1000000L))),
-//
-//      new SparkNativeIntervalJoin(bucketingConfig = None),
-//      new SparkNativeIntervalJoin(bucketingConfig = Some(BucketCount(10L))),
-//      new SparkNativeIntervalJoin(bucketingConfig = Some(BucketCount(100L))),
-//      new SparkNativeIntervalJoin(bucketingConfig = Some(BucketCount(1000L))),
-//      new SparkNativeIntervalJoin(bucketingConfig = Some(BucketCount(10000L))),
-//      new SparkNativeIntervalJoin(bucketingConfig = Some(BucketCount(100000L)))
-    ).map(join => join.toString -> join).toMap
+  private val cachedAIListIntervalJoin: Array[IntervalJoin] = {
+    for {
+      aiListConfig        <- aiListConfigs
+      config = NativeAIListConfig(
+        aiListConfig        = aiListConfig,
+        preprocessorConfig  = PreprocessorConfig(None, None)
+      )
+    } yield new CachedNativeAIListIntervalJoin(config)
   }
 
+  private val checkpointedAIListIntervalJoin: Array[IntervalJoin] = {
+    for {
+      aiListConfig    <- aiListConfigs
+      config = NativeAIListConfig(
+        aiListConfig        = aiListConfig,
+        preprocessorConfig  = PreprocessorConfig(None, None)
+      )
+    } yield new CheckpointedNativeAIListIntervalJoin(config, checkpointDir)
+  }
+
+  private val rddAIListIntervalJoin: Array[IntervalJoin] = {
+    for {
+      aiListConfig        <- aiListConfigs
+      preprocessingConfig <- preprocessingConfigs
+        config = RDDAIListConfig(
+        aiListConfig        = aiListConfig,
+        preprocessorConfig  = preprocessingConfig
+      )
+    } yield new RDDAIListIntervalJoin(config)
+  }
+
+  private val sparkNativeIntervalJoin: Array[IntervalJoin] = {
+    Array(new SparkNativeIntervalJoin(SparkNativeConfig(PreprocessorConfig(None, None))))
+  }
+
+  val values: Map[String, IntervalJoin] = {
+    (
+      Array(DriverAIListIntervalJoin)
+        ++ cachedAIListIntervalJoin
+        ++ checkpointedAIListIntervalJoin
+        ++ rddAIListIntervalJoin
+        ++ sparkNativeIntervalJoin
+    ).map(join => join.toString -> join).toMap
+  }
 }

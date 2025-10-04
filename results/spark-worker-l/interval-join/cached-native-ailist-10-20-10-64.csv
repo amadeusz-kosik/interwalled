@@ -1,0 +1,63 @@
+data_suite,join_name,elapsed_time,result,result_rows_count
+odd-to-even-100000,cached-native-ailist-10-20-10-64,56760,success,0
+odd-to-even-500000,cached-native-ailist-10-20-10-64,1608415,success,0
+odd-to-even-1000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+odd-to-even-5000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+odd-to-even-10000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+odd-to-even-50000000,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Master removed our application: KILLED
+one-to-even-100000,cached-native-ailist-10-20-10-64,121175,success,50001
+one-to-even-500000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+one-to-even-1000000,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Master removed our application: KILLED
+one-to-long-continuous-100000,cached-native-ailist-10-20-10-64,6010,success,100000
+one-to-long-continuous-500000,cached-native-ailist-10-20-10-64,10389,success,500000
+one-to-long-continuous-1000000,cached-native-ailist-10-20-10-64,17058,success,1000000
+one-to-long-continuous-5000000,cached-native-ailist-10-20-10-64,125149,success,5000000
+one-to-long-continuous-10000000,cached-native-ailist-10-20-10-64,282378,success,6415008
+one-to-long-continuous-50000000,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 15.0 failed 1 times; most recent failure: Lost task 0.0 in stage 15.0 (TID 43) (192.168.107.4 executor 0): java.lang.OutOfMemoryError: Java heap space
+one-to-long-overlap-100000,cached-native-ailist-10-20-10-64,5706,success,190019
+one-to-long-overlap-500000,cached-native-ailist-10-20-10-64,11005,success,990099
+one-to-long-overlap-1000000,cached-native-ailist-10-20-10-64,20402,success,1990199
+one-to-long-overlap-5000000,cached-native-ailist-10-20-10-64,170449,success,9990999
+one-to-long-overlap-10000000,cached-native-ailist-10-20-10-64,399614,success,12285893
+one-to-long-overlap-50000000,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 15.0 failed 1 times; most recent failure: Lost task 0.0 in stage 15.0 (TID 43) (192.168.107.3 executor 1): java.lang.OutOfMemoryError: Java heap space
+one-to-one-100000,cached-native-ailist-10-20-10-64,258342,success,100001
+one-to-one-500000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-long-overlap-100000,cached-native-ailist-10-20-10-64,5479,success,19018
+short-continuous-to-long-overlap-500000,cached-native-ailist-10-20-10-64,5449,success,99098
+short-continuous-to-long-overlap-1000000,cached-native-ailist-10-20-10-64,6844,success,199198
+short-continuous-to-long-overlap-5000000,cached-native-ailist-10-20-10-64,27954,success,999998
+short-continuous-to-long-overlap-10000000,cached-native-ailist-10-20-10-64,76165,success,2000998
+short-continuous-to-long-overlap-50000000,cached-native-ailist-10-20-10-64,933495,success,10008998
+short-continuous-to-random-normal-short-100000,cached-native-ailist-10-20-10-64,12329,success,95400
+short-continuous-to-random-normal-short-500000,cached-native-ailist-10-20-10-64,285279,success,477600
+short-continuous-to-random-normal-short-1000000,cached-native-ailist-10-20-10-64,1463649,success,964400
+short-continuous-to-random-normal-short-5000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-random-normal-short-10000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-random-normal-short-50000000,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 15.0 failed 1 times; most recent failure: Lost task 0.0 in stage 15.0 (TID 43) (192.168.107.4 executor 0): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-poisson-short-100000,cached-native-ailist-10-20-10-64,1144366,success,20000000
+short-continuous-to-random-poisson-short-500000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-random-poisson-short-1000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-random-poisson-short-5000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-random-poisson-short-10000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-random-poisson-short-10000000,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Master removed our application: KILLED
+short-continuous-to-random-uniform-short-100000,cached-native-ailist-10-20-10-64,19643,success,197160
+short-continuous-to-random-uniform-short-500000,cached-native-ailist-10-20-10-64,530260,success,1001560
+short-continuous-to-random-uniform-short-1000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-random-uniform-short-5000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-random-uniform-short-10000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-random-uniform-short-50000000,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 15.0 failed 1 times; most recent failure: Lost task 0.0 in stage 15.0 (TID 43) (192.168.107.4 executor 0): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-short-overlap-100000,cached-native-ailist-10-20-10-64,7650,success,39997
+short-continuous-to-short-overlap-500000,cached-native-ailist-10-20-10-64,108472,success,199997
+short-continuous-to-short-overlap-1000000,cached-native-ailist-10-20-10-64,506963,success,399997
+short-continuous-to-short-overlap-5000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-short-overlap-10000000,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Master removed our application: KILLED
+short-continuous-to-short-overlap-50000000,cached-native-ailist-10-20-10-64,,Cannot call methods on a stopped SparkContext.
+databio-s-1-2,cached-native-ailist-10-20-10-64,24727,success,54343
+databio-s-2-7,cached-native-ailist-10-20-10-64,110193,success,274266
+databio-s-1-0,cached-native-ailist-10-20-10-64,101805,success,321138
+databio-m-7-0,cached-native-ailist-10-20-10-64,1022791,success,2764185
+databio-m-7-3,cached-native-ailist-10-20-10-64,1259662,success,4410928
+databio-l-0-8,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 2 in stage 89.0 failed 1 times; most recent failure: Lost task 2.0 in stage 89.0 (TID 4110) (192.168.107.3 executor 1): java.lang.OutOfMemoryError: Java heap space
+databio-l-4-8,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 1 in stage 89.0 failed 1 times; most recent failure: Lost task 1.0 in stage 89.0 (TID 4143) (192.168.107.3 executor 1): java.lang.OutOfMemoryError: Java heap space
+databio-l-7-8,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 1 in stage 107.0 failed 1 times; most recent failure: Lost task 1.0 in stage 107.0 (TID 4131) (192.168.107.3 executor 1): java.lang.OutOfMemoryError: Java heap space
+databio-xl-3-0,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 2 in stage 89.0 failed 1 times; most recent failure: Lost task 2.0 in stage 89.0 (TID 4100) (192.168.107.3 executor 1): java.lang.OutOfMemoryError: Java heap space

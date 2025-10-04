@@ -1,0 +1,70 @@
+data_suite,join_name,elapsed_time,result,result_rows_count
+odd-to-even-100000,rdd-ailist-10-20-10-64,4101,success,0
+odd-to-even-500000,rdd-ailist-10-20-10-64,4838,success,0
+odd-to-even-1000000,rdd-ailist-10-20-10-64,6336,success,0
+odd-to-even-5000000,rdd-ailist-10-20-10-64,19819,success,0
+odd-to-even-10000000,rdd-ailist-10-20-10-64,36536,success,0
+odd-to-even-50000000,rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 5.0 failed 1 times; most recent failure: Lost task 0.0 in stage 5.0 (TID 42) (192.168.97.3 executor 2): ExecutorLostFailure (executor 2 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 155992 ms
+one-to-even-100000,rdd-ailist-10-20-10-64,4419,success,50001
+one-to-even-500000,rdd-ailist-10-20-10-64,6282,success,250001
+one-to-even-1000000,rdd-ailist-10-20-10-64,8935,success,500001
+one-to-even-5000000,rdd-ailist-10-20-10-64,36406,success,2500001
+one-to-even-10000000,rdd-ailist-10-20-10-64,118817,success
+one-to-even-50000000,rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 5.0 failed 1 times; most recent failure: Lost task 0.0 in stage 5.0 (TID 42) (192.168.97.3 executor 2): java.lang.OutOfMemoryError: Java heap space
+one-to-long-continuous-100000,rdd-ailist-10-20-10-64,3992,success,100000
+one-to-long-continuous-500000,rdd-ailist-10-20-10-64,5364,success,500000
+one-to-long-continuous-1000000,rdd-ailist-10-20-10-64,7784,success,1000000
+one-to-long-continuous-5000000,rdd-ailist-10-20-10-64,28403,success,5000000
+one-to-long-continuous-10000000,rdd-ailist-10-20-10-64,62232,success
+one-to-long-continuous-50000000,rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 5.0 failed 1 times; most recent failure: Lost task 0.0 in stage 5.0 (TID 38) (192.168.97.6 executor 4): java.lang.OutOfMemoryError: Java heap space
+one-to-long-overlap-100000,rdd-ailist-10-20-10-64,4038,success,190019
+one-to-long-overlap-500000,rdd-ailist-10-20-10-64,5408,success,990099
+one-to-long-overlap-1000000,rdd-ailist-10-20-10-64,7731,success,1990199
+one-to-long-overlap-5000000,rdd-ailist-10-20-10-64,29198,success,9990999
+one-to-long-overlap-10000000,rdd-ailist-10-20-10-64,66484,success,19991999
+one-to-long-overlap-50000000,rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 5.0 failed 1 times; most recent failure: Lost task 0.0 in stage 5.0 (TID 38) (192.168.97.5 executor 0): ExecutorLostFailure (executor 0 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 126488 ms
+one-to-one-100000,rdd-ailist-10-20-10-64,4594,success,100001
+one-to-one-500000,rdd-ailist-10-20-10-64,6902,success,500001
+one-to-one-1000000,rdd-ailist-10-20-10-64,9938,success,1000001
+one-to-one-5000000,rdd-ailist-10-20-10-64,46554,success,5000001
+one-to-one-10000000,rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 8.0 failed 1 times; most recent failure: Lost task 0.0 in stage 8.0 (TID 44) (192.168.97.7 executor 1): java.lang.OutOfMemoryError: Java heap space
+one-to-one-50000000,rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 7.0 failed 1 times; most recent failure: Lost task 0.0 in stage 7.0 (TID 43) (192.168.97.3 executor 2): ExecutorLostFailure (executor 2 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 139639 ms
+short-continuous-to-long-overlap-100000,rdd-ailist-10-20-10-64,3925,success,19018
+short-continuous-to-long-overlap-500000,rdd-ailist-10-20-10-64,3811,success,99098
+short-continuous-to-long-overlap-1000000,rdd-ailist-10-20-10-64,4089,success,199198
+short-continuous-to-long-overlap-5000000,rdd-ailist-10-20-10-64,5336,success,999998
+short-continuous-to-long-overlap-10000000,rdd-ailist-10-20-10-64,7696,success,2000998
+short-continuous-to-long-overlap-50000000,rdd-ailist-10-20-10-64,27469,success,10008998
+short-continuous-to-random-normal-short-100000,rdd-ailist-10-20-10-64,4679,success,95400
+short-continuous-to-random-normal-short-500000,rdd-ailist-10-20-10-64,5153,success,477600
+short-continuous-to-random-normal-short-1000000,rdd-ailist-10-20-10-64,6040,success,964400
+short-continuous-to-random-normal-short-5000000,rdd-ailist-10-20-10-64,13317,success,5076600
+short-continuous-to-random-normal-short-10000000,rdd-ailist-10-20-10-64,25684,success,10602960
+short-continuous-to-random-normal-short-50000000,rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 8.0 failed 1 times; most recent failure: Lost task 0.0 in stage 8.0 (TID 40) (192.168.97.6 executor 4): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-poisson-short-100000,rdd-ailist-10-20-10-64,24592,success,20000000
+short-continuous-to-random-poisson-short-500000,rdd-ailist-10-20-10-64,23559,success,20000000
+short-continuous-to-random-poisson-short-1000000,rdd-ailist-10-20-10-64,24412,success,20000000
+short-continuous-to-random-poisson-short-5000000,rdd-ailist-10-20-10-64,23631,success,20000000
+short-continuous-to-random-poisson-short-10000000,rdd-ailist-10-20-10-64,24407,success,20000000
+short-continuous-to-random-poisson-short-50000000,rdd-ailist-10-20-10-64,80066,success,20000000
+short-continuous-to-random-uniform-short-100000,rdd-ailist-10-20-10-64,5249,success,197160
+short-continuous-to-random-uniform-short-500000,rdd-ailist-10-20-10-64,6138,success,1001560
+short-continuous-to-random-uniform-short-1000000,rdd-ailist-10-20-10-64,7695,success,2001360
+short-continuous-to-random-uniform-short-5000000,rdd-ailist-10-20-10-64,21586,success,10019800
+short-continuous-to-random-uniform-short-10000000,rdd-ailist-10-20-10-64,41664,success,20031480
+short-continuous-to-random-uniform-short-50000000,rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 8.0 failed 1 times; most recent failure: Lost task 0.0 in stage 8.0 (TID 40) (192.168.97.6 executor 4): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-short-overlap-100000,rdd-ailist-10-20-10-64,4061,success,39997
+short-continuous-to-short-overlap-500000,rdd-ailist-10-20-10-64,4285,success,199997
+short-continuous-to-short-overlap-1000000,rdd-ailist-10-20-10-64,4521,success,399997
+short-continuous-to-short-overlap-5000000,rdd-ailist-10-20-10-64,7673,success,1999997
+short-continuous-to-short-overlap-10000000,rdd-ailist-10-20-10-64,13191,success,3999997
+short-continuous-to-short-overlap-50000000,rdd-ailist-10-20-10-64,106345,success,19999997
+databio-s-1-2,rdd-ailist-10-20-10-64,4759,success,54343
+databio-s-2-7,rdd-ailist-10-20-10-64,5889,success,274259
+databio-s-1-0,rdd-ailist-10-20-10-64,6126,success,321138
+databio-m-7-0,rdd-ailist-10-20-10-64,6619,success,2764005
+databio-m-7-3,rdd-ailist-10-20-10-64,6995,success,4410737
+databio-l-0-8,rdd-ailist-10-20-10-64,25565,success,164213737
+databio-l-4-8,rdd-ailist-10-20-10-64,1777459,success,227866045
+databio-l-7-8,rdd-ailist-10-20-10-64,25898,success,307298035
+databio-xl-3-0,rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 17 in stage 8.0 failed 1 times; most recent failure: Lost task 17.0 in stage 8.0 (TID 72) (192.168.97.5 executor 0): java.lang.OutOfMemoryError: Java heap space

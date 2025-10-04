@@ -5,13 +5,13 @@ import org.apache.spark.sql.{SaveMode, SparkSession}
 import org.slf4j.LoggerFactory
 
 
-object TestDataGenerator {
+class TestDataGenerator(env: MainEnv) extends BenchmarkApp {
 
   private lazy val logger = LoggerFactory.getLogger(getClass)
 
   private val PARTITIONS_PER_DATASET: Int      = 16
 
-  def run(env: MainEnv): Unit = {
+  override def run(): Unit = {
     implicit val spark: SparkSession = env.sparkSession
 
     TestCases.values.values foreach { testCaseCallback =>

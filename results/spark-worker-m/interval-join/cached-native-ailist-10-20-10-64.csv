@@ -1,0 +1,44 @@
+data_suite,join_name,elapsed_time,result,result_rows_count
+odd-to-even-100000,cached-native-ailist-10-20-10-64,60555,success,0
+odd-to-even-500000,cached-native-ailist-10-20-10-64,1235089,success,0
+odd-to-even-1000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+one-to-even-100000,cached-native-ailist-10-20-10-64,132301,success,50001
+one-to-even-500000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+one-to-long-continuous-100000,cached-native-ailist-10-20-10-64,6203,success,100000
+one-to-long-continuous-500000,cached-native-ailist-10-20-10-64,10239,success,500000
+one-to-long-continuous-1000000,cached-native-ailist-10-20-10-64,18121,success,1000000
+one-to-long-continuous-5000000,cached-native-ailist-10-20-10-64,119547,success,1867392
+one-to-long-continuous-10000000,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 15.0 failed 1 times; most recent failure: Lost task 0.0 in stage 15.0 (TID 43) (192.168.97.7 executor 3): java.lang.OutOfMemoryError: Java heap space
+one-to-long-overlap-100000,cached-native-ailist-10-20-10-64,6116,success,190019
+one-to-long-overlap-500000,cached-native-ailist-10-20-10-64,10907,success,990099
+one-to-long-overlap-1000000,cached-native-ailist-10-20-10-64,20097,success,1990199
+one-to-long-overlap-5000000,cached-native-ailist-10-20-10-64,158785,success,3725157
+one-to-long-overlap-10000000,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 15.0 failed 1 times; most recent failure: Lost task 0.0 in stage 15.0 (TID 43) (192.168.97.5 executor 2): java.lang.OutOfMemoryError: Java heap space
+one-to-one-100000,cached-native-ailist-10-20-10-64,265001,success,100001
+short-continuous-to-long-overlap-100000,cached-native-ailist-10-20-10-64,5112,success,19018
+short-continuous-to-long-overlap-500000,cached-native-ailist-10-20-10-64,5744,success,99098
+short-continuous-to-long-overlap-1000000,cached-native-ailist-10-20-10-64,6894,success,199198
+short-continuous-to-long-overlap-5000000,cached-native-ailist-10-20-10-64,22834,success,999998
+short-continuous-to-long-overlap-10000000,cached-native-ailist-10-20-10-64,57700,success,2000998
+short-continuous-to-long-overlap-50000000,cached-native-ailist-10-20-10-64,823941,success,3737516
+short-continuous-to-random-normal-short-100000,cached-native-ailist-10-20-10-64,14221,success,95400
+short-continuous-to-random-normal-short-500000,cached-native-ailist-10-20-10-64,240521,success,477600
+short-continuous-to-random-normal-short-1000000,cached-native-ailist-10-20-10-64,1136035,success,964400
+short-continuous-to-random-normal-short-5000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-random-poisson-short-100000,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 15.0 failed 1 times; most recent failure: Lost task 0.0 in stage 15.0 (TID 39) (192.168.97.7 executor 3): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-uniform-short-100000,cached-native-ailist-10-20-10-64,20354,success,197160
+short-continuous-to-random-uniform-short-500000,cached-native-ailist-10-20-10-64,563342,success,1001560
+short-continuous-to-random-uniform-short-1000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+short-continuous-to-short-overlap-100000,cached-native-ailist-10-20-10-64,8646,success,39997
+short-continuous-to-short-overlap-500000,cached-native-ailist-10-20-10-64,111244,success,199997
+short-continuous-to-short-overlap-1000000,cached-native-ailist-10-20-10-64,489985,success,399997
+short-continuous-to-short-overlap-5000000,cached-native-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+databio-s-1-2,cached-native-ailist-10-20-10-64,26226,success,54343
+databio-s-2-7,cached-native-ailist-10-20-10-64,123041,success,274266
+databio-s-1-0,cached-native-ailist-10-20-10-64,88524,success,321138
+databio-m-7-0,cached-native-ailist-10-20-10-64,1093267,success,2764185
+databio-m-7-3,cached-native-ailist-10-20-10-64,1290548,success,4410928
+databio-l-0-8,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 89.0 failed 1 times; most recent failure: Lost task 0.0 in stage 89.0 (TID 4108) (192.168.97.4 executor 4): java.lang.OutOfMemoryError: Java heap space
+databio-l-4-8,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 9 in stage 89.0 failed 1 times; most recent failure: Lost task 9.0 in stage 89.0 (TID 4151) (192.168.97.4 executor 4): java.lang.OutOfMemoryError: Java heap space
+databio-l-7-8,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 7 in stage 107.0 failed 1 times; most recent failure: Lost task 7.0 in stage 107.0 (TID 4137) (192.168.97.6 executor 0): java.lang.OutOfMemoryError: Java heap space
+databio-xl-3-0,cached-native-ailist-10-20-10-64,,Job aborted due to stage failure: Task 16 in stage 89.0 failed 1 times; most recent failure: Lost task 16.0 in stage 89.0 (TID 4114) (192.168.97.7 executor 3): ExecutorLostFailure (executor 3 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 146264 ms

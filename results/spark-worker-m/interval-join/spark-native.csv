@@ -1,0 +1,62 @@
+data_suite,join_name,elapsed_time,result,result_rows_count
+odd-to-even-100000,spark-native,16264,success,0
+odd-to-even-500000,spark-native,,Futures timed out after [30 minutes]
+odd-to-even-1000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+odd-to-even-5000000,spark-native,,Cannot call methods on a stopped SparkContext.
+odd-to-even-10000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+one-to-even-100000,spark-native,29631,success,50001
+one-to-even-500000,spark-native,,Futures timed out after [30 minutes]
+one-to-even-1000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+one-to-even-50000000,spark-native,,Cannot call methods on a stopped SparkContext.
+one-to-long-continuous-100000,spark-native,3232,success,100000
+one-to-long-continuous-500000,spark-native,3567,success,500000
+one-to-long-continuous-1000000,spark-native,4013,success,1000000
+one-to-long-continuous-5000000,spark-native,11062,success,5000000
+one-to-long-continuous-10000000,spark-native,36662,success,10000000
+one-to-long-continuous-50000000,spark-native,1308655,success,50000000
+one-to-long-overlap-100000,spark-native,3357,success,190019
+one-to-long-overlap-500000,spark-native,4044,success,990099
+one-to-long-overlap-1000000,spark-native,4837,success,1990199
+one-to-long-overlap-5000000,spark-native,22536,success,9990999
+one-to-long-overlap-10000000,spark-native,140536,success,19991999
+one-to-long-overlap-50000000,spark-native,,Futures timed out after [30 minutes]
+one-to-one-100000,spark-native,67279,success,100001
+one-to-one-500000,spark-native,,Futures timed out after [30 minutes]
+one-to-one-1000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+short-continuous-to-long-overlap-100000,spark-native,3697,success,19018
+short-continuous-to-long-overlap-500000,spark-native,3468,success,99098
+short-continuous-to-long-overlap-1000000,spark-native,4040,success,199198
+short-continuous-to-long-overlap-5000000,spark-native,6904,success,999998
+short-continuous-to-long-overlap-10000000,spark-native,13476,success,2000998
+short-continuous-to-long-overlap-50000000,spark-native,396617,success,10008998
+short-continuous-to-random-normal-short-100000,spark-native,6507,success,95400
+short-continuous-to-random-normal-short-500000,spark-native,68254,success,477600
+short-continuous-to-random-normal-short-1000000,spark-native,290501,success,964400
+short-continuous-to-random-normal-short-5000000,spark-native,,Futures timed out after [30 minutes]
+short-continuous-to-random-normal-short-10000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+short-continuous-to-random-normal-short-50000000,spark-native,,Cannot call methods on a stopped SparkContext.
+short-continuous-to-random-poisson-short-100000,spark-native,367630,success,20000000
+short-continuous-to-random-poisson-short-500000,spark-native,1632365,success,20000000
+short-continuous-to-random-poisson-short-1000000,spark-native,,Futures timed out after [30 minutes]
+short-continuous-to-random-poisson-short-5000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+short-continuous-to-random-uniform-short-100000,spark-native,9933,success,197160
+short-continuous-to-random-uniform-short-500000,spark-native,130503,success,1001560
+short-continuous-to-random-uniform-short-1000000,spark-native,730932,success,2001360
+short-continuous-to-random-uniform-short-5000000,spark-native,,Futures timed out after [30 minutes]
+short-continuous-to-random-uniform-short-10000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+short-continuous-to-random-uniform-short-50000000,spark-native,,Cannot call methods on a stopped SparkContext.
+short-continuous-to-short-overlap-100000,spark-native,5376,success,39997
+short-continuous-to-short-overlap-500000,spark-native,51026,success,199997
+short-continuous-to-short-overlap-1000000,spark-native,203918,success,399997
+short-continuous-to-short-overlap-5000000,spark-native,,Futures timed out after [30 minutes]
+short-continuous-to-short-overlap-10000000,spark-native,,Job aborted due to stage failure: Master removed our application: KILLED
+short-continuous-to-short-overlap-50000000,spark-native,,Cannot call methods on a stopped SparkContext.
+databio-s-1-2,spark-native,13874,success,54343
+databio-s-2-7,spark-native,64348,success,274266
+databio-s-1-0,spark-native,50029,success,321138
+databio-m-7-0,spark-native,339290,success,2764185
+databio-m-7-3,spark-native,387106,success,4410928
+databio-l-0-8,spark-native,,Futures timed out after [30 minutes]
+databio-l-4-8,spark-native,,Futures timed out after [30 minutes]
+databio-l-7-8,spark-native,1319544,success,307298602
+databio-xl-3-0,spark-native,,Futures timed out after [30 minutes]

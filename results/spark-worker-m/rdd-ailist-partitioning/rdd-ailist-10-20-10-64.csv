@@ -1,0 +1,281 @@
+data_suite,join_name,elapsed_time,result,result_rows_count
+one-to-even-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,24358,success,5000001
+one-to-even-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,21371,success,5000001
+one-to-even-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,115612,success
+one-to-even-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 14.0 failed 1 times; most recent failure: Lost task 0.0 in stage 14.0 (TID 86) (192.168.97.5 executor 1): java.lang.OutOfMemoryError: Java heap space
+one-to-even-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,56416,success,25000001
+one-to-even-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,86189,success,25000001
+one-to-even-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 15 in stage 11.0 failed 1 times; most recent failure: Lost task 15.0 in stage 11.0 (TID 99) (192.168.97.7 executor 3): java.lang.OutOfMemoryError: Java heap space
+one-to-even-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 5 in stage 13.0 failed 1 times; most recent failure: Lost task 5.0 in stage 13.0 (TID 114) (192.168.97.5 executor 1): java.lang.OutOfMemoryError: Java heap space
+one-to-long-continuous-100000,bucket-per-1000-rdd-ailist-10-20-10-64,7050,success,100000
+one-to-long-continuous-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,6876,success,100000
+one-to-long-continuous-100000,salt-per-1000000-rdd-ailist-10-20-10-64,5271,success,100000
+one-to-long-continuous-100000,salt-per-10000000-rdd-ailist-10-20-10-64,5054,success,100000
+one-to-long-continuous-500000,bucket-per-1000-rdd-ailist-10-20-10-64,7471,success,500000
+one-to-long-continuous-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,8088,success,500000
+one-to-long-continuous-500000,salt-per-1000000-rdd-ailist-10-20-10-64,6540,success,500000
+one-to-long-continuous-500000,salt-per-10000000-rdd-ailist-10-20-10-64,6435,success,500000
+one-to-long-continuous-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,8757,success,1000000
+one-to-long-continuous-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,11183,success,1000000
+one-to-long-continuous-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,7790,success,1000000
+one-to-long-continuous-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,7817,success,1000000
+one-to-long-continuous-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,14729,success,5000000
+one-to-long-continuous-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,16389,success,5000000
+one-to-long-continuous-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,20018,success,5000000
+one-to-long-continuous-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,29250,success,5000000
+one-to-long-continuous-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,20637,success,10000000
+one-to-long-continuous-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,19762,success,10000000
+one-to-long-continuous-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,59082,success,10000000
+one-to-long-continuous-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,74112,success
+one-to-long-continuous-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,48506,success,50000000
+one-to-long-continuous-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,74426,success,50000000
+one-to-long-continuous-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 3 in stage 13.0 failed 1 times; most recent failure: Lost task 3.0 in stage 13.0 (TID 87) (192.168.97.4 executor 0): java.lang.OutOfMemoryError: Java heap space
+one-to-long-continuous-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 6 in stage 13.0 failed 1 times; most recent failure: Lost task 6.0 in stage 13.0 (TID 83) (192.168.97.4 executor 0): java.lang.OutOfMemoryError: Java heap space: failed reallocation of scalar replaced objects
+one-to-long-overlap-100000,bucket-per-1000-rdd-ailist-10-20-10-64,8277,success,190019
+one-to-long-overlap-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,7107,success,190019
+one-to-long-overlap-100000,salt-per-1000000-rdd-ailist-10-20-10-64,5040,success,190019
+one-to-long-overlap-100000,salt-per-10000000-rdd-ailist-10-20-10-64,5102,success,190019
+one-to-long-overlap-500000,bucket-per-1000-rdd-ailist-10-20-10-64,8036,success,990099
+one-to-long-overlap-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,8648,success,990099
+one-to-long-overlap-500000,salt-per-1000000-rdd-ailist-10-20-10-64,6191,success,990099
+one-to-long-overlap-500000,salt-per-10000000-rdd-ailist-10-20-10-64,6175,success,990099
+one-to-long-overlap-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,8820,success,1990199
+one-to-long-overlap-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,12195,success,1990199
+one-to-long-overlap-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,8396,success,1990199
+one-to-long-overlap-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,8913,success,1990199
+one-to-long-overlap-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,15986,success,9990999
+one-to-long-overlap-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,20790,success,9990999
+one-to-long-overlap-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,21089,success,9990999
+one-to-long-overlap-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,33900,success,9990999
+one-to-long-overlap-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,24015,success,19991999
+one-to-long-overlap-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,22716,success,19991999
+one-to-long-overlap-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,59433,success,19991999
+one-to-long-overlap-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,71096,success,19991999
+one-to-long-overlap-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,68452,success,99999999
+one-to-long-overlap-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 14 in stage 17.0 failed 1 times; most recent failure: Lost task 14.0 in stage 17.0 (TID 138) (192.168.97.5 executor 1): java.lang.OutOfMemoryError: Java heap space
+one-to-long-overlap-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 5 in stage 13.0 failed 1 times; most recent failure: Lost task 5.0 in stage 13.0 (TID 96) (192.168.97.4 executor 0): java.lang.OutOfMemoryError: Java heap space
+one-to-long-overlap-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 8 in stage 13.0 failed 1 times; most recent failure: Lost task 8.0 in stage 13.0 (TID 85) (192.168.97.5 executor 1): java.lang.OutOfMemoryError: Java heap space
+one-to-one-100000,bucket-per-1000-rdd-ailist-10-20-10-64,9273,success,100001
+one-to-one-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,7710,success,100001
+one-to-one-100000,salt-per-1000000-rdd-ailist-10-20-10-64,6017,success,100001
+one-to-one-100000,salt-per-10000000-rdd-ailist-10-20-10-64,6032,success,100001
+one-to-one-500000,bucket-per-1000-rdd-ailist-10-20-10-64,9847,success,500001
+one-to-one-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,10381,success,500001
+one-to-one-500000,salt-per-1000000-rdd-ailist-10-20-10-64,8487,success,500001
+one-to-one-500000,salt-per-10000000-rdd-ailist-10-20-10-64,8069,success,500001
+one-to-one-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,11310,success,1000001
+one-to-one-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,14777,success,1000001
+one-to-one-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,11446,success,1000001
+one-to-one-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,11842,success,1000001
+one-to-one-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,18698,success,5000001
+one-to-one-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,27826,success,5000001
+one-to-one-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,42236,success,5000001
+one-to-one-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,53815,success,5000001
+one-to-one-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,24759,success,10000001
+one-to-one-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,26973,success,10000001
+one-to-one-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 14.0 failed 1 times; most recent failure: Lost task 0.0 in stage 14.0 (TID 188) (192.168.97.4 executor 0): java.lang.OutOfMemoryError: Java heap space
+one-to-one-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 13.0 failed 1 times; most recent failure: Lost task 0.0 in stage 13.0 (TID 85) (192.168.97.3 executor 2): java.lang.OutOfMemoryError: Java heap space
+odd-to-even-100000,bucket-per-1000-rdd-ailist-10-20-10-64,8186,success,0
+odd-to-even-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,6350,success,0
+odd-to-even-100000,salt-per-1000000-rdd-ailist-10-20-10-64,5292,success,0
+odd-to-even-100000,salt-per-10000000-rdd-ailist-10-20-10-64,5132,success,0
+odd-to-even-500000,bucket-per-1000-rdd-ailist-10-20-10-64,7988,success,0
+odd-to-even-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,6851,success,0
+odd-to-even-500000,salt-per-1000000-rdd-ailist-10-20-10-64,6287,success,0
+odd-to-even-500000,salt-per-10000000-rdd-ailist-10-20-10-64,6015,success,0
+odd-to-even-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,9030,success,0
+odd-to-even-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,8031,success,0
+odd-to-even-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,7276,success,0
+odd-to-even-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,7446,success,0
+odd-to-even-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,13577,success,0
+odd-to-even-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,18915,success,0
+odd-to-even-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,18926,success,0
+odd-to-even-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,21688,success,0
+odd-to-even-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,16530,success,0
+odd-to-even-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,18984,success,0
+odd-to-even-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,40279,success,0
+odd-to-even-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,37535,success,0
+odd-to-even-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,35557,success,0
+odd-to-even-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,43446,success,0
+odd-to-even-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 18 in stage 13.0 failed 1 times; most recent failure: Lost task 18.0 in stage 13.0 (TID 287) (192.168.97.7 executor 3): java.lang.OutOfMemoryError: Java heap space
+odd-to-even-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 1 in stage 13.0 failed 1 times; most recent failure: Lost task 1.0 in stage 13.0 (TID 89) (192.168.97.3 executor 4): java.lang.OutOfMemoryError: Java heap space
+one-to-even-100000,bucket-per-1000-rdd-ailist-10-20-10-64,8461,success,50001
+one-to-even-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,6569,success,50001
+one-to-even-100000,salt-per-1000000-rdd-ailist-10-20-10-64,5423,success,50001
+one-to-even-100000,salt-per-10000000-rdd-ailist-10-20-10-64,5352,success,50001
+one-to-even-500000,bucket-per-1000-rdd-ailist-10-20-10-64,8489,success,250001
+one-to-even-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,8821,success,250001
+one-to-even-500000,salt-per-1000000-rdd-ailist-10-20-10-64,7180,success,250001
+one-to-even-500000,salt-per-10000000-rdd-ailist-10-20-10-64,7359,success,250001
+one-to-even-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,10389,success,500001
+one-to-even-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,11455,success,500001
+one-to-even-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,9866,success,500001
+one-to-even-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,8976,success,500001
+one-to-even-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,17152,success,2500001
+one-to-even-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,19521,success,2500001
+one-to-even-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,33777,success,2500001
+one-to-even-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,39779,success,2500001
+one-to-one-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,70692,success,50000001
+one-to-one-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 24 in stage 17.0 failed 1 times; most recent failure: Lost task 24.0 in stage 17.0 (TID 181) (192.168.97.3 executor 4): java.lang.OutOfMemoryError: Java heap space
+one-to-one-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 3 in stage 13.0 failed 1 times; most recent failure: Lost task 3.0 in stage 13.0 (TID 91) (192.168.97.4 executor 2): java.lang.OutOfMemoryError: Java heap space: failed reallocation of scalar replaced objects
+one-to-one-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 1 in stage 13.0 failed 1 times; most recent failure: Lost task 1.0 in stage 13.0 (TID 89) (192.168.97.5 executor 1): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-long-overlap-100000,bucket-per-1000-rdd-ailist-10-20-10-64,5974,success,19018
+short-continuous-to-long-overlap-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,6166,success,19018
+short-continuous-to-long-overlap-100000,salt-per-1000000-rdd-ailist-10-20-10-64,4677,success,19018
+short-continuous-to-long-overlap-100000,salt-per-10000000-rdd-ailist-10-20-10-64,4907,success,19018
+short-continuous-to-long-overlap-500000,bucket-per-1000-rdd-ailist-10-20-10-64,6979,success,99098
+short-continuous-to-long-overlap-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,6368,success,99098
+short-continuous-to-long-overlap-500000,salt-per-1000000-rdd-ailist-10-20-10-64,4895,success,99098
+short-continuous-to-long-overlap-500000,salt-per-10000000-rdd-ailist-10-20-10-64,5173,success,99098
+short-continuous-to-long-overlap-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,6823,success,199198
+short-continuous-to-long-overlap-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,6987,success,199198
+short-continuous-to-long-overlap-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,5162,success,199198
+short-continuous-to-long-overlap-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,5083,success,199198
+short-continuous-to-long-overlap-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,7698,success,999998
+short-continuous-to-long-overlap-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,8952,success,999998
+short-continuous-to-long-overlap-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,6247,success,999998
+short-continuous-to-long-overlap-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,6334,success,999998
+short-continuous-to-long-overlap-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,8982,success,2000998
+short-continuous-to-long-overlap-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,12047,success,2000998
+short-continuous-to-long-overlap-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,8133,success,2000998
+short-continuous-to-long-overlap-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,8153,success,2000998
+short-continuous-to-long-overlap-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,15722,success,10008998
+short-continuous-to-long-overlap-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,20195,success,10008998
+short-continuous-to-long-overlap-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,20758,success,10008998
+short-continuous-to-long-overlap-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,32284,success,10008998
+short-continuous-to-random-normal-short-100000,bucket-per-1000-rdd-ailist-10-20-10-64,8361,success,4712
+short-continuous-to-random-normal-short-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,7773,success,4712
+short-continuous-to-random-normal-short-100000,salt-per-1000000-rdd-ailist-10-20-10-64,6121,success,95400
+short-continuous-to-random-normal-short-100000,salt-per-10000000-rdd-ailist-10-20-10-64,5941,success,95400
+short-continuous-to-random-normal-short-500000,bucket-per-1000-rdd-ailist-10-20-10-64,9596,success,23604
+short-continuous-to-random-normal-short-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,9357,success,23604
+short-continuous-to-random-normal-short-500000,salt-per-1000000-rdd-ailist-10-20-10-64,7152,success,477600
+short-continuous-to-random-normal-short-500000,salt-per-10000000-rdd-ailist-10-20-10-64,6887,success,477600
+short-continuous-to-random-normal-short-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,12943,success,47642
+short-continuous-to-random-normal-short-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,9886,success,47642
+short-continuous-to-random-normal-short-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,7339,success,964400
+short-continuous-to-random-normal-short-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,7342,success,964400
+short-continuous-to-random-normal-short-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,13177,success,250626
+short-continuous-to-random-normal-short-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,17126,success,250626
+short-continuous-to-random-normal-short-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,12341,success,5076600
+short-continuous-to-random-normal-short-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,13882,success,5076600
+short-continuous-to-random-normal-short-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,14879,success,523172
+short-continuous-to-random-normal-short-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,19009,success,523172
+short-continuous-to-random-normal-short-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,20722,success,10602960
+short-continuous-to-random-normal-short-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,24355,success,10602960
+short-continuous-to-random-normal-short-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,28991,success,3356654
+short-continuous-to-random-normal-short-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,41073,success,3356654
+short-continuous-to-random-normal-short-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 22 in stage 14.0 failed 1 times; most recent failure: Lost task 22.0 in stage 14.0 (TID 412) (192.168.97.5 executor 1): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-normal-short-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 14.0 failed 1 times; most recent failure: Lost task 0.0 in stage 14.0 (TID 94) (192.168.97.4 executor 2): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-poisson-short-100000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 7 in stage 17.0 failed 1 times; most recent failure: Lost task 7.0 in stage 17.0 (TID 141) (192.168.97.5 executor 1): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-poisson-short-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,21747,success,1598
+short-continuous-to-random-poisson-short-100000,salt-per-1000000-rdd-ailist-10-20-10-64,46742,success,20000000
+short-continuous-to-random-poisson-short-100000,salt-per-10000000-rdd-ailist-10-20-10-64,24899,success,20000000
+short-continuous-to-random-poisson-short-500000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 18 in stage 17.0 failed 1 times; most recent failure: Lost task 18.0 in stage 17.0 (TID 152) (192.168.97.3 executor 4): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-poisson-short-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,21592,success,1598
+short-continuous-to-random-poisson-short-500000,salt-per-1000000-rdd-ailist-10-20-10-64,47384,success,20000000
+short-continuous-to-random-poisson-short-500000,salt-per-10000000-rdd-ailist-10-20-10-64,25385,success,20000000
+short-continuous-to-random-poisson-short-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 11 in stage 17.0 failed 1 times; most recent failure: Lost task 11.0 in stage 17.0 (TID 146) (192.168.97.4 executor 2): ExecutorLostFailure (executor 2 exited caused by one of the running tasks) Reason: Command exited with code 52
+short-continuous-to-random-poisson-short-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,21265,success,1598
+short-continuous-to-random-poisson-short-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,49451,success,20000000
+short-continuous-to-random-poisson-short-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,25193,success,20000000
+short-continuous-to-random-poisson-short-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 6 in stage 17.0 failed 1 times; most recent failure: Lost task 6.0 in stage 17.0 (TID 144) (192.168.97.5 executor 1): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-poisson-short-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,18827,success,1598
+short-continuous-to-random-poisson-short-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,49862,success,20000000
+short-continuous-to-random-poisson-short-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,25918,success,20000000
+short-continuous-to-random-poisson-short-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 8 in stage 17.0 failed 1 times; most recent failure: Lost task 8.0 in stage 17.0 (TID 171) (192.168.97.6 executor 0): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-poisson-short-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,18997,success,1598
+short-continuous-to-random-poisson-short-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,49283,success,20000000
+short-continuous-to-random-poisson-short-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,25234,success,20000000
+short-continuous-to-random-poisson-short-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 7 in stage 17.0 failed 1 times; most recent failure: Lost task 7.0 in stage 17.0 (TID 170) (192.168.97.6 executor 0): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-poisson-short-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,20071,success,1598
+short-continuous-to-random-poisson-short-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,54937,success,20000000
+short-continuous-to-random-poisson-short-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,24901,success,20000000
+short-continuous-to-random-poisson-short-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 3 in stage 16.0 failed 1 times; most recent failure: Lost task 3.0 in stage 16.0 (TID 92) (192.168.97.7 executor 3): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-poisson-short-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,19353,success,1598
+short-continuous-to-random-poisson-short-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,78312,success,20000000
+short-continuous-to-random-poisson-short-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,88805,success,20000000
+short-continuous-to-random-uniform-short-100000,bucket-per-1000-rdd-ailist-10-20-10-64,8446,success,9602
+short-continuous-to-random-uniform-short-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,7641,success,9602
+short-continuous-to-random-uniform-short-100000,salt-per-1000000-rdd-ailist-10-20-10-64,6225,success,197160
+short-continuous-to-random-uniform-short-100000,salt-per-10000000-rdd-ailist-10-20-10-64,6300,success,197160
+short-continuous-to-random-uniform-short-500000,bucket-per-1000-rdd-ailist-10-20-10-64,9170,success,48852
+short-continuous-to-random-uniform-short-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,8769,success,48852
+short-continuous-to-random-uniform-short-500000,salt-per-1000000-rdd-ailist-10-20-10-64,7372,success,1001560
+short-continuous-to-random-uniform-short-500000,salt-per-10000000-rdd-ailist-10-20-10-64,7659,success,1001560
+short-continuous-to-random-uniform-short-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,9915,success,97652
+short-continuous-to-random-uniform-short-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,10698,success,97652
+short-continuous-to-random-uniform-short-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,9093,success,2001360
+short-continuous-to-random-uniform-short-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,9139,success,2001360
+short-continuous-to-random-uniform-short-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,12251,success,488642
+short-continuous-to-random-uniform-short-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,17664,success,488642
+short-continuous-to-random-uniform-short-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,18282,success,10019800
+short-continuous-to-random-uniform-short-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,21652,success,10019800
+short-continuous-to-random-uniform-short-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,14556,success,977052
+short-continuous-to-random-uniform-short-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,17289,success,977052
+short-continuous-to-random-uniform-short-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,47727,success,20031480
+short-continuous-to-random-uniform-short-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,38064,success,20031480
+short-continuous-to-random-uniform-short-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,31796,success,4875362
+short-continuous-to-random-uniform-short-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,55058,success,4875362
+short-continuous-to-random-uniform-short-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 19 in stage 14.0 failed 1 times; most recent failure: Lost task 19.0 in stage 14.0 (TID 475) (192.168.97.5 executor 1): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-uniform-short-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 1 in stage 14.0 failed 1 times; most recent failure: Lost task 1.0 in stage 14.0 (TID 109) (192.168.97.3 executor 4): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-short-overlap-100000,bucket-per-1000-rdd-ailist-10-20-10-64,7240,success,39997
+short-continuous-to-short-overlap-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,6500,success,39997
+short-continuous-to-short-overlap-100000,salt-per-1000000-rdd-ailist-10-20-10-64,4963,success,39997
+short-continuous-to-short-overlap-100000,salt-per-10000000-rdd-ailist-10-20-10-64,5009,success,39997
+short-continuous-to-short-overlap-500000,bucket-per-1000-rdd-ailist-10-20-10-64,8289,success,199997
+short-continuous-to-short-overlap-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,7253,success,199997
+short-continuous-to-short-overlap-500000,salt-per-1000000-rdd-ailist-10-20-10-64,5277,success,199997
+short-continuous-to-short-overlap-500000,salt-per-10000000-rdd-ailist-10-20-10-64,5459,success,199997
+short-continuous-to-short-overlap-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,8805,success,399997
+short-continuous-to-short-overlap-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,7712,success,399997
+short-continuous-to-short-overlap-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,5562,success,399997
+short-continuous-to-short-overlap-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,5931,success,399997
+short-continuous-to-short-overlap-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,10717,success,1999997
+short-continuous-to-short-overlap-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,12731,success,1999997
+short-continuous-to-short-overlap-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,8888,success,1999997
+short-continuous-to-short-overlap-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,9638,success,1999997
+short-continuous-to-short-overlap-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,13525,success,3999997
+short-continuous-to-short-overlap-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,21061,success,3999997
+short-continuous-to-short-overlap-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,13077,success,3999997
+short-continuous-to-short-overlap-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,12940,success,3999997
+short-continuous-to-short-overlap-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,24356,success,19999997
+short-continuous-to-short-overlap-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,32263,success,19999997
+short-continuous-to-short-overlap-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,71382,success,19999997
+short-continuous-to-short-overlap-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,101215,success,19999997
+databio-s-1-2,bucket-per-1000-rdd-ailist-10-20-10-64,8234,success,54343
+databio-s-1-2,bucket-per-1000000-rdd-ailist-10-20-10-64,7465,success,54343
+databio-s-1-2,salt-per-1000000-rdd-ailist-10-20-10-64,5667,success,54343
+databio-s-1-2,salt-per-10000000-rdd-ailist-10-20-10-64,5560,success,54343
+databio-s-2-7,bucket-per-1000-rdd-ailist-10-20-10-64,9237,success,274262
+databio-s-2-7,bucket-per-1000000-rdd-ailist-10-20-10-64,7751,success,274237
+databio-s-2-7,salt-per-1000000-rdd-ailist-10-20-10-64,6341,success,274246
+databio-s-2-7,salt-per-10000000-rdd-ailist-10-20-10-64,6374,success,274259
+databio-s-1-0,bucket-per-1000-rdd-ailist-10-20-10-64,8676,success,321138
+databio-s-1-0,bucket-per-1000000-rdd-ailist-10-20-10-64,7806,success,321138
+databio-s-1-0,salt-per-1000000-rdd-ailist-10-20-10-64,7549,success,321138
+databio-s-1-0,salt-per-10000000-rdd-ailist-10-20-10-64,6606,success,321138
+databio-m-7-0,bucket-per-1000-rdd-ailist-10-20-10-64,10973,success,2764045
+databio-m-7-0,bucket-per-1000000-rdd-ailist-10-20-10-64,10045,success,2764054
+databio-m-7-0,salt-per-1000000-rdd-ailist-10-20-10-64,9126,success,2764131
+databio-m-7-0,salt-per-10000000-rdd-ailist-10-20-10-64,8050,success,2764051
+databio-m-7-3,bucket-per-1000-rdd-ailist-10-20-10-64,11752,success,4410826
+databio-m-7-3,bucket-per-1000000-rdd-ailist-10-20-10-64,11627,success,4410783
+databio-m-7-3,salt-per-1000000-rdd-ailist-10-20-10-64,8417,success,4410785
+databio-m-7-3,salt-per-10000000-rdd-ailist-10-20-10-64,8410,success,4410723
+databio-l-0-8,bucket-per-1000-rdd-ailist-10-20-10-64,132191,success,164213758
+databio-l-0-8,bucket-per-1000000-rdd-ailist-10-20-10-64,195484,success,164213633
+databio-l-0-8,salt-per-1000000-rdd-ailist-10-20-10-64,51302,success,164214417
+databio-l-0-8,salt-per-10000000-rdd-ailist-10-20-10-64,26926,success,164213710
+databio-l-4-8,bucket-per-1000-rdd-ailist-10-20-10-64,151963,success,227865838
+databio-l-4-8,bucket-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 15 in stage 17.0 failed 1 times; most recent failure: Lost task 15.0 in stage 17.0 (TID 140) (192.168.97.6 executor 0): java.lang.OutOfMemoryError: Java heap space
+databio-l-4-8,salt-per-1000000-rdd-ailist-10-20-10-64,111079,success,227868693
+databio-l-4-8,salt-per-10000000-rdd-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+databio-l-7-8,bucket-per-1000-rdd-ailist-10-20-10-64,139843,success,307298136
+databio-l-7-8,bucket-per-1000000-rdd-ailist-10-20-10-64,196514,success,307297744
+databio-l-7-8,salt-per-1000000-rdd-ailist-10-20-10-64,45373,success,307298559
+databio-l-7-8,salt-per-10000000-rdd-ailist-10-20-10-64,21038,success,307298132
+databio-xl-3-0,bucket-per-1000-rdd-ailist-10-20-10-64,536985,success,1087655015
+databio-xl-3-0,bucket-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 18 in stage 17.0 failed 1 times; most recent failure: Lost task 18.0 in stage 17.0 (TID 104) (192.168.97.7 executor 3): org.apache.spark.memory.SparkOutOfMemoryError: No enough memory for aggregation
+databio-xl-3-0,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 5 in stage 14.0 failed 1 times; most recent failure: Lost task 5.0 in stage 14.0 (TID 86) (192.168.97.5 executor 1): java.lang.OutOfMemoryError: Java heap space
+databio-xl-3-0,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 16 in stage 14.0 failed 1 times; most recent failure: Lost task 16.0 in stage 14.0 (TID 92) (192.168.97.3 executor 4): java.lang.OutOfMemoryError: Java heap space

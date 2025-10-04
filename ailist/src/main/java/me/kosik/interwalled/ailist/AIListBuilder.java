@@ -6,10 +6,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class AIListBuilder<T> implements Serializable {
+public class AIListBuilder implements Serializable {
 
     private final AIListConfig config;
-    private final ArrayList<Interval<T>> intervals = new ArrayList<>();
+    private final ArrayList<Interval> intervals = new ArrayList<>();
 
     public AIListBuilder() {
         this.config = AIListConfig.DEFAULT;
@@ -19,7 +19,7 @@ public class AIListBuilder<T> implements Serializable {
         this.config = config;
     }
 
-    public AIList<T> build() {
+    public AIList build() {
         intervals.sort(Comparator.comparingLong(Interval::from));
 
         int componentsCount = 0;
@@ -49,10 +49,10 @@ public class AIListBuilder<T> implements Serializable {
                 int currentComponentStartIndex = lastAssignedIndex + 1;
                 int currentComponentLength = 0;
 
-                ArrayList<Interval<T>> extractedIntervals = new ArrayList<>();
+                ArrayList<Interval> extractedIntervals = new ArrayList<>();
 
                 for(int currentIntervalIndex = currentComponentStartIndex; currentIntervalIndex < intervals.size(); ) {
-                    final Interval<T> currentInterval = intervals.get(currentIntervalIndex);
+                    final Interval currentInterval = intervals.get(currentIntervalIndex);
                     int coverage = 0;
 
                     // Count interval's coverage: how many further intervals are "covered" by the current one's length.
@@ -120,7 +120,7 @@ public class AIListBuilder<T> implements Serializable {
             }
         }
 
-        return new AIList<>(
+        return new AIList(
             intervals,
             componentsCount,
             componentsLengths,
@@ -129,7 +129,7 @@ public class AIListBuilder<T> implements Serializable {
         );
     }
 
-    public void put(final Interval<T> interval) {
+    public void put(final Interval interval) {
         intervals.add(interval);
     }
 }
