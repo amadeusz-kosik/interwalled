@@ -1,10 +1,9 @@
-# Copyright Broadcom, Inc. All Rights Reserved.
-# SPDX-License-Identifier: APACHE-2.0
-
 services:
   spark-master:
-    image: docker.io/bitnami/spark:3.5.3
+    image: spark:3.5.7-scala
+    entrypoint: ['/opt/spark/sbin/start-master.sh']
     environment:
+      - SPARK_NO_DAEMONIZE=true
       - SPARK_MODE=master
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
       - SPARK_RPC_ENCRYPTION_ENABLED=no
@@ -16,14 +15,16 @@ services:
       - '8080:8080'
       - '7077:7077'
     volumes:
-      - ../../data/:/mnt/data/
-      - ../../results/:/mnt/results/
-      - ../../benchmark/target/scala-2.12/:/mnt/jar/
-      - ../../temporary:/mnt/temporary/
+      - ../data/:/mnt/data/
+      - ../results/:/mnt/results/
+      - ../docker/scripts/:/mnt/scripts/
+      - ../benchmark/target/scala-2.12/:/mnt/jar/
+      - ../temporary:/mnt/temporary/
 
   spark-driver:
-    image: docker.io/bitnami/spark:3.5.3
+    image: spark:3.5.7-scala
     environment:
+      - SPARK_NO_DAEMONIZE=true
       - INTERWALLED_CSV_DIRECTORY=/mnt/results/default.csv
       - INTERWALLED_DATA_DIRECTORY=/mnt/data
       - SPARK_MODE=driver
@@ -36,30 +37,20 @@ services:
     ports:
       - '4040:4040'
     command:
-      - "/opt/bitnami/spark/bin/spark-submit"
-      - "--master"
-      - "spark://spark-master:7077"
-      - "--deploy-mode"
-      - "client"
-      - "--driver-memory"
+      - "/mnt/scripts/iw-submit.sh"
       - "4G"
-      - "--executor-memory"
-      - "4G"
-      - "--executor-cores"
-      - "4"
-      - "--class"
-      - "me.kosik.interwalled.benchmark.Main"
-      - "/mnt/jar/interwalled-benchmark.jar"
+      - "10G"
+      - "10"
       - "$IW_APP_COMMAND"
       - "$IW_DATA"
       - "$IW_BENCHMARK"
 
     volumes:
-      - ../../data/:/mnt/data/
-      - ../../results/:/mnt/results/
-      - ../../docker/scripts/:/mnt/scripts/
-      - ../../benchmark/target/scala-2.12/:/mnt/jar/
-      - ../../temporary:/mnt/temporary/
+      - ../data/:/mnt/data/
+      - ../results/:/mnt/results/
+      - ../docker/scripts/:/mnt/scripts/
+      - ../benchmark/target/scala-2.12/:/mnt/jar/
+      - ../temporary:/mnt/temporary/
 
     deploy:
       resources:
@@ -67,14 +58,16 @@ services:
           memory: 4G
 
   spark-worker:
-    image: docker.io/bitnami/spark:3.5.3
+    image: spark:3.5.7-scala
     deploy:
-      replicas: 5
+      replicas: 4
+    entrypoint: ['/opt/spark/sbin/start-worker.sh', 'spark://spark-master:7077']
     environment:
+      - SPARK_NO_DAEMONIZE=true
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_MEMORY=4G
-      - SPARK_WORKER_CORES=4
+      - SPARK_WORKER_MEMORY=10G
+      - SPARK_WORKER_CORES=10
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
       - SPARK_RPC_ENCRYPTION_ENABLED=no
       - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
@@ -83,7 +76,8 @@ services:
     ports:
       - '8081'
     volumes:
-      - ../../data/:/mnt/data/
-      - ../../results/:/mnt/results/
-      - ../../benchmark/target/scala-2.12/:/mnt/jar/
-      - ../../temporary:/mnt/temporary/
+      - ../data/:/mnt/data/
+      - ../results/:/mnt/results/
+      - ../docker/scripts/:/mnt/scripts/
+      - ../benchmark/target/scala-2.12/:/mnt/jar/
+      - ../temporary:/mnt/temporary/
