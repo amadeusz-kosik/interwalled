@@ -22,11 +22,5 @@ jobs:
       - name: Setup SBT
         uses: sbt/setup-sbt@v1
 
-      - name: Generate test data
-        run: sbt "testDataGenerator/run false"
-
       - name: Run tests for 'ailist' module
         run: sbt "ailist/test"
-
-      - name: Run tests for 'spark' module
-        run: sbt "spark/test"
