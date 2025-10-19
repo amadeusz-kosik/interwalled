@@ -1,6 +1,6 @@
 services:
   spark-master:
-    image: spark:3.5.7-scala
+    image: spark:3.5.7-java17-scala
     entrypoint: ['/opt/spark/sbin/start-master.sh']
     environment:
       - SPARK_NO_DAEMONIZE=true
@@ -22,7 +22,7 @@ services:
       - ../temporary:/mnt/temporary/
 
   spark-driver:
-    image: spark:3.5.7-scala
+    image: spark:3.5.7-java17-scala
     environment:
       - SPARK_NO_DAEMONIZE=true
       - INTERWALLED_CSV_DIRECTORY=/mnt/results/default.csv
@@ -38,12 +38,13 @@ services:
       - '4040:4040'
     command:
       - "/mnt/scripts/iw-submit.sh"
-      - "4G"
-      - "10G"
-      - "10"
-      - "$IW_APP_COMMAND"
-      - "$IW_DATA"
-      - "$IW_BENCHMARK"
+      - "${IW_DRIVER_MEMORY}"
+      - "${IW_EXECUTOR_CORES}"
+      - "${IW_TOTAL_EXECUTOR_CORES}"
+      - "${IW_EXECUTOR_MEMORY}"
+      - "${IW_APP_COMMAND}"
+      - "${IW_DATA}"
+      - "${IW_BENCHMARK}"
 
     volumes:
       - ../data/:/mnt/data/
@@ -58,7 +59,7 @@ services:
           memory: 4G
 
   spark-worker:
-    image: spark:3.5.7-scala
+    image: spark:3.5.7-java17-scala
     deploy:
       replicas: 4
     entrypoint: ['/opt/spark/sbin/start-worker.sh', 'spark://spark-master:7077']

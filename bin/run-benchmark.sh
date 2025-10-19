@@ -15,10 +15,10 @@ export PATH="$JAVA_HOME/bin:$PATH"
 BENCHMARKS=(
 #    "cached-native-ailist-10-20-10-64"
 #    "checkpointed-native-ailist-10-20-10-64"
-#    "driver-ailist"
 #    "rdd-ailist-10-20-10-64"
 #    "spark-native"
 # ----------------------------------------------------------------------------------------------------------------------
+  "driver-ailist"
   "bucket-per-1000-rdd-ailist-10-20-10-64"
   "bucket-per-1000000-rdd-ailist-10-20-10-64"
   "salt-per-1000000-rdd-ailist-10-20-10-64"
@@ -36,87 +36,87 @@ PREPROCESSORS=(
 )
 
 DATA_SUITES=(
-  # odd to even
-  "odd-to-even-100000"
-  "odd-to-even-500000"
-  "odd-to-even-1000000"
-  "odd-to-even-5000000"
-  "odd-to-even-10000000"
-  "odd-to-even-50000000"
-  # one to even
-  "one-to-even-100000"
-  "one-to-even-500000"
-  "one-to-even-1000000"
-  "one-to-even-5000000"
-  "one-to-even-10000000"
+#  # odd to even
+#  "odd-to-even-100000"
+#  "odd-to-even-500000"
+#  "odd-to-even-1000000"
+#  "odd-to-even-5000000"
+#  "odd-to-even-10000000"
+#  "odd-to-even-50000000"
+#  # one to even
+#  "one-to-even-100000"
+#  "one-to-even-500000"
+#  "one-to-even-1000000"
+#  "one-to-even-5000000"
+#  "one-to-even-10000000"
   "one-to-even-50000000"
   # one to long cont
-  "one-to-long-continuous-100000"
-  "one-to-long-continuous-500000"
-  "one-to-long-continuous-1000000"
-  "one-to-long-continuous-5000000"
-  "one-to-long-continuous-10000000"
-  "one-to-long-continuous-50000000"
-  # one to long overlap
-  "one-to-long-overlap-100000"
-  "one-to-long-overlap-500000"
-  "one-to-long-overlap-1000000"
-  "one-to-long-overlap-5000000"
-  "one-to-long-overlap-10000000"
-  "one-to-long-overlap-50000000"
-  # one to one
-  "one-to-one-100000"
-  "one-to-one-500000"
-  "one-to-one-1000000"
-  "one-to-one-5000000"
-  "one-to-one-10000000"
-  "one-to-one-50000000"
-  # short cont to long overlap
-  "short-continuous-to-long-overlap-100000"
-  "short-continuous-to-long-overlap-500000"
-  "short-continuous-to-long-overlap-1000000"
-  "short-continuous-to-long-overlap-5000000"
-  "short-continuous-to-long-overlap-10000000"
-  "short-continuous-to-long-overlap-50000000"
-  # short cont to random normal
-  "short-continuous-to-random-normal-short-100000"
-  "short-continuous-to-random-normal-short-500000"
-  "short-continuous-to-random-normal-short-1000000"
-  "short-continuous-to-random-normal-short-5000000"
-  "short-continuous-to-random-normal-short-10000000"
-  "short-continuous-to-random-normal-short-50000000"
-  # short cont to random poisson
-  "short-continuous-to-random-poisson-short-100000"
-  "short-continuous-to-random-poisson-short-500000"
-  "short-continuous-to-random-poisson-short-1000000"
-  "short-continuous-to-random-poisson-short-5000000"
-  "short-continuous-to-random-poisson-short-10000000"
-  "short-continuous-to-random-poisson-short-10000000"
-  "short-continuous-to-random-poisson-short-50000000"
-  # short cont to random uniform
-  "short-continuous-to-random-uniform-short-100000"
-  "short-continuous-to-random-uniform-short-500000"
-  "short-continuous-to-random-uniform-short-1000000"
-  "short-continuous-to-random-uniform-short-5000000"
-  "short-continuous-to-random-uniform-short-10000000"
-  "short-continuous-to-random-uniform-short-50000000"
-  # short cont to short overlap
-  "short-continuous-to-short-overlap-100000"
-  "short-continuous-to-short-overlap-500000"
-  "short-continuous-to-short-overlap-1000000"
-  "short-continuous-to-short-overlap-5000000"
-  "short-continuous-to-short-overlap-10000000"
-  "short-continuous-to-short-overlap-50000000"
-  # databio
-  "databio-s-1-2"    # Expected output count:        54 343
-  "databio-s-2-7"    # Expected output count:       274 266
-  "databio-s-1-0"    # Expected output count:       321 138
-  "databio-m-7-0"    # Expected output count:     2 764 185
-  "databio-m-7-3"    # Expected output count:     4 410 928
-  "databio-l-0-8"    # Expected output count:   164 214 743
-  "databio-l-4-8"    # Expected output count:   227 869 400
-  "databio-l-7-8"    # Expected output count:   307 298 107
-  "databio-xl-3-0"   # Expected output count: 1 087 646 273
+#  "one-to-long-continuous-100000"
+#  "one-to-long-continuous-500000"
+#  "one-to-long-continuous-1000000"
+#  "one-to-long-continuous-5000000"
+#  "one-to-long-continuous-10000000"
+#  "one-to-long-continuous-50000000"
+#  # one to long overlap
+#  "one-to-long-overlap-100000"
+#  "one-to-long-overlap-500000"
+#  "one-to-long-overlap-1000000"
+#  "one-to-long-overlap-5000000"
+#  "one-to-long-overlap-10000000"
+#  "one-to-long-overlap-50000000"
+#  # one to one
+#  "one-to-one-100000"
+#  "one-to-one-500000"
+#  "one-to-one-1000000"
+#  "one-to-one-5000000"
+#  "one-to-one-10000000"
+#  "one-to-one-50000000"
+#  # short cont to long overlap
+#  "short-continuous-to-long-overlap-100000"
+#  "short-continuous-to-long-overlap-500000"
+#  "short-continuous-to-long-overlap-1000000"
+#  "short-continuous-to-long-overlap-5000000"
+#  "short-continuous-to-long-overlap-10000000"
+#  "short-continuous-to-long-overlap-50000000"
+#  # short cont to random normal
+#  "short-continuous-to-random-normal-short-100000"
+#  "short-continuous-to-random-normal-short-500000"
+#  "short-continuous-to-random-normal-short-1000000"
+#  "short-continuous-to-random-normal-short-5000000"
+#  "short-continuous-to-random-normal-short-10000000"
+#  "short-continuous-to-random-normal-short-50000000"
+#  # short cont to random poisson
+#  "short-continuous-to-random-poisson-short-100000"
+#  "short-continuous-to-random-poisson-short-500000"
+#  "short-continuous-to-random-poisson-short-1000000"
+#  "short-continuous-to-random-poisson-short-5000000"
+#  "short-continuous-to-random-poisson-short-10000000"
+#  "short-continuous-to-random-poisson-short-10000000"
+#  "short-continuous-to-random-poisson-short-50000000"
+#  # short cont to random uniform
+#  "short-continuous-to-random-uniform-short-100000"
+#  "short-continuous-to-random-uniform-short-500000"
+#  "short-continuous-to-random-uniform-short-1000000"
+#  "short-continuous-to-random-uniform-short-5000000"
+#  "short-continuous-to-random-uniform-short-10000000"
+#  "short-continuous-to-random-uniform-short-50000000"
+#  # short cont to short overlap
+#  "short-continuous-to-short-overlap-100000"
+#  "short-continuous-to-short-overlap-500000"
+#  "short-continuous-to-short-overlap-1000000"
+#  "short-continuous-to-short-overlap-5000000"
+#  "short-continuous-to-short-overlap-10000000"
+#  "short-continuous-to-short-overlap-50000000"
+#  # databio
+#  "databio-s-1-2"    # Expected output count:        54 343
+#  "databio-s-2-7"    # Expected output count:       274 266
+#  "databio-s-1-0"    # Expected output count:       321 138
+#  "databio-m-7-0"    # Expected output count:     2 764 185
+#  "databio-m-7-3"    # Expected output count:     4 410 928
+#  "databio-l-0-8"    # Expected output count:   164 214 743
+#  "databio-l-4-8"    # Expected output count:   227 869 400
+#  "databio-l-7-8"    # Expected output count:   307 298 107
+#  "databio-xl-3-0"   # Expected output count: 1 087 646 273
 )
 
 function build() {
@@ -129,7 +129,33 @@ function local_run_benchmark() {
   export IW_DATA="$1"
   export IW_BENCHMARK="$2"
 
-  cd "./docker/$ARG_CLUSTER" && docker compose up spark-driver && cd ../../
+  export IW_DRIVER_MEMORY="4G"git
+  export IW_TOTAL_EXECUTOR_CORES="20"
+
+  case "$ARG_CLUSTER" in
+    s | small)
+      export IW_EXECUTOR_CORES="2"
+      export IW_EXECUTOR_MEMORY="2G"
+      ;;
+
+    m | medium)
+      export IW_EXECUTOR_CORES="4"
+      export IW_EXECUTOR_MEMORY="4G"
+      ;;
+
+    l | large)
+      export IW_EXECUTOR_CORES="10"
+      export IW_EXECUTOR_MEMORY="10G"
+      ;;
+
+    *)
+      echo "Incorrect cluster sizing: $ARG_CLUSTER. Use one of: s|m|l." >&2
+      exit 127
+      ;;
+
+  esac
+
+  cd "./docker/" && docker compose up spark-driver && cd ../
 }
 
 function local_run_benchmarks() {
