@@ -1,0 +1,332 @@
+data_suite,join_name,elapsed_time,result,result_rows_count
+odd-to-even-100000,driver-ailist,4513,success,0
+odd-to-even-100000,bucket-per-1000-rdd-ailist-10-20-10-64,7479,success,0
+odd-to-even-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,6555,success,0
+odd-to-even-100000,salt-per-1000000-rdd-ailist-10-20-10-64,5669,success,0
+odd-to-even-100000,salt-per-10000000-rdd-ailist-10-20-10-64,5532,success,0
+odd-to-even-500000,driver-ailist,4934,success,0
+odd-to-even-500000,bucket-per-1000-rdd-ailist-10-20-10-64,8257,success,0
+odd-to-even-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,7589,success,0
+odd-to-even-500000,salt-per-1000000-rdd-ailist-10-20-10-64,6633,success,0
+odd-to-even-500000,salt-per-10000000-rdd-ailist-10-20-10-64,6687,success,0
+odd-to-even-1000000,driver-ailist,5900,success,0
+odd-to-even-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,9603,success,0
+odd-to-even-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,9106,success,0
+odd-to-even-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,8880,success,0
+odd-to-even-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,8520,success,0
+odd-to-even-5000000,driver-ailist,20590,success,0
+odd-to-even-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,14881,success,0
+odd-to-even-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,18547,success,0
+odd-to-even-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,18089,success,0
+odd-to-even-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,21552,success,0
+odd-to-even-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,15780,success,0
+odd-to-even-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,26967,success,0
+odd-to-even-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,46799,success,0
+odd-to-even-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 14.0 failed 1 times; most recent failure: Lost task 0.0 in stage 14.0 (TID 86) (192.168.97.5 executor 6): java.lang.OutOfMemoryError: Java heap space
+odd-to-even-50000000,driver-ailist,,Futures timed out after [30 minutes]
+odd-to-even-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,70599,success,0
+odd-to-even-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,51279,success,0
+odd-to-even-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 10 in stage 13.0 failed 1 times; most recent failure: Lost task 10.0 in stage 13.0 (TID 279) (192.168.97.4 executor 0): ExecutorLostFailure (executor 0 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 155299 ms
+odd-to-even-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 11.0 failed 1 times; most recent failure: Lost task 0.0 in stage 11.0 (TID 84) (192.168.97.6 executor 5): java.lang.OutOfMemoryError: Java heap space
+one-to-even-100000,driver-ailist,4859,success,50001
+one-to-even-100000,bucket-per-1000-rdd-ailist-10-20-10-64,8903,success,50001
+one-to-even-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,8115,success,50001
+one-to-even-100000,salt-per-1000000-rdd-ailist-10-20-10-64,6171,success,50001
+one-to-even-100000,salt-per-10000000-rdd-ailist-10-20-10-64,6173,success,50001
+one-to-even-500000,driver-ailist,6095,success,250001
+one-to-even-500000,bucket-per-1000-rdd-ailist-10-20-10-64,10459,success,250001
+one-to-even-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,10770,success,250001
+one-to-even-500000,salt-per-1000000-rdd-ailist-10-20-10-64,7672,success,250001
+one-to-even-500000,salt-per-10000000-rdd-ailist-10-20-10-64,7498,success,250001
+one-to-even-1000000,driver-ailist,8108,success,500001
+one-to-even-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,12086,success,500001
+one-to-even-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,13123,success,500001
+one-to-even-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,10463,success,500001
+one-to-even-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,9977,success,500001
+one-to-even-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,16709,success,2500001
+one-to-even-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,26310,success,2500001
+one-to-even-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,41030,success,2500001
+one-to-even-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 11.0 failed 1 times; most recent failure: Lost task 0.0 in stage 11.0 (TID 84) (192.168.97.4 executor 1): java.lang.OutOfMemoryError: Java heap space
+one-to-even-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,25793,success,5000001
+one-to-even-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,21590,success,5000001
+one-to-even-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 2 in stage 11.0 failed 1 times; most recent failure: Lost task 2.0 in stage 11.0 (TID 86) (192.168.97.5 executor 6): ExecutorLostFailure (executor 6 exited caused by one of the running tasks) Reason: Command exited with code 137
+one-to-even-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 11.0 failed 1 times; most recent failure: Lost task 0.0 in stage 11.0 (TID 84) (192.168.97.7 executor 9): ExecutorLostFailure (executor 9 exited caused by one of the running tasks) Reason: Command exited with code 52
+one-to-even-50000000,driver-ailist,,Job aborted due to stage failure: Total size of serialized results of 16 tasks (1063.2 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+one-to-even-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 11 in stage 15.0 failed 1 times; most recent failure: Lost task 11.0 in stage 15.0 (TID 116) (192.168.97.6 executor 5): ExecutorLostFailure (executor 5 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 126281 ms
+one-to-even-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 21 in stage 17.0 failed 1 times; most recent failure: Lost task 21.0 in stage 17.0 (TID 178) (192.168.97.7 executor 9): ExecutorLostFailure (executor 9 exited caused by one of the running tasks) Reason: Command exited with code 137
+one-to-even-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 8 in stage 11.0 failed 1 times; most recent failure: Lost task 8.0 in stage 11.0 (TID 92) (192.168.97.7 executor 8): ExecutorLostFailure (executor 8 exited caused by one of the running tasks) Reason: Command exited with code 137
+one-to-even-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 11 in stage 11.0 failed 1 times; most recent failure: Lost task 11.0 in stage 11.0 (TID 95) (192.168.97.7 executor 9): ExecutorLostFailure (executor 9 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 123833 ms
+one-to-long-continuous-100000,driver-ailist,4668,success,100000
+one-to-long-continuous-100000,bucket-per-1000-rdd-ailist-10-20-10-64,8108,success,100000
+one-to-long-continuous-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,7451,success,100000
+one-to-long-continuous-100000,salt-per-1000000-rdd-ailist-10-20-10-64,5510,success,100000
+one-to-long-continuous-100000,salt-per-10000000-rdd-ailist-10-20-10-64,5583,success,100000
+one-to-long-continuous-500000,driver-ailist,5539,success,500000
+one-to-long-continuous-500000,bucket-per-1000-rdd-ailist-10-20-10-64,9143,success,500000
+one-to-long-continuous-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,9161,success,500000
+one-to-long-continuous-500000,salt-per-1000000-rdd-ailist-10-20-10-64,6694,success,500000
+one-to-long-continuous-500000,salt-per-10000000-rdd-ailist-10-20-10-64,6770,success,500000
+one-to-long-continuous-1000000,driver-ailist,7276,success,1000000
+one-to-long-continuous-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,9885,success,1000000
+one-to-long-continuous-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,11496,success,1000000
+one-to-long-continuous-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,8390,success,1000000
+one-to-long-continuous-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,8388,success,1000000
+one-to-long-continuous-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,16139,success,5000000
+one-to-long-continuous-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,22485,success,5000000
+one-to-long-continuous-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,26749,success,5000000
+one-to-long-continuous-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,31163,success,5000000
+one-to-long-continuous-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,22073,success,10000000
+one-to-long-continuous-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,19468,success,10000000
+one-to-long-continuous-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 7 in stage 11.0 failed 1 times; most recent failure: Lost task 7.0 in stage 11.0 (TID 83) (192.168.97.4 executor 8): ExecutorLostFailure (executor 8 exited caused by one of the running tasks) Reason: Command exited with code 137
+one-to-long-continuous-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 13.0 failed 1 times; most recent failure: Lost task 0.0 in stage 13.0 (TID 77) (192.168.97.6 executor 5): ExecutorLostFailure (executor 5 exited caused by one of the running tasks) Reason: Command exited with code 52
+one-to-long-continuous-50000000,driver-ailist,,Job aborted due to stage failure: Total size of serialized results of 16 tasks (1063.2 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+one-to-long-continuous-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,618116,success
+one-to-long-continuous-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 14 in stage 17.0 failed 1 times; most recent failure: Lost task 14.0 in stage 17.0 (TID 138) (192.168.97.6 executor 3): java.lang.OutOfMemoryError: Java heap space
+one-to-long-continuous-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 10 in stage 11.0 failed 1 times; most recent failure: Lost task 10.0 in stage 11.0 (TID 86) (192.168.97.5 executor 6): ExecutorLostFailure (executor 6 exited caused by one of the running tasks) Reason: Command exited with code 137
+one-to-long-continuous-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 4 in stage 11.0 failed 1 times; most recent failure: Lost task 4.0 in stage 11.0 (TID 80) (192.168.97.3 executor 1): ExecutorLostFailure (executor 1 exited caused by one of the running tasks) Reason: Command exited with code 137
+one-to-long-overlap-100000,driver-ailist,4290,success,190019
+one-to-long-overlap-100000,bucket-per-1000-rdd-ailist-10-20-10-64,7934,success,190019
+one-to-long-overlap-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,7947,success,190019
+one-to-long-overlap-100000,salt-per-1000000-rdd-ailist-10-20-10-64,5842,success,190019
+one-to-long-overlap-100000,salt-per-10000000-rdd-ailist-10-20-10-64,5659,success,190019
+one-to-long-overlap-500000,driver-ailist,5659,success,990099
+one-to-long-overlap-500000,bucket-per-1000-rdd-ailist-10-20-10-64,9383,success,990099
+one-to-long-overlap-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,10344,success,990099
+one-to-long-overlap-500000,salt-per-1000000-rdd-ailist-10-20-10-64,6963,success,990099
+one-to-long-overlap-500000,salt-per-10000000-rdd-ailist-10-20-10-64,6919,success,990099
+one-to-long-overlap-1000000,driver-ailist,7634,success,1990199
+one-to-long-overlap-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,10432,success,1990199
+one-to-long-overlap-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,12816,success,1990199
+one-to-long-overlap-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,8662,success,1990199
+one-to-long-overlap-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,8098,success,1990199
+one-to-long-overlap-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,17669,success,9990999
+one-to-long-overlap-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,29687,success,9990999
+one-to-long-overlap-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,27637,success,9990999
+one-to-long-overlap-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 11.0 failed 1 times; most recent failure: Lost task 0.0 in stage 11.0 (TID 76) (192.168.97.3 executor 6): java.lang.OutOfMemoryError: Java heap space
+one-to-long-overlap-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,27803,success,19991999
+one-to-long-overlap-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,23439,success,19991999
+one-to-long-overlap-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 15 in stage 13.0 failed 1 times; most recent failure: Lost task 15.0 in stage 13.0 (TID 92) (192.168.97.6 executor 0): ExecutorLostFailure (executor 0 exited caused by one of the running tasks) Reason: Command exited with code 137
+one-to-long-overlap-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 13.0 failed 1 times; most recent failure: Lost task 0.0 in stage 13.0 (TID 77) (192.168.97.3 executor 6): ExecutorLostFailure (executor 6 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 167369 ms
+one-to-long-overlap-50000000,driver-ailist,,Job aborted due to stage failure: Total size of serialized results of 16 tasks (1063.2 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+one-to-long-overlap-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,715840,success
+one-to-long-overlap-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 14 in stage 17.0 failed 1 times; most recent failure: Lost task 14.0 in stage 17.0 (TID 138) (192.168.97.3 executor 7): java.lang.OutOfMemoryError: Java heap space
+one-to-long-overlap-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 7 in stage 13.0 failed 1 times; most recent failure: Lost task 7.0 in stage 13.0 (TID 98) (192.168.97.3 executor 7): ExecutorLostFailure (executor 7 exited caused by one of the running tasks) Reason: Command exited with code 137
+one-to-long-overlap-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 17 in stage 13.0 failed 1 times; most recent failure: Lost task 17.0 in stage 13.0 (TID 94) (192.168.97.4 executor 5): ExecutorLostFailure (executor 5 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 931462 ms
+one-to-one-100000,driver-ailist,4563,success,100001
+one-to-one-100000,bucket-per-1000-rdd-ailist-10-20-10-64,9036,success,100001
+one-to-one-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,8200,success,100001
+one-to-one-100000,salt-per-1000000-rdd-ailist-10-20-10-64,6098,success,100001
+one-to-one-100000,salt-per-10000000-rdd-ailist-10-20-10-64,6181,success,100001
+one-to-one-500000,driver-ailist,6736,success,500001
+one-to-one-500000,bucket-per-1000-rdd-ailist-10-20-10-64,10898,success,500001
+one-to-one-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,11302,success,500001
+one-to-one-500000,salt-per-1000000-rdd-ailist-10-20-10-64,8158,success,500001
+one-to-one-500000,salt-per-10000000-rdd-ailist-10-20-10-64,8070,success,500001
+one-to-one-1000000,driver-ailist,8343,success,1000001
+one-to-one-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,12249,success,1000001
+one-to-one-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,14871,success,1000001
+one-to-one-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,12574,success,1000001
+one-to-one-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,12064,success,1000001
+one-to-one-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,19663,success,5000001
+one-to-one-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,42641,success,5000001
+one-to-one-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,461355,success,5000001
+one-to-one-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 14.0 failed 1 times; most recent failure: Lost task 0.0 in stage 14.0 (TID 86) (192.168.97.4 executor 4): ExecutorLostFailure (executor 4 exited caused by one of the running tasks) Reason: Command exited with code 52
+one-to-one-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,30073,success,10000001
+one-to-one-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,29431,success,10000001
+one-to-one-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 37 in stage 11.0 failed 1 times; most recent failure: Lost task 37.0 in stage 11.0 (TID 121) (192.168.97.4 executor 3): ExecutorLostFailure (executor 3 exited caused by one of the running tasks) Reason: Command exited with code 137
+one-to-one-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 13.0 failed 1 times; most recent failure: Lost task 0.0 in stage 13.0 (TID 85) (192.168.97.5 executor 9): ExecutorLostFailure (executor 9 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 177836 ms
+one-to-one-50000000,driver-ailist,,Job aborted due to stage failure: Total size of serialized results of 16 tasks (1063.3 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+one-to-one-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 1 in stage 17.0 failed 1 times; most recent failure: Lost task 1.0 in stage 17.0 (TID 164) (192.168.97.4 executor 5): ExecutorLostFailure (executor 5 exited caused by one of the running tasks) Reason: Command exited with code 137
+one-to-one-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 24 in stage 16.0 failed 1 times; most recent failure: Lost task 24.0 in stage 16.0 (TID 155) (192.168.97.6 executor 0): ExecutorLostFailure (executor 0 exited caused by one of the running tasks) Reason: Command exited with code 137
+one-to-one-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 198 in stage 11.0 failed 1 times; most recent failure: Lost task 198.0 in stage 11.0 (TID 282) (192.168.97.5 executor 8): ExecutorLostFailure (executor 8 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 133160 ms
+one-to-one-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 2 in stage 11.0 failed 1 times; most recent failure: Lost task 2.0 in stage 11.0 (TID 86) (192.168.97.3 executor 7): ExecutorLostFailure (executor 7 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 140781 ms
+short-continuous-to-long-overlap-100000,driver-ailist,11103,success,19018
+short-continuous-to-long-overlap-100000,bucket-per-1000-rdd-ailist-10-20-10-64,6794,success,19018
+short-continuous-to-long-overlap-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,6574,success,19018
+short-continuous-to-long-overlap-100000,salt-per-1000000-rdd-ailist-10-20-10-64,5002,success,19018
+short-continuous-to-long-overlap-100000,salt-per-10000000-rdd-ailist-10-20-10-64,5123,success,19018
+short-continuous-to-long-overlap-500000,driver-ailist,4014,success,99098
+short-continuous-to-long-overlap-500000,bucket-per-1000-rdd-ailist-10-20-10-64,7693,success,99098
+short-continuous-to-long-overlap-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,7131,success,99098
+short-continuous-to-long-overlap-500000,salt-per-1000000-rdd-ailist-10-20-10-64,5175,success,99098
+short-continuous-to-long-overlap-500000,salt-per-10000000-rdd-ailist-10-20-10-64,5290,success,99098
+short-continuous-to-long-overlap-1000000,driver-ailist,4163,success,199198
+short-continuous-to-long-overlap-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,8138,success,199198
+short-continuous-to-long-overlap-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,7683,success,199198
+short-continuous-to-long-overlap-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,5458,success,199198
+short-continuous-to-long-overlap-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,5521,success,199198
+short-continuous-to-long-overlap-5000000,driver-ailist,5464,success,999998
+short-continuous-to-long-overlap-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,9265,success,999998
+short-continuous-to-long-overlap-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,9839,success,999998
+short-continuous-to-long-overlap-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,7082,success,999998
+short-continuous-to-long-overlap-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,6696,success,999998
+short-continuous-to-long-overlap-10000000,driver-ailist,7123,success,2000998
+short-continuous-to-long-overlap-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,10599,success,2000998
+short-continuous-to-long-overlap-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,12832,success,2000998
+short-continuous-to-long-overlap-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,8746,success,2000998
+short-continuous-to-long-overlap-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,8474,success,2000998
+short-continuous-to-long-overlap-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,21785,success,10008998
+short-continuous-to-long-overlap-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,26805,success,10008998
+short-continuous-to-long-overlap-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,25711,success,10008998
+short-continuous-to-long-overlap-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,31856,success,10008998
+short-continuous-to-random-normal-short-100000,driver-ailist,5953,success,95400
+short-continuous-to-random-normal-short-100000,bucket-per-1000-rdd-ailist-10-20-10-64,9499,success,4712
+short-continuous-to-random-normal-short-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,8915,success,4712
+short-continuous-to-random-normal-short-100000,salt-per-1000000-rdd-ailist-10-20-10-64,7045,success,95400
+short-continuous-to-random-normal-short-100000,salt-per-10000000-rdd-ailist-10-20-10-64,6456,success,95400
+short-continuous-to-random-normal-short-500000,driver-ailist,5350,success,477600
+short-continuous-to-random-normal-short-500000,bucket-per-1000-rdd-ailist-10-20-10-64,10836,success,23604
+short-continuous-to-random-normal-short-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,9546,success,23604
+short-continuous-to-random-normal-short-500000,salt-per-1000000-rdd-ailist-10-20-10-64,8014,success,477600
+short-continuous-to-random-normal-short-500000,salt-per-10000000-rdd-ailist-10-20-10-64,7593,success,477600
+short-continuous-to-random-normal-short-1000000,driver-ailist,5763,success,964400
+short-continuous-to-random-normal-short-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,11565,success,47642
+short-continuous-to-random-normal-short-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,11147,success,47642
+short-continuous-to-random-normal-short-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,7859,success,964400
+short-continuous-to-random-normal-short-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,8279,success,964400
+short-continuous-to-random-normal-short-5000000,driver-ailist,6972,success,5076600
+short-continuous-to-random-normal-short-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,14998,success,250626
+short-continuous-to-random-normal-short-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,18067,success,250626
+short-continuous-to-random-normal-short-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,13483,success,5076600
+short-continuous-to-random-normal-short-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,15654,success,5076600
+short-continuous-to-random-normal-short-10000000,driver-ailist,11091,success,10602960
+short-continuous-to-random-normal-short-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,17860,success,523172
+short-continuous-to-random-normal-short-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,21599,success,523172
+short-continuous-to-random-normal-short-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,28614,success,10602960
+short-continuous-to-random-normal-short-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,40541,success,10602960
+short-continuous-to-random-normal-short-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,383129,success,3356654
+short-continuous-to-random-normal-short-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,340906,success,3356654
+short-continuous-to-random-normal-short-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 34 in stage 11.0 failed 1 times; most recent failure: Lost task 34.0 in stage 11.0 (TID 110) (192.168.97.3 executor 7): ExecutorLostFailure (executor 7 exited caused by one of the running tasks) Reason: Command exited with code 137
+short-continuous-to-random-normal-short-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 6 in stage 14.0 failed 1 times; most recent failure: Lost task 6.0 in stage 14.0 (TID 100) (192.168.97.6 executor 5): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-poisson-short-100000,driver-ailist,4626,success,20000000
+short-continuous-to-random-poisson-short-100000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 3 in stage 17.0 failed 1 times; most recent failure: Lost task 3.0 in stage 17.0 (TID 137) (192.168.97.3 executor 7): ExecutorLostFailure (executor 7 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 142743 ms
+short-continuous-to-random-poisson-short-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,22478,success,1598
+short-continuous-to-random-poisson-short-100000,salt-per-1000000-rdd-ailist-10-20-10-64,501164,success
+short-continuous-to-random-poisson-short-100000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 14.0 failed 1 times; most recent failure: Lost task 0.0 in stage 14.0 (TID 70) (192.168.97.4 executor 0): ExecutorLostFailure (executor 0 exited caused by one of the running tasks) Reason: Command exited with code 52
+short-continuous-to-random-poisson-short-500000,driver-ailist,5045,success,20000000
+short-continuous-to-random-poisson-short-500000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 8 in stage 17.0 failed 1 times; most recent failure: Lost task 8.0 in stage 17.0 (TID 142) (192.168.97.5 executor 8): ExecutorLostFailure (executor 8 exited caused by one of the running tasks) Reason: Command exited with code 137
+short-continuous-to-random-poisson-short-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,21495,success,1598
+short-continuous-to-random-poisson-short-500000,salt-per-1000000-rdd-ailist-10-20-10-64,642638,success
+short-continuous-to-random-poisson-short-500000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 14.0 failed 1 times; most recent failure: Lost task 0.0 in stage 14.0 (TID 70) (192.168.97.6 executor 4): ExecutorLostFailure (executor 4 exited caused by one of the running tasks) Reason: Command exited with code 52
+short-continuous-to-random-poisson-short-1000000,driver-ailist,5460,success,20000000
+short-continuous-to-random-poisson-short-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 13 in stage 17.0 failed 1 times; most recent failure: Lost task 13.0 in stage 17.0 (TID 148) (192.168.97.3 executor 7): ExecutorLostFailure (executor 7 exited caused by one of the running tasks) Reason: Command exited with code 137
+short-continuous-to-random-poisson-short-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,22196,success,1598
+short-continuous-to-random-poisson-short-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,642459,success
+short-continuous-to-random-poisson-short-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 14.0 failed 1 times; most recent failure: Lost task 0.0 in stage 14.0 (TID 70) (192.168.97.5 executor 8): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-poisson-short-5000000,driver-ailist,6239,success,20000000
+short-continuous-to-random-poisson-short-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 26 in stage 15.0 failed 1 times; most recent failure: Lost task 26.0 in stage 15.0 (TID 111) (192.168.97.3 executor 7): ExecutorLostFailure (executor 7 exited caused by one of the running tasks) Reason: Command exited with code 137
+short-continuous-to-random-poisson-short-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,19595,success,1598
+short-continuous-to-random-poisson-short-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,732201,success
+short-continuous-to-random-poisson-short-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 14.0 failed 1 times; most recent failure: Lost task 0.0 in stage 14.0 (TID 70) (192.168.97.5 executor 9): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-poisson-short-10000000,driver-ailist,9956,success,20000000
+short-continuous-to-random-poisson-short-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 9 in stage 15.0 failed 1 times; most recent failure: Lost task 9.0 in stage 15.0 (TID 94) (192.168.97.4 executor 8): ExecutorLostFailure (executor 8 exited caused by one of the running tasks) Reason: Command exited with code 137
+short-continuous-to-random-poisson-short-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,19435,success,1598
+short-continuous-to-random-poisson-short-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 21 in stage 14.0 failed 1 times; most recent failure: Lost task 21.0 in stage 14.0 (TID 136) (192.168.97.6 executor 3): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-poisson-short-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 14.0 failed 1 times; most recent failure: Lost task 0.0 in stage 14.0 (TID 70) (192.168.97.5 executor 2): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-poisson-short-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 11 in stage 16.0 failed 1 times; most recent failure: Lost task 11.0 in stage 16.0 (TID 124) (192.168.97.6 executor 3): ExecutorLostFailure (executor 3 exited caused by one of the running tasks) Reason: Command exited with code 52
+short-continuous-to-random-poisson-short-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,21475,success,1598
+short-continuous-to-random-poisson-short-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 3 in stage 14.0 failed 1 times; most recent failure: Lost task 3.0 in stage 14.0 (TID 122) (192.168.97.4 executor 9): ExecutorLostFailure (executor 9 exited caused by one of the running tasks) Reason: Command exited with code 137
+short-continuous-to-random-poisson-short-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 11.0 failed 1 times; most recent failure: Lost task 0.0 in stage 11.0 (TID 68) (192.168.97.3 executor 6): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-uniform-short-100000,driver-ailist,6031,success,197160
+short-continuous-to-random-uniform-short-100000,bucket-per-1000-rdd-ailist-10-20-10-64,10864,success,9602
+short-continuous-to-random-uniform-short-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,9580,success,9602
+short-continuous-to-random-uniform-short-100000,salt-per-1000000-rdd-ailist-10-20-10-64,7222,success,197160
+short-continuous-to-random-uniform-short-100000,salt-per-10000000-rdd-ailist-10-20-10-64,7669,success,197160
+short-continuous-to-random-uniform-short-500000,driver-ailist,6517,success,1001560
+short-continuous-to-random-uniform-short-500000,bucket-per-1000-rdd-ailist-10-20-10-64,11191,success,48852
+short-continuous-to-random-uniform-short-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,11159,success,48852
+short-continuous-to-random-uniform-short-500000,salt-per-1000000-rdd-ailist-10-20-10-64,8859,success,1001560
+short-continuous-to-random-uniform-short-500000,salt-per-10000000-rdd-ailist-10-20-10-64,8311,success,1001560
+short-continuous-to-random-uniform-short-1000000,driver-ailist,6091,success,2001360
+short-continuous-to-random-uniform-short-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,12349,success,97652
+short-continuous-to-random-uniform-short-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,13366,success,97652
+short-continuous-to-random-uniform-short-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,9144,success,2001360
+short-continuous-to-random-uniform-short-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,9884,success,2001360
+short-continuous-to-random-uniform-short-5000000,driver-ailist,8248,success,10019800
+short-continuous-to-random-uniform-short-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,15010,success,488642
+short-continuous-to-random-uniform-short-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,19784,success,488642
+short-continuous-to-random-uniform-short-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,20370,success,10019800
+short-continuous-to-random-uniform-short-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,24552,success,10019800
+short-continuous-to-random-uniform-short-10000000,driver-ailist,12897,success,20031480
+short-continuous-to-random-uniform-short-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,19650,success,977052
+short-continuous-to-random-uniform-short-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,18167,success,977052
+short-continuous-to-random-uniform-short-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 35 in stage 14.0 failed 1 times; most recent failure: Lost task 35.0 in stage 14.0 (TID 187) (192.168.97.4 executor 8): ExecutorLostFailure (executor 8 exited caused by one of the running tasks) Reason: Command exited with code 137
+short-continuous-to-random-uniform-short-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 14.0 failed 1 times; most recent failure: Lost task 0.0 in stage 14.0 (TID 78) (192.168.97.3 executor 6): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-random-uniform-short-50000000,driver-ailist,,Job aborted due to stage failure: Task 10 in stage 3.0 failed 1 times; most recent failure: Lost task 10.0 in stage 3.0 (TID 28) (192.168.97.6 executor 5): ExecutorLostFailure (executor 5 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 130998 ms
+short-continuous-to-random-uniform-short-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,564660,success,4875362
+short-continuous-to-random-uniform-short-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,633553,success
+short-continuous-to-random-uniform-short-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 57 in stage 11.0 failed 1 times; most recent failure: Lost task 57.0 in stage 11.0 (TID 133) (192.168.97.3 executor 7): ExecutorLostFailure (executor 7 exited caused by one of the running tasks) Reason: Command exited with code 137
+short-continuous-to-random-uniform-short-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 11 in stage 14.0 failed 1 times; most recent failure: Lost task 11.0 in stage 14.0 (TID 119) (192.168.97.6 executor 4): java.lang.OutOfMemoryError: Java heap space
+short-continuous-to-short-overlap-100000,driver-ailist,4353,success,39997
+short-continuous-to-short-overlap-100000,bucket-per-1000-rdd-ailist-10-20-10-64,7754,success,39997
+short-continuous-to-short-overlap-100000,bucket-per-1000000-rdd-ailist-10-20-10-64,7486,success,39997
+short-continuous-to-short-overlap-100000,salt-per-1000000-rdd-ailist-10-20-10-64,5799,success,39997
+short-continuous-to-short-overlap-100000,salt-per-10000000-rdd-ailist-10-20-10-64,5767,success,39997
+short-continuous-to-short-overlap-500000,driver-ailist,4804,success,199997
+short-continuous-to-short-overlap-500000,bucket-per-1000-rdd-ailist-10-20-10-64,9916,success,199997
+short-continuous-to-short-overlap-500000,bucket-per-1000000-rdd-ailist-10-20-10-64,8517,success,199997
+short-continuous-to-short-overlap-500000,salt-per-1000000-rdd-ailist-10-20-10-64,6120,success,199997
+short-continuous-to-short-overlap-500000,salt-per-10000000-rdd-ailist-10-20-10-64,6328,success,199997
+short-continuous-to-short-overlap-1000000,driver-ailist,4798,success,399997
+short-continuous-to-short-overlap-1000000,bucket-per-1000-rdd-ailist-10-20-10-64,10672,success,399997
+short-continuous-to-short-overlap-1000000,bucket-per-1000000-rdd-ailist-10-20-10-64,8921,success,399997
+short-continuous-to-short-overlap-1000000,salt-per-1000000-rdd-ailist-10-20-10-64,6756,success,399997
+short-continuous-to-short-overlap-1000000,salt-per-10000000-rdd-ailist-10-20-10-64,6706,success,399997
+short-continuous-to-short-overlap-5000000,driver-ailist,6455,success,1999997
+short-continuous-to-short-overlap-5000000,bucket-per-1000-rdd-ailist-10-20-10-64,13403,success,1999997
+short-continuous-to-short-overlap-5000000,bucket-per-1000000-rdd-ailist-10-20-10-64,14148,success,1999997
+short-continuous-to-short-overlap-5000000,salt-per-1000000-rdd-ailist-10-20-10-64,9724,success,1999997
+short-continuous-to-short-overlap-5000000,salt-per-10000000-rdd-ailist-10-20-10-64,9607,success,1999997
+short-continuous-to-short-overlap-10000000,driver-ailist,8607,success,3999997
+short-continuous-to-short-overlap-10000000,bucket-per-1000-rdd-ailist-10-20-10-64,14845,success,3999997
+short-continuous-to-short-overlap-10000000,bucket-per-1000000-rdd-ailist-10-20-10-64,23929,success,3999997
+short-continuous-to-short-overlap-10000000,salt-per-1000000-rdd-ailist-10-20-10-64,15106,success,3999997
+short-continuous-to-short-overlap-10000000,salt-per-10000000-rdd-ailist-10-20-10-64,14638,success,3999997
+short-continuous-to-short-overlap-50000000,bucket-per-1000-rdd-ailist-10-20-10-64,32654,success,19999997
+short-continuous-to-short-overlap-50000000,bucket-per-1000000-rdd-ailist-10-20-10-64,61382,success,19999997
+short-continuous-to-short-overlap-50000000,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 12 in stage 14.0 failed 1 times; most recent failure: Lost task 12.0 in stage 14.0 (TID 185) (192.168.97.4 executor 9): ExecutorLostFailure (executor 9 exited caused by one of the running tasks) Reason: Command exited with code 137
+short-continuous-to-short-overlap-50000000,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 14.0 failed 1 times; most recent failure: Lost task 0.0 in stage 14.0 (TID 78) (192.168.97.3 executor 6): java.lang.OutOfMemoryError: Java heap space
+databio-s-1-2,driver-ailist,5748,success,54343
+databio-s-1-2,bucket-per-1000-rdd-ailist-10-20-10-64,10405,success,54343
+databio-s-1-2,bucket-per-1000000-rdd-ailist-10-20-10-64,9474,success,54343
+databio-s-1-2,salt-per-1000000-rdd-ailist-10-20-10-64,8408,success,54343
+databio-s-1-2,salt-per-10000000-rdd-ailist-10-20-10-64,8407,success,54343
+databio-s-2-7,driver-ailist,7049,success,274249
+databio-s-2-7,bucket-per-1000-rdd-ailist-10-20-10-64,12555,success,274262
+databio-s-2-7,bucket-per-1000000-rdd-ailist-10-20-10-64,10987,success,274239
+databio-s-2-7,salt-per-1000000-rdd-ailist-10-20-10-64,9090,success,274248
+databio-s-2-7,salt-per-10000000-rdd-ailist-10-20-10-64,9649,success,274259
+databio-s-1-0,driver-ailist,6050,success,321138
+databio-s-1-0,bucket-per-1000-rdd-ailist-10-20-10-64,12036,success,321138
+databio-s-1-0,bucket-per-1000000-rdd-ailist-10-20-10-64,10922,success,321138
+databio-s-1-0,salt-per-1000000-rdd-ailist-10-20-10-64,9789,success,321138
+databio-s-1-0,salt-per-10000000-rdd-ailist-10-20-10-64,9436,success,321138
+databio-m-7-0,driver-ailist,10647,success,2764069
+databio-m-7-0,bucket-per-1000-rdd-ailist-10-20-10-64,14354,success,2764042
+databio-m-7-0,bucket-per-1000000-rdd-ailist-10-20-10-64,13702,success,2764044
+databio-m-7-0,salt-per-1000000-rdd-ailist-10-20-10-64,12340,success,2764137
+databio-m-7-0,salt-per-10000000-rdd-ailist-10-20-10-64,10456,success,2764048
+databio-m-7-3,driver-ailist,10689,success,4410796
+databio-m-7-3,bucket-per-1000-rdd-ailist-10-20-10-64,14726,success,4410821
+databio-m-7-3,bucket-per-1000000-rdd-ailist-10-20-10-64,15431,success,4410789
+databio-m-7-3,salt-per-1000000-rdd-ailist-10-20-10-64,10527,success,4410752
+databio-m-7-3,salt-per-10000000-rdd-ailist-10-20-10-64,10425,success,4410775
+databio-l-0-8,driver-ailist,46109,success,164213743
+databio-l-0-8,bucket-per-1000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 7 in stage 17.0 failed 1 times; most recent failure: Lost task 7.0 in stage 17.0 (TID 119) (192.168.97.6 executor 5): ExecutorLostFailure (executor 5 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 147272 ms
+databio-l-0-8,bucket-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 0 in stage 17.0 failed 1 times; most recent failure: Lost task 0.0 in stage 17.0 (TID 116) (192.168.97.4 executor 8): ExecutorLostFailure (executor 8 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 153921 ms
+databio-l-0-8,salt-per-1000000-rdd-ailist-10-20-10-64,455216,success,164214411
+databio-l-0-8,salt-per-10000000-rdd-ailist-10-20-10-64,40644,success,164213801
+databio-l-4-8,bucket-per-1000-rdd-ailist-10-20-10-64,616624,success
+databio-l-4-8,bucket-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 15 in stage 17.0 failed 1 times; most recent failure: Lost task 15.0 in stage 17.0 (TID 140) (192.168.97.6 executor 6): java.lang.OutOfMemoryError: Java heap space
+databio-l-4-8,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 32 in stage 14.0 failed 1 times; most recent failure: Lost task 32.0 in stage 14.0 (TID 274) (192.168.97.4 executor 9): ExecutorLostFailure (executor 9 exited caused by one of the running tasks) Reason: Command exited with code 137
+databio-l-4-8,salt-per-10000000-rdd-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+databio-l-7-8,driver-ailist,14728,success,307298107
+databio-l-7-8,bucket-per-1000-rdd-ailist-10-20-10-64,1321541,success
+databio-l-7-8,bucket-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 6 in stage 17.0 failed 1 times; most recent failure: Lost task 6.0 in stage 17.0 (TID 122) (192.168.97.4 executor 8): ExecutorLostFailure (executor 8 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 143528 ms
+databio-l-7-8,salt-per-1000000-rdd-ailist-10-20-10-64,221309,success,307298482
+databio-l-7-8,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 5 in stage 14.0 failed 1 times; most recent failure: Lost task 5.0 in stage 14.0 (TID 100) (192.168.97.3 executor 4): ExecutorLostFailure (executor 4 exited caused by one of the running tasks) Reason: Command exited with code 52
+databio-xl-3-0,driver-ailist,38417,success,1087646273
+databio-xl-3-0,bucket-per-1000-rdd-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+databio-xl-3-0,bucket-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 15 in stage 17.0 failed 1 times; most recent failure: Lost task 15.0 in stage 17.0 (TID 101) (192.168.97.4 executor 8): ExecutorLostFailure (executor 8 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 147733 ms
+databio-xl-3-0,salt-per-1000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 19 in stage 14.0 failed 1 times; most recent failure: Lost task 19.0 in stage 14.0 (TID 100) (192.168.97.3 executor 5): ExecutorLostFailure (executor 5 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 157561 ms
+databio-xl-3-0,salt-per-10000000-rdd-ailist-10-20-10-64,,Job aborted due to stage failure: Task 15 in stage 14.0 failed 1 times; most recent failure: Lost task 15.0 in stage 14.0 (TID 91) (192.168.97.3 executor 4): ExecutorLostFailure (executor 4 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 149159 ms
