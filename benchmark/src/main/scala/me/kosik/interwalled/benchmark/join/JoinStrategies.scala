@@ -32,7 +32,7 @@ object JoinStrategies {
       aiListConfig        <- aiListConfigs
       config = NativeAIListConfig(
         aiListConfig        = aiListConfig,
-        preprocessorConfig  = PreprocessorConfig(None, None)
+        preprocessorConfig  = PreprocessorConfig.empty
       )
     } yield new CachedNativeAIListIntervalJoin(config)
   }
@@ -42,7 +42,7 @@ object JoinStrategies {
       aiListConfig    <- aiListConfigs
       config = NativeAIListConfig(
         aiListConfig        = aiListConfig,
-        preprocessorConfig  = PreprocessorConfig(None, None)
+        preprocessorConfig  = PreprocessorConfig.empty
       )
     } yield new CheckpointedNativeAIListIntervalJoin(config, checkpointDir)
   }
@@ -59,7 +59,7 @@ object JoinStrategies {
   }
 
   private val sparkNativeIntervalJoin: Array[IntervalJoin] = {
-    Array(new SparkNativeIntervalJoin(SparkNativeConfig(PreprocessorConfig(None, None))))
+    Array(new SparkNativeIntervalJoin(SparkNativeConfig(PreprocessorConfig.empty)))
   }
 
   val values: Map[String, IntervalJoin] = {

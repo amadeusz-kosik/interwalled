@@ -1,0 +1,42 @@
+package me.kosik.interwalled.spark.join.preprocessor.deoutlier
+
+import me.kosik.interwalled.domain.{BucketedInterval, IntervalColumns}
+import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
+import org.apache.spark.sql.{Dataset, functions => F}
+import org.slf4j.LoggerFactory
+
+
+class Deoutlier(config: DeoutlierConfig) extends Serializable {
+
+  private lazy val logger = LoggerFactory.getLogger(getClass)
+
+  override def toString: String =
+    config.toString
+
+  def processInput(input: PreparedInput): PreparedInput = {
+    import IntervalColumns._
+    import input.lhsData.sparkSession.implicits._
+
+    input.copy(
+      lhsData = process(input.lhsData),
+      rhsData = process(input.rhsData)
+    )
+  }
+
+  private def process(data: Dataset[BucketedInterval]): Dataset[BucketedInterval] = {
+    import IntervalColumns._
+
+    val width       = F.col(TO) - F.col(FROM)
+    val percentage  = F.lit(config.percentile.toDouble / 1000.0)
+    val accuracy    = F.lit(1000000)
+
+    val percentile = data
+      .select(F.approx_percentile(width, percentage, accuracy))
+      .take(1)
+      .head
+      .getLong(0)
+
+    logger.info(s"Computed outlier threshold: ${data.queryExecution}")
+    data.filter(width < F.lit(percentile))
+  }
+}

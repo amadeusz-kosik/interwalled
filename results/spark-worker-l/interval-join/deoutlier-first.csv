@@ -1,0 +1,19 @@
+data_suite,join_name,elapsed_time,result,result_rows_count
+databio-s-1-2,bucket-per-1000-deoutlier-995-rdd-ailist-10-20-10-64,8544,success,50883
+databio-s-1-2,bucket-per-1000-deoutlier-999-rdd-ailist-10-20-10-64,8778,success,53522
+databio-s-2-7,bucket-per-1000-deoutlier-995-rdd-ailist-10-20-10-64,10672,success,256461
+databio-s-2-7,bucket-per-1000-deoutlier-999-rdd-ailist-10-20-10-64,10416,success,269633
+databio-s-1-0,bucket-per-1000-deoutlier-995-rdd-ailist-10-20-10-64,9583,success,87492
+databio-s-1-0,bucket-per-1000-deoutlier-999-rdd-ailist-10-20-10-64,9916,success,95596
+databio-m-7-0,bucket-per-1000-deoutlier-995-rdd-ailist-10-20-10-64,12296,success,1299740
+databio-m-7-0,bucket-per-1000-deoutlier-999-rdd-ailist-10-20-10-64,13330,success,1412341
+databio-m-7-3,bucket-per-1000-deoutlier-995-rdd-ailist-10-20-10-64,13224,success,2926517
+databio-m-7-3,bucket-per-1000-deoutlier-999-rdd-ailist-10-20-10-64,13342,success,3566061
+databio-l-0-8,bucket-per-1000-deoutlier-995-rdd-ailist-10-20-10-64,269856,success,115804661
+databio-l-0-8,bucket-per-1000-deoutlier-999-rdd-ailist-10-20-10-64,253907,success,140795267
+databio-l-4-8,bucket-per-1000-deoutlier-995-rdd-ailist-10-20-10-64,324738,success,192760931
+databio-l-4-8,bucket-per-1000-deoutlier-999-rdd-ailist-10-20-10-64,399131,success,211045635
+databio-l-7-8,bucket-per-1000-deoutlier-995-rdd-ailist-10-20-10-64,529683,success,299805639
+databio-l-7-8,bucket-per-1000-deoutlier-999-rdd-ailist-10-20-10-64,500312,success,305298107
+databio-xl-3-0,bucket-per-1000-deoutlier-995-rdd-ailist-10-20-10-64,,Futures timed out after [30 minutes]
+databio-xl-3-0,bucket-per-1000-deoutlier-999-rdd-ailist-10-20-10-64,,Futures timed out after [30 minutes]

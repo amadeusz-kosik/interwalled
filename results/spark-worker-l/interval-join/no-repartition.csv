@@ -1,0 +1,51 @@
+data_suite,join_name-no-repartition,elapsed_time,result,result_rows_count
+databio-s-1-2,driver-ailist-no-repartition,5810,success,54343
+databio-s-1-2,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,9575,success,54343
+databio-s-1-2,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,9263,success,54343
+databio-s-2-7,driver-ailist-no-repartition,6665,success,274249
+databio-s-2-7,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,12015,success,274266
+databio-s-2-7,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,11618,success,274266
+databio-s-1-0,driver-ailist-no-repartition,5850,success,321138
+databio-s-1-0,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,11507,success,321138
+databio-s-1-0,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,11881,success,321138
+databio-m-7-0,driver-ailist-no-repartition,10505,success,2764069
+databio-m-7-0,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,12758,success,2764181
+databio-m-7-0,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,13828,success,2764179
+databio-m-7-3,driver-ailist-no-repartition,10452,success,4410796
+databio-m-7-3,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,13371,success,4410920
+databio-m-7-3,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,14491,success,4410919
+databio-l-0-8,driver-ailist-no-repartition,46976,success,164213743
+databio-l-0-8,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,,Job aborted due to stage failure: Task 10 in stage 13.0 failed 1 times; most recent failure: Lost task 10.0 in stage 13.0 (TID 79) (192.168.97.3 executor 0): ExecutorLostFailure (executor 0 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 150857 ms
+databio-l-0-8,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,,Job aborted due to stage failure: Task 2 in stage 13.0 failed 1 times; most recent failure: Lost task 2.0 in stage 13.0 (TID 71) (192.168.97.3 executor 2): ExecutorLostFailure (executor 2 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 136011 ms
+databio-l-4-8,driver-ailist-no-repartition,,Futures timed out after [30 minutes]
+databio-l-4-8,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,,Job aborted due to stage failure: Task 15 in stage 13.0 failed 1 times; most recent failure: Lost task 15.0 in stage 13.0 (TID 100) (192.168.97.3 executor 0): ExecutorLostFailure (executor 0 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 153442 ms
+databio-l-4-8,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,,Job aborted due to stage failure: Task 2 in stage 13.0 failed 1 times; most recent failure: Lost task 2.0 in stage 13.0 (TID 87) (192.168.97.4 executor 4): ExecutorLostFailure (executor 4 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 149198 ms
+databio-l-7-8,driver-ailist-no-repartition,18461,success,307298107
+databio-l-7-8,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,1617991,success
+databio-s-1-2,driver-ailist-no-repartition,4273,success,54343
+databio-s-1-2,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,6007,success,54343
+databio-s-1-2,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,7078,success,54343
+databio-s-2-7,driver-ailist-no-repartition,5409,success,274249
+databio-s-2-7,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,6929,success,274266
+databio-s-2-7,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,7731,success,274266
+databio-s-1-0,driver-ailist-no-repartition,4427,success,321138
+databio-s-1-0,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,6769,success,321138
+databio-s-1-0,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,9322,success,321138
+databio-m-7-0,driver-ailist-no-repartition,9802,success,2764069
+databio-m-7-0,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,9159,success,2764181
+databio-m-7-0,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,11812,success,2764179
+databio-m-7-3,driver-ailist-no-repartition,9240,success,4410796
+databio-m-7-3,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,8787,success,4410920
+databio-m-7-3,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,11317,success,4410919
+databio-l-0-8,driver-ailist-no-repartition,40587,success,164213743
+databio-l-0-8,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,578001,success,164214497
+databio-l-0-8,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,532363,success,164214411
+databio-l-4-8,driver-ailist-no-repartition,1068702,success,227866180
+databio-l-4-8,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,365068,success,227868578
+databio-l-4-8,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,446308,success,227868436
+databio-l-7-8,driver-ailist-no-repartition,12962,success,307298107
+databio-l-7-8,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,430935,success,307298592
+databio-l-7-8,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,512554,success,307298555
+databio-xl-3-0,driver-ailist-no-repartition,38701,success,1087646273
+databio-xl-3-0,bucket-per-1000-rdd-ailist-10-20-10-64-no-repartition,,Futures timed out after [30 minutes]
+databio-xl-3-0,bucket-per-1000000-rdd-ailist-10-20-10-64-no-repartition,,Job aborted due to stage failure: Task 5 in stage 13.0 failed 1 times; most recent failure: Lost task 5.0 in stage 13.0 (TID 50) (192.168.97.6 executor 0): ExecutorLostFailure (executor 0 exited caused by one of the running tasks) Reason: Executor heartbeat timed out after 142297 ms

@@ -2,7 +2,7 @@ package me.kosik.interwalled.spark.join
 
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.config.AIListConfig
-import me.kosik.interwalled.spark.join.implementation.ailist.CachedNativeAIListIntervalJoin
+import me.kosik.interwalled.spark.join.implementation.ailist.implementation.CachedNativeAIListIntervalJoin
 import me.kosik.interwalled.spark.join.preprocessor.PreprocessorConfig
 
 
