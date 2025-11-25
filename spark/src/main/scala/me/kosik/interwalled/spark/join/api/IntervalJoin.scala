@@ -19,22 +19,22 @@ trait IntervalJoin extends Logging with Serializable {
 
   def join(input: Input, gatherStatistics: Boolean): Result = {
     val prepared    = prepareInput(input.toPreparedInput)
-    val joined      = doJoin(prepared)
+    val joined      = Result(doJoin(prepared), None)
     val finalized   = finalizeResult(joined)
 
     val statistics: Option[IntervalJoinRunStats] = {
       if(gatherStatistics)
-        Some(IntervalJoinRunStatsHelper.gatherStats(finalized))
+        Some(IntervalJoinRunStatsHelper.gatherStats(finalized.data))
       else
         None
     }
 
-    Result(finalized, statistics)
+    finalized.copy(statistics = statistics)
   }
 
   protected def prepareInput(input: PreparedInput): PreparedInput
 
   protected def doJoin(input: PreparedInput): Dataset[IntervalsPair]
 
-  protected def finalizeResult(joinedResultRaw: Dataset[IntervalsPair]): Dataset[IntervalsPair]
+  protected def finalizeResult(result: Result): Result
 }

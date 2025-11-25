@@ -2,13 +2,14 @@ package me.kosik.interwalled.spark.join.preprocessor.bucketizer
 
 import me.kosik.interwalled.domain.{BucketedInterval, IntervalColumns, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
+import me.kosik.interwalled.spark.join.preprocessor.PreprocessorStep
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.types.DataTypes
 import org.apache.spark.sql.{Dataset, functions => F}
 import org.slf4j.LoggerFactory
 
 
-class Bucketizer(config: BucketizerConfig) extends Serializable {
+class Bucketizer(config: BucketizerConfig) extends PreprocessorStep {
 
   private lazy val logger = LoggerFactory.getLogger(getClass)
 
@@ -23,7 +24,7 @@ class Bucketizer(config: BucketizerConfig) extends Serializable {
   override def toString: String =
     config.toString
 
-  def processInput(input: PreparedInput): PreparedInput = {
+  override def processInput(input: PreparedInput): PreparedInput = {
     import IntervalColumns._
 
     val (greaterDataset, scale) = {

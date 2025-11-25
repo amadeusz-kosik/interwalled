@@ -1,25 +1,36 @@
 package me.kosik.interwalled.utility
 
+import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{PreparedInput, Result}
+import me.kosik.interwalled.spark.join.preprocessor.PreprocessorStep
 
-sealed trait OptionalTransformer[T] {
-  def apply[U](input: U)(fn: T => (U => U)): U
+
+sealed trait OptionalTransformer {
+  def apply(input: PreparedInput): PreparedInput
+  def apply(input: Result): Result
 }
 
 object OptionalTransformer {
-  def apply[T](maybeTransformer: Option[T]): OptionalTransformer[T] = maybeTransformer match {
-
+  def apply(maybeTransformer: Option[PreprocessorStep]): OptionalTransformer = maybeTransformer match {
     case Some(transformer) =>
-      SomeTransformer[T](transformer)
+      SomeTransformer(transformer)
 
     case None =>
-      NoneTransformer[T]()
+      NoneTransformer
   }
 }
 
-case class SomeTransformer[T](transformer: T) extends OptionalTransformer[T] {
-  override def apply[U](input: U)(fn: T => (U => U)): U = fn(transformer)(input)
+case class SomeTransformer(transformer: PreprocessorStep) extends OptionalTransformer {
+  override def apply(input: PreparedInput): PreparedInput =
+    transformer.processInput(input)
+
+  override def apply(result: Result): Result =
+    transformer.processResult(result)
 }
 
-case class NoneTransformer[T]() extends OptionalTransformer[T] {
-  override def apply[U](input: U)(fn: T => (U => U)): U = input
+case object NoneTransformer extends OptionalTransformer {
+  override def apply(input: PreparedInput): PreparedInput =
+    input
+
+  override def apply(result: Result): Result =
+    result
 }
