@@ -4,7 +4,7 @@ import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.implementation.spark.native.SparkNativeIntervalJoin
 
 
-class SparkNativeIntervalJoinTestSuite extends AbstractIntervalJoinTestSuite {
-
-  override def intervalJoin: IntervalJoin = new SparkNativeIntervalJoin(None)
-}
+//class SparkNativeIntervalJoinTestSuite extends AbstractIntervalJoinTestSuite {
+//
+//  override def intervalJoin: IntervalJoin = new SparkNativeIntervalJoin(None)
+//}

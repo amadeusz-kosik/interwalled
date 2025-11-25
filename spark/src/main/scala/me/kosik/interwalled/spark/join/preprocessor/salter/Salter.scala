@@ -2,19 +2,20 @@ package me.kosik.interwalled.spark.join.preprocessor.salter
 
 import me.kosik.interwalled.domain.{BucketedInterval, IntervalColumns}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
+import me.kosik.interwalled.spark.join.preprocessor.PreprocessorStep
 import org.apache.spark.sql.types.DataTypes
 import org.apache.spark.sql.{functions => F}
 import org.slf4j.LoggerFactory
 
 
-class Salter(config: SalterConfig) extends Serializable {
+class Salter(config: SalterConfig) extends PreprocessorStep {
 
   private lazy val logger = LoggerFactory.getLogger(getClass)
 
   override def toString: String =
     config.toString
 
-  def processInput(input: PreparedInput): PreparedInput = {
+  override def processInput(input: PreparedInput): PreparedInput = {
     import IntervalColumns._
     import input.lhsData.sparkSession.implicits._
 

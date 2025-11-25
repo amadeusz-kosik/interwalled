@@ -2,26 +2,23 @@ package me.kosik.interwalled.spark.join.preprocessor.deoutlier
 
 import me.kosik.interwalled.domain.{BucketedInterval, IntervalColumns}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
+import me.kosik.interwalled.spark.join.preprocessor.PreprocessorStep
 import org.apache.spark.sql.{Dataset, functions => F}
 import org.slf4j.LoggerFactory
 
 
-class Deoutlier(config: DeoutlierConfig) extends Serializable {
+class Deoutlier(config: DeoutlierConfig) extends PreprocessorStep {
 
   private lazy val logger = LoggerFactory.getLogger(getClass)
 
   override def toString: String =
     config.toString
 
-  def processInput(input: PreparedInput): PreparedInput = {
-    import IntervalColumns._
-    import input.lhsData.sparkSession.implicits._
-
+  override def processInput(input: PreparedInput): PreparedInput =
     input.copy(
       lhsData = process(input.lhsData),
       rhsData = process(input.rhsData)
     )
-  }
 
   private def process(data: Dataset[BucketedInterval]): Dataset[BucketedInterval] = {
     import IntervalColumns._
