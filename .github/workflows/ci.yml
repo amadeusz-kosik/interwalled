@@ -24,3 +24,6 @@ jobs:
 
       - name: Run tests for 'ailist' module
         run: sbt "ailist/test"
+
+      - name: Run tests for 'spark' module
+        run: sbt "spark/test"
