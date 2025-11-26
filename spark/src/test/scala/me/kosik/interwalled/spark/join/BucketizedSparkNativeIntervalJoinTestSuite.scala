@@ -1,12 +1,15 @@
 package me.kosik.interwalled.spark.join
 
 import me.kosik.interwalled.spark.join.api.IntervalJoin
-import me.kosik.interwalled.spark.join.implementation.spark.native.SparkNativeIntervalJoin
+import me.kosik.interwalled.spark.join.implementation.spark.native.{SparkNativeConfig, SparkNativeIntervalJoin}
 import me.kosik.interwalled.spark.join.preprocessor.PreprocessorConfig
+import me.kosik.interwalled.spark.join.preprocessor.bucketizer.BucketizerConfig
 
 
-//class BucketizedSparkNativeIntervalJoinTestSuite extends AbstractIntervalJoinTestSuite {
-//
-//  override def intervalJoin: IntervalJoin =
-//    new SparkNativeIntervalJoin(Some(PreprocessorConfig(1000)))
-//}
+class BucketizedSparkNativeIntervalJoinTestSuite extends AbstractIntervalJoinTestSuite {
+
+  override def intervalJoin: IntervalJoin = {
+    val preprocessorConfig = PreprocessorConfig.empty.copy(bucketizerConfig = Some(BucketizerConfig(1000)))
+    new SparkNativeIntervalJoin(SparkNativeConfig(preprocessorConfig))
+  }
+}
