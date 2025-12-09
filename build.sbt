@@ -25,12 +25,9 @@ val sparkJobAssemblyMergeStrategy: String => sbtassembly.MergeStrategy = {
 val SparkVersion            = "3.5.3"
 val SparkTestingBaseVersion = "2.0.1"
 
-lazy val ailist = (project in file("ailist"))
-  .settings(name := "ailist")
 
 lazy val spark = (project in file("spark"))
   .settings(name := "spark")
-  .dependsOn(ailist)
 
 lazy val benchmark = (project in file("benchmark"))
   .settings(
@@ -40,14 +37,14 @@ lazy val benchmark = (project in file("benchmark"))
     assembly / mainClass := Some("me.kosik.interwalled.benchmark.Main"),
     assembly / assemblyMergeStrategy := sparkJobAssemblyMergeStrategy
   )
-  .dependsOn(ailist, spark)
+  .dependsOn(spark)
 
 lazy val root = (project in file("."))
-  .aggregate(ailist, spark, benchmark)
+  .aggregate(spark, benchmark)
   .settings(name := "interwalled")
 
 
-ailist / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test
+ThisBuild / resolvers += "jitpack" at "https://jitpack.io"
 
 benchmark / Compile / run / mainClass := Some("me.kosik.interwalled.benchmark.Main")
 benchmark / parallelExecution in Test := false
@@ -57,6 +54,9 @@ benchmark / libraryDependencies += "org.apache.spark"  %% "spark-sql"           
 benchmark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"  % f"${SparkVersion}_${SparkTestingBaseVersion}" % "test"
 
 spark / Test / parallelExecution := false
+spark / libraryDependencies += "com.github.amadeusz-kosik" % "interwalled-ailist" % "v0.1.0"
 spark / libraryDependencies += "org.apache.spark"  %% "spark-core"              % SparkVersion                                  % "provided"
 spark / libraryDependencies += "org.apache.spark"  %% "spark-sql"               % SparkVersion                                  % "provided"
 spark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"      % f"${SparkVersion}_${SparkTestingBaseVersion}" % "test"
+
+
