@@ -6,7 +6,7 @@ import me.kosik.interwalled.benchmark.utils.csv.{CSVWriter, PreprocessingCSVForm
 import org.slf4j.LoggerFactory
 
 
-class PreprocessingBenchmark(args: Array[String], env: MainEnv) extends BenchmarkApp {
+class PreprocessingBenchmark(args: Array[String], env: ApplicationEnv) extends BenchmarkApp {
 
   private lazy val logger = LoggerFactory.getLogger(getClass)
 

@@ -1,17 +1,17 @@
 package me.kosik.interwalled.benchmark.test.suite
 
-import me.kosik.interwalled.benchmark.app.MainEnv
-import me.kosik.interwalled.domain.IntervalColumns
-import me.kosik.interwalled.domain.test.TestDataRow
+import me.kosik.interwalled.benchmark.app.ApplicationEnv
+import me.kosik.interwalled.ailist.IntervalColumns
+import me.kosik.interwalled.ailist.test.TestDataRow
 import org.apache.spark.sql.{DataFrame, Dataset, functions => F}
 
 
 object TestDataSuiteReader {
 
-  def readDatabase(dataSuite: TestDataSuite, env: MainEnv): Dataset[TestDataRow] =
+  def readDatabase(dataSuite: TestDataSuite, env: ApplicationEnv): Dataset[TestDataRow] =
     read(dataSuite, dataSuite.databasePaths, env)
 
-  def readQuery(dataSuite: TestDataSuite, env: MainEnv): Dataset[TestDataRow] =
+  def readQuery(dataSuite: TestDataSuite, env: ApplicationEnv): Dataset[TestDataRow] =
     read(dataSuite, dataSuite.queryPaths, env)
 
   private def loaders: Map[String, DataFrame => DataFrame] = Map(
@@ -38,7 +38,7 @@ object TestDataSuiteReader {
   )
 
   // FixMe refactor
-  private def read(suite: TestDataSuite, paths: Array[String], env: MainEnv): Dataset[TestDataRow] = {
+  private def read(suite: TestDataSuite, paths: Array[String], env: ApplicationEnv): Dataset[TestDataRow] = {
 
     def doRead(path: String): Dataset[TestDataRow] = {
       import env.sparkSession.implicits._

@@ -1,4 +1,4 @@
-package me.kosik.interwalled.domain
+package me.kosik.interwalled.ailist
 
 case class IntervalsPair(
   key: String,

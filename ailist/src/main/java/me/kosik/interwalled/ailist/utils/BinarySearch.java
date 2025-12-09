@@ -1,7 +1,8 @@
 package me.kosik.interwalled.ailist.utils;
 
+import me.kosik.interwalled.ailist.Interval;
+
 import java.util.ArrayList;
-import me.kosik.interwalled.domain.Interval;
 
 
 public class BinarySearch {

@@ -1,12 +1,13 @@
-package me.kosik.interwalled.spark.join.implementation.spark.native
+package me.kosik.interwalled.spark.join.implementation
 
-import me.kosik.interwalled.domain.{IntervalColumns, IntervalsPair}
+import me.kosik.interwalled.ailist.{IntervalColumns, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
-import me.kosik.interwalled.spark.join.implementation.ExecutorIntervalJoin
+import me.kosik.interwalled.spark.join.implementation.SparkNativeIntervalJoin.Config
+import me.kosik.interwalled.spark.join.preprocessor.PreprocessorConfig
 import org.apache.spark.sql.{Dataset, functions => F}
 
 
-class SparkNativeIntervalJoin(override val config: SparkNativeConfig) extends ExecutorIntervalJoin {
+class SparkNativeIntervalJoin(override val config: Config) extends ExecutorIntervalJoin {
 
   protected val name: String = "spark-native"
 
@@ -48,4 +49,9 @@ class SparkNativeIntervalJoin(override val config: SparkNativeConfig) extends Ex
       )
       .as[IntervalsPair]
   }
+}
+
+object SparkNativeIntervalJoin {
+  case class Config(override val preprocessorConfig: PreprocessorConfig)
+    extends ExecutorConfig
 }

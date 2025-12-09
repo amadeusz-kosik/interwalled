@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 import scala.util.{Failure, Success}
 
 
-class IntervalJoinBenchmark(args: Array[String], env: MainEnv) extends BenchmarkApp {
+class IntervalJoinBenchmark(args: Array[String], env: ApplicationEnv) extends BenchmarkApp {
 
   private lazy val logger = LoggerFactory.getLogger(getClass)
 

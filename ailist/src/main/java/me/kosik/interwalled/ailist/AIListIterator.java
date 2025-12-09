@@ -1,8 +1,6 @@
 package me.kosik.interwalled.ailist;
 
 import me.kosik.interwalled.ailist.utils.BinarySearch;
-import me.kosik.interwalled.domain.Interval;
-
 import java.util.Iterator;
 
 public class AIListIterator implements Iterator<Interval>

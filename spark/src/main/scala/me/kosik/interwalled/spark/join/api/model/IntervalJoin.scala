@@ -1,7 +1,7 @@
 package me.kosik.interwalled.spark.join.api.model
 
-import me.kosik.interwalled.domain.IntervalColumns.BUCKET
-import me.kosik.interwalled.domain.{BucketedInterval, Interval, IntervalsPair}
+
+import me.kosik.interwalled.ailist.{BucketedInterval, Interval, IntervalColumns, IntervalsPair}
 import me.kosik.interwalled.utility.stats.model.IntervalJoinRunStats
 import org.apache.spark.sql.{Column, Dataset, functions => F}
 
@@ -14,6 +14,7 @@ object IntervalJoin {
   ) {
     def toPreparedInput: PreparedInput = {
       import lhsData.sparkSession.implicits._
+      import IntervalColumns.BUCKET
 
       PreparedInput(
         lhsData.withColumn(BUCKET, F.lit("Bucket")).as[BucketedInterval],

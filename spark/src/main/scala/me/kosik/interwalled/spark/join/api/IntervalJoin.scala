@@ -1,6 +1,6 @@
 package me.kosik.interwalled.spark.join.api
 
-import me.kosik.interwalled.domain.IntervalsPair
+import me.kosik.interwalled.ailist.IntervalsPair
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{Input, PreparedInput, Result}
 import me.kosik.interwalled.utility.stats.IntervalJoinRunStatsHelper
 import me.kosik.interwalled.utility.stats.model.IntervalJoinRunStats

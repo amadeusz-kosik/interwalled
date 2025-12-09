@@ -25,16 +25,12 @@ val sparkJobAssemblyMergeStrategy: String => sbtassembly.MergeStrategy = {
 val SparkVersion            = "3.5.3"
 val SparkTestingBaseVersion = "2.0.1"
 
-lazy val domain = (project in file("domain"))
-  .settings(name := "domain")
-
 lazy val ailist = (project in file("ailist"))
   .settings(name := "ailist")
-  .dependsOn(domain)
 
 lazy val spark = (project in file("spark"))
   .settings(name := "spark")
-  .dependsOn(ailist, domain)
+  .dependsOn(ailist)
 
 lazy val benchmark = (project in file("benchmark"))
   .settings(
@@ -44,10 +40,10 @@ lazy val benchmark = (project in file("benchmark"))
     assembly / mainClass := Some("me.kosik.interwalled.benchmark.Main"),
     assembly / assemblyMergeStrategy := sparkJobAssemblyMergeStrategy
   )
-  .dependsOn(ailist, domain, spark)
+  .dependsOn(ailist, spark)
 
 lazy val root = (project in file("."))
-  .aggregate(domain, ailist, spark, benchmark)
+  .aggregate(ailist, spark, benchmark)
   .settings(name := "interwalled")
 
 

@@ -1,16 +1,13 @@
-package me.kosik.interwalled.spark.join.implementation.ailist.implementation
+package me.kosik.interwalled.spark.join.implementation.ailist.native.ailist
 
-import me.kosik.interwalled.domain.IntervalColumns
-import me.kosik.interwalled.spark.join.config.AIListConfig
-import me.kosik.interwalled.spark.join.implementation.ailist.{NativeAIListConfig, NativeAIListIntervalJoin}
-import me.kosik.interwalled.spark.join.preprocessor.PreprocessorConfig
+import me.kosik.interwalled.ailist.IntervalColumns
+import me.kosik.interwalled.spark.join.implementation.NativeAIListIntervalJoin
 import org.apache.spark.sql.{DataFrame, SaveMode, functions => F}
-import org.slf4j.LoggerFactory
 
 import scala.annotation.tailrec
 
 
-class CheckpointedNativeAIListIntervalJoin(override val config: NativeAIListConfig, checkpointDir: String)
+class CheckpointedNativeAIListIntervalJoin(override val config: NativeAIListIntervalJoin.Config, checkpointDir: String)
   extends NativeAIListIntervalJoin(config) {
 
   protected val name: String =

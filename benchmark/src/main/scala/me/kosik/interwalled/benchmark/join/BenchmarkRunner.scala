@@ -1,9 +1,9 @@
 package me.kosik.interwalled.benchmark.join
 
-import me.kosik.interwalled.benchmark.app.MainEnv
+import me.kosik.interwalled.ailist.Interval
+import me.kosik.interwalled.benchmark.app.ApplicationEnv
 import me.kosik.interwalled.benchmark.test.suite.TestDataSuiteReader
 import me.kosik.interwalled.benchmark.utils.timer.{Timer, TimerResult}
-import me.kosik.interwalled.domain.Interval
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin
 import me.kosik.interwalled.utility.stats.model.IntervalJoinRunStats
@@ -17,7 +17,7 @@ import scala.util.{Failure, Success, Try}
 object BenchmarkRunner {
   private lazy val logger = LoggerFactory.getLogger(getClass)
 
-  def run(request: BenchmarkRequest, env: MainEnv): BenchmarkResult = {
+  def run(request: BenchmarkRequest, env: ApplicationEnv): BenchmarkResult = {
     val database  = TestDataSuiteReader.readDatabase(request.dataSuite, env)
     val query     = TestDataSuiteReader.readQuery(request.dataSuite, env)
 

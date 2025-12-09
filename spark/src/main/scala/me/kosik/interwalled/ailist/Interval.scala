@@ -1,12 +1,4 @@
-package me.kosik.interwalled.domain
-
-case class Interval(
-  key:    String,
-  from:   Long,
-  to:     Long,
-  value:  String
-)
-
+package me.kosik.interwalled.ailist
 
 case class BucketedInterval(
   bucket:   String,

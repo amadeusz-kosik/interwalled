@@ -1,14 +1,16 @@
-package me.kosik.interwalled.spark.join.implementation.ailist
+package me.kosik.interwalled.spark.join.implementation
 
-import me.kosik.interwalled.domain.{Interval, IntervalColumns, IntervalsPair}
+import me.kosik.interwalled.ailist.{Interval, IntervalColumns, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
-import me.kosik.interwalled.spark.join.implementation.ExecutorIntervalJoin
+import me.kosik.interwalled.spark.join.config.AIListConfig
+import me.kosik.interwalled.spark.join.implementation.NativeAIListIntervalJoin.Config
+import me.kosik.interwalled.spark.join.preprocessor.PreprocessorConfig
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession, functions => F}
 
 
-abstract class NativeAIListIntervalJoin(override val config: NativeAIListConfig) extends ExecutorIntervalJoin {
+abstract class NativeAIListIntervalJoin(override val config: Config) extends ExecutorIntervalJoin {
 
   override protected def doJoin(input: PreparedInput): Dataset[IntervalsPair] = {
     import IntervalColumns._
@@ -157,4 +159,9 @@ abstract class NativeAIListIntervalJoin(override val config: NativeAIListConfig)
     dataFrame
       .withColumn(_MAX_E, F.max(TO).over(maxEndWindow))
   }
+}
+
+object NativeAIListIntervalJoin {
+  case class Config(aiListConfig: AIListConfig, override val preprocessorConfig:  PreprocessorConfig)
+    extends ExecutorConfig
 }

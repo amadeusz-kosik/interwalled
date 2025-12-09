@@ -1,7 +1,6 @@
-package me.kosik.interwalled.spark.join.implementation.driver
+package me.kosik.interwalled.spark.join.implementation
 
-import me.kosik.interwalled.ailist.{AIList, AIListBuilder}
-import me.kosik.interwalled.domain.IntervalsPair
+import me.kosik.interwalled.ailist.{AIList, AIListBuilder, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{PreparedInput, Result}
 import org.apache.spark.sql._

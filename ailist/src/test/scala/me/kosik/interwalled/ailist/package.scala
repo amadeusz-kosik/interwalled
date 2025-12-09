@@ -1,6 +1,5 @@
 package me.kosik.interwalled
 
-import me.kosik.interwalled.domain.Interval
 import org.scalatest.Assertion
 import org.scalatest.matchers.should.Matchers
 

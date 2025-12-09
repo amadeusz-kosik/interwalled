@@ -1,8 +1,8 @@
 package me.kosik.interwalled.ailist
 
-import me.kosik.interwalled.domain.Interval
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
+
 
 class ListSplittingTest extends AnyFunSuite with Matchers {
   import AIListTestHelper._

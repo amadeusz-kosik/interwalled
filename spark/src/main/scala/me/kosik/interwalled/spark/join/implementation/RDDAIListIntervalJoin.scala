@@ -1,16 +1,17 @@
-package me.kosik.interwalled.spark.join.implementation.rdd
+package me.kosik.interwalled.spark.join.implementation
 
-import me.kosik.interwalled.ailist.{AIList, AIListBuilder}
-import me.kosik.interwalled.domain.{BucketedInterval, IntervalColumns, IntervalsPair}
+import me.kosik.interwalled.ailist.{AIList, AIListBuilder, BucketedInterval, IntervalColumns, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
-import me.kosik.interwalled.spark.join.implementation.ExecutorIntervalJoin
+import me.kosik.interwalled.spark.join.config.AIListConfig
+import me.kosik.interwalled.spark.join.implementation.RDDAIListIntervalJoin.Config
+import me.kosik.interwalled.spark.join.preprocessor.PreprocessorConfig
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.Dataset
 
 import scala.collection.JavaConverters._
 
 
-class RDDAIListIntervalJoin(override val config: RDDAIListConfig) extends ExecutorIntervalJoin {
+class RDDAIListIntervalJoin(override val config: Config) extends ExecutorIntervalJoin {
 
   protected val name: String =
     s"rdd-ailist-${config.aiListConfig.toShortString}" // FIXME
@@ -73,4 +74,9 @@ class RDDAIListIntervalJoin(override val config: RDDAIListConfig) extends Execut
 
     mapped
   }
+}
+
+object RDDAIListIntervalJoin {
+  case class Config(aiListConfig: AIListConfig, override val preprocessorConfig: PreprocessorConfig)
+    extends ExecutorConfig with Serializable
 }

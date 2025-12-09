@@ -1,13 +1,14 @@
 package me.kosik.interwalled.benchmark
 
-import me.kosik.interwalled.benchmark.app.{IntervalJoinBenchmark, MainEnv, PreprocessingBenchmark, TestDataGenerator}
+import me.kosik.interwalled.benchmark.app.{IntervalJoinBenchmark, ApplicationEnv, PreprocessingBenchmark}
+import me.kosik.interwalled.benchmark.generator.TestDataGenerator
 import org.slf4j.LoggerFactory
 
 
 object Main extends App {
 
   val logger = LoggerFactory.getLogger(getClass)
-  val env = MainEnv.build(args.mkString("Array(", ", ", ")"))
+  val env = ApplicationEnv.build(args.mkString("Array(", ", ", ")"))
 
   val app = args.headOption match {
     case Some("interval-join-benchmark") =>
@@ -17,7 +18,7 @@ object Main extends App {
       new PreprocessingBenchmark(args.tail, env)
 
     case Some("test-data-generator") =>
-      new TestDataGenerator(env)
+      new TestDataGenerator(args.tail, env)
 
     case Some(anythingElse) =>
       throw new IllegalArgumentException(s"Unknown benchmark mode: $anythingElse")

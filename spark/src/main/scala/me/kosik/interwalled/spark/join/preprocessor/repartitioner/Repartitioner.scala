@@ -1,6 +1,6 @@
 package me.kosik.interwalled.spark.join.preprocessor.repartitioner
 
-import me.kosik.interwalled.domain.IntervalColumns
+import me.kosik.interwalled.ailist.IntervalColumns
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.preprocessor.PreprocessorStep
 import org.apache.spark.sql.{functions => F}

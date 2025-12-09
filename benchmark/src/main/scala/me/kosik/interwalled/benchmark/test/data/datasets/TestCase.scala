@@ -1,8 +1,8 @@
 package me.kosik.interwalled.benchmark.test.data.datasets
 
+import me.kosik.interwalled.ailist.IntervalColumns
+import me.kosik.interwalled.ailist.test.TestDataRow
 import me.kosik.interwalled.benchmark.test.data.model.RawTestDataRow
-import me.kosik.interwalled.domain.IntervalColumns
-import me.kosik.interwalled.domain.test.TestDataRow
 import org.apache.spark.sql.{Dataset, SparkSession, functions => F}
 
 

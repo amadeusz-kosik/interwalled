@@ -1,7 +1,7 @@
 package me.kosik.interwalled.spark.join
 
 import com.holdenkarau.spark.testing.DatasetSuiteBase
-import me.kosik.interwalled.domain.{Interval, IntervalsPair}
+import me.kosik.interwalled.ailist.{Interval, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.Input
 import org.apache.spark.sql.{Dataset, functions => F}
