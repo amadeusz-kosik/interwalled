@@ -17,20 +17,21 @@ object OptionalTransformer {
     case None =>
       NoneTransformer
   }
+
+  private case class SomeTransformer(transformer: PreprocessorStep) extends OptionalTransformer {
+    override def apply(input: PreparedInput): PreparedInput =
+      transformer.processInput(input)
+
+    override def apply(result: Result): Result =
+      transformer.processResult(result)
+  }
+
+  private case object NoneTransformer extends OptionalTransformer {
+    override def apply(input: PreparedInput): PreparedInput =
+      input
+
+    override def apply(result: Result): Result =
+      result
+  }
 }
 
-case class SomeTransformer(transformer: PreprocessorStep) extends OptionalTransformer {
-  override def apply(input: PreparedInput): PreparedInput =
-    transformer.processInput(input)
-
-  override def apply(result: Result): Result =
-    transformer.processResult(result)
-}
-
-case object NoneTransformer extends OptionalTransformer {
-  override def apply(input: PreparedInput): PreparedInput =
-    input
-
-  override def apply(result: Result): Result =
-    result
-}
