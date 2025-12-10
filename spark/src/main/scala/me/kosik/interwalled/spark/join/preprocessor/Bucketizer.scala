@@ -1,8 +1,9 @@
-package me.kosik.interwalled.spark.join.preprocessor.bucketizer
+package me.kosik.interwalled.spark.join.preprocessor
 
 import me.kosik.interwalled.ailist.{BucketedInterval, IntervalColumns, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
-import me.kosik.interwalled.spark.join.preprocessor.PreprocessorStep
+import me.kosik.interwalled.spark.join.preprocessor.Bucketizer.BucketizerConfig
+import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorStep
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.types.DataTypes
 import org.apache.spark.sql.{Dataset, functions => F}
@@ -68,5 +69,12 @@ class Bucketizer(config: BucketizerConfig) extends PreprocessorStep {
       .drop("_bucketizer")
       .as[BucketedInterval]
   }
+}
 
+object Bucketizer {
+  case class BucketizerConfig(perRows: Long) {
+    override def toString: String = s"bucket-per-$perRows"
+
+    def calculateScale(datasetCount: => Long): Long = math.max(1L, datasetCount / perRows)
+  }
 }

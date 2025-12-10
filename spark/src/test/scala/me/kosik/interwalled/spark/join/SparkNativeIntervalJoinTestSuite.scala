@@ -2,8 +2,7 @@ package me.kosik.interwalled.spark.join
 
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.implementation.SparkNativeIntervalJoin
-import me.kosik.interwalled.spark.join.preprocessor.PreprocessorConfig
-import me.kosik.interwalled.spark.join.preprocessor.bucketizer.BucketizerConfig
+import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorConfig
 
 
 class SparkNativeIntervalJoinTestSuite extends AbstractIntervalJoinTestSuite {

@@ -4,7 +4,7 @@ import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.config.AIListConfig
 import me.kosik.interwalled.spark.join.implementation.NativeAIListIntervalJoin
 import me.kosik.interwalled.spark.join.implementation.ailist.native.ailist.CachedNativeAIListIntervalJoin
-import me.kosik.interwalled.spark.join.preprocessor.PreprocessorConfig
+import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorConfig
 
 
 class CachedNativeAIListIntervalJoinTestSuite extends AbstractIntervalJoinTestSuite {

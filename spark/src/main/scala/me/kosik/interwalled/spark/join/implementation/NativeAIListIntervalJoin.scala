@@ -4,7 +4,7 @@ import me.kosik.interwalled.ailist.{Interval, IntervalColumns, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.config.AIListConfig
 import me.kosik.interwalled.spark.join.implementation.NativeAIListIntervalJoin.Config
-import me.kosik.interwalled.spark.join.preprocessor.PreprocessorConfig
+import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorConfig
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession, functions => F}

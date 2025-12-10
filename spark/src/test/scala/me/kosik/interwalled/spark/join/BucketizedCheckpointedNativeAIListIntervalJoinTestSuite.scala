@@ -4,8 +4,8 @@ import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.config.AIListConfig
 import me.kosik.interwalled.spark.join.implementation.NativeAIListIntervalJoin
 import me.kosik.interwalled.spark.join.implementation.ailist.native.ailist.CheckpointedNativeAIListIntervalJoin
-import me.kosik.interwalled.spark.join.preprocessor.PreprocessorConfig
-import me.kosik.interwalled.spark.join.preprocessor.bucketizer.BucketizerConfig
+import me.kosik.interwalled.spark.join.preprocessor.Bucketizer.BucketizerConfig
+import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorConfig
 
 
 class BucketizedCheckpointedNativeAIListIntervalJoinTestSuite extends AbstractIntervalJoinTestSuite {

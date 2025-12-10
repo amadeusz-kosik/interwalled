@@ -1,13 +1,12 @@
 package me.kosik.interwalled.spark.join.preprocessor
 
-import me.kosik.interwalled.ailist.IntervalColumns
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{PreparedInput, Result}
-import me.kosik.interwalled.spark.join.preprocessor.bucketizer.Bucketizer
-import me.kosik.interwalled.spark.join.preprocessor.deoutlier.Deoutlier
-import me.kosik.interwalled.spark.join.preprocessor.repartitioner.Repartitioner
-import me.kosik.interwalled.spark.join.preprocessor.salter.Salter
+import me.kosik.interwalled.spark.join.preprocessor.Bucketizer.BucketizerConfig
+import me.kosik.interwalled.spark.join.preprocessor.Deoutlier.DeoutlierConfig
+import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorConfig
+import me.kosik.interwalled.spark.join.preprocessor.Repartitioner.RepartitionerConfig
+import me.kosik.interwalled.spark.join.preprocessor.Salter.SalterConfig
 import me.kosik.interwalled.utility.OptionalTransformer
-import org.apache.spark.sql.{Dataset, functions => F}
 
 
 class Preprocessor(config: PreprocessorConfig) extends Serializable {
@@ -47,11 +46,26 @@ class Preprocessor(config: PreprocessorConfig) extends Serializable {
   }
 }
 
+object Preprocessor {
+  trait PreprocessorStep extends Serializable {
+    def processInput(input: PreparedInput): PreparedInput =
+      input
 
-trait PreprocessorStep extends Serializable {
-  def processInput(input: PreparedInput): PreparedInput =
-    input
+    def processResult(result: Result): Result =
+      result
+  }
 
-  def processResult(result: Result): Result =
-    result
+  case class PreprocessorConfig(
+    bucketizerConfig:     Option[BucketizerConfig],
+    salterConfig:         Option[SalterConfig],
+    deoutlierConfig:      Option[DeoutlierConfig],
+    repartitionerConfig:  Option[RepartitionerConfig]
+  )
+
+  object PreprocessorConfig {
+
+    def empty: PreprocessorConfig =
+      PreprocessorConfig(None, None, None, None)
+  }
 }
+

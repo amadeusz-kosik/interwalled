@@ -1,7 +1,7 @@
 package me.kosik.interwalled.utility
 
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{PreparedInput, Result}
-import me.kosik.interwalled.spark.join.preprocessor.PreprocessorStep
+import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorStep
 
 
 sealed trait OptionalTransformer {

@@ -1,8 +1,9 @@
-package me.kosik.interwalled.spark.join.preprocessor.salter
+package me.kosik.interwalled.spark.join.preprocessor
 
 import me.kosik.interwalled.ailist.{BucketedInterval, IntervalColumns}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
-import me.kosik.interwalled.spark.join.preprocessor.PreprocessorStep
+import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorStep
+import me.kosik.interwalled.spark.join.preprocessor.Salter.SalterConfig
 import org.apache.spark.sql.types.DataTypes
 import org.apache.spark.sql.{functions => F}
 import org.slf4j.LoggerFactory
@@ -37,5 +38,13 @@ class Salter(config: SalterConfig) extends PreprocessorStep {
       .as[BucketedInterval]
 
     PreparedInput(lhsSalted, rhsSalted)
+  }
+}
+
+object Salter {
+  case class SalterConfig(perRows: Long) {
+    override def toString: String = s"salt-per-$perRows"
+
+    def calculateScale(datasetCount: => Long): Long = math.max(1L, datasetCount / perRows)
   }
 }

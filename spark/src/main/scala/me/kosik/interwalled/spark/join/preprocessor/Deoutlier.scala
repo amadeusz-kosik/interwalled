@@ -1,8 +1,9 @@
-package me.kosik.interwalled.spark.join.preprocessor.deoutlier
+package me.kosik.interwalled.spark.join.preprocessor
 
 import me.kosik.interwalled.ailist.{BucketedInterval, IntervalColumns}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
-import me.kosik.interwalled.spark.join.preprocessor.PreprocessorStep
+import me.kosik.interwalled.spark.join.preprocessor.Deoutlier.DeoutlierConfig
+import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorStep
 import org.apache.spark.sql.{Dataset, functions => F}
 import org.slf4j.LoggerFactory
 
@@ -35,5 +36,11 @@ class Deoutlier(config: DeoutlierConfig) extends PreprocessorStep {
 
     logger.info(s"Computed outlier threshold: ${data.queryExecution}")
     data.filter(width < F.lit(percentile))
+  }
+}
+
+object Deoutlier {
+  case class DeoutlierConfig(percentile: Int) {
+    override def toString: String = s"deoutlier-$percentile"
   }
 }

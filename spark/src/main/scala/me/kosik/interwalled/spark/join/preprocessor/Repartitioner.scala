@@ -1,8 +1,9 @@
-package me.kosik.interwalled.spark.join.preprocessor.repartitioner
+package me.kosik.interwalled.spark.join.preprocessor
 
 import me.kosik.interwalled.ailist.IntervalColumns
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
-import me.kosik.interwalled.spark.join.preprocessor.PreprocessorStep
+import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorStep
+import me.kosik.interwalled.spark.join.preprocessor.Repartitioner.RepartitionerConfig
 import org.apache.spark.sql.{functions => F}
 import org.slf4j.LoggerFactory
 
@@ -26,5 +27,16 @@ class Repartitioner(config: RepartitionerConfig) extends PreprocessorStep {
       )
     else
       input
+  }
+}
+
+object Repartitioner {
+  case class RepartitionerConfig(doRepartition: Boolean) {
+    override def toString: String = {
+      if(doRepartition)
+        "repartition"
+      else
+        "skip-repartition"
+    }
   }
 }
