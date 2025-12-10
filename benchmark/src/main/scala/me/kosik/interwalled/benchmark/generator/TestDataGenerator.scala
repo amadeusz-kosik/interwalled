@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory
 
 class TestDataGenerator(args: Array[String], env: ApplicationEnv) extends BenchmarkApp {
 
-  private lazy val logger = LoggerFactory.getLogger(getClass)
-
   private val PARTITIONS_PER_DATASET: Int      = 16
 
   override def run(): Unit = {

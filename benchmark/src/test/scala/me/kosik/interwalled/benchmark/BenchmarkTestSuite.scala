@@ -3,9 +3,8 @@ package me.kosik.interwalled.benchmark
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import me.kosik.interwalled.benchmark.app.ApplicationEnv
 import me.kosik.interwalled.benchmark.join.JoinStrategies
-import me.kosik.interwalled.benchmark.test.suite.{TestDataSuite, TestDataSuiteReader}
+import me.kosik.interwalled.benchmark.test.suite.TestDataSuite
 import me.kosik.interwalled.benchmark.utils.csv.{BenchmarkCSVFormatter, CSVWriter}
-import org.apache.spark.sql.SparkSession
 import org.scalatest.funsuite.AnyFunSuite
 
 import java.io.PrintWriter

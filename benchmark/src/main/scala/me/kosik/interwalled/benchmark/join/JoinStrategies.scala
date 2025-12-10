@@ -4,10 +4,10 @@ import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.config.AIListConfig
 import me.kosik.interwalled.spark.join.implementation.{DriverAIListIntervalJoin, NativeAIListIntervalJoin, RDDAIListIntervalJoin, SparkNativeIntervalJoin}
 import me.kosik.interwalled.spark.join.implementation.ailist.native.ailist.{CachedNativeAIListIntervalJoin, CheckpointedNativeAIListIntervalJoin}
-import me.kosik.interwalled.spark.join.preprocessor.PreprocessorConfig
-import me.kosik.interwalled.spark.join.preprocessor.bucketizer.BucketizerConfig
-import me.kosik.interwalled.spark.join.preprocessor.repartitioner.RepartitionerConfig
-import me.kosik.interwalled.spark.join.preprocessor.salter.SalterConfig
+import me.kosik.interwalled.spark.join.preprocessor.Bucketizer.BucketizerConfig
+import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorConfig
+import me.kosik.interwalled.spark.join.preprocessor.Repartitioner.RepartitionerConfig
+import me.kosik.interwalled.spark.join.preprocessor.Salter.SalterConfig
 
 
 object JoinStrategies {
@@ -15,10 +15,11 @@ object JoinStrategies {
   private val checkpointDir = "/mnt/temporary/checkpoint.parquet"
 
   private val defaultAIListConfig = AIListConfig(
-    maximumComponentsCount            = 10,
-    intervalsCountToCheckLookahead    = 20,
-    intervalsCountToTriggerExtraction = 10,
-    minimumComponentSize              = 64
+    // Default values:
+    //    maximumComponentsCount            = 10,
+    //    intervalsCountToCheckLookahead    = 20,
+    //    intervalsCountToTriggerExtraction = 10,
+    //    minimumComponentSize              = 64
   )
 
   private val emptyPreprocessorConfig = new PreprocessorConfig(

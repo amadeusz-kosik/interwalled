@@ -1,11 +1,12 @@
 package me.kosik.interwalled.benchmark.preprocessing
 
 import me.kosik.interwalled.benchmark.utils.Implicits._
-import me.kosik.interwalled.spark.join.preprocessor.{Preprocessor, PreprocessorConfig}
-import me.kosik.interwalled.spark.join.preprocessor.bucketizer.BucketizerConfig
-import me.kosik.interwalled.spark.join.preprocessor.deoutlier.DeoutlierConfig
-import me.kosik.interwalled.spark.join.preprocessor.repartitioner.RepartitionerConfig
-import me.kosik.interwalled.spark.join.preprocessor.salter.SalterConfig
+import me.kosik.interwalled.spark.join.preprocessor.Bucketizer.BucketizerConfig
+import me.kosik.interwalled.spark.join.preprocessor.Deoutlier.DeoutlierConfig
+import me.kosik.interwalled.spark.join.preprocessor.Preprocessor
+import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorConfig
+import me.kosik.interwalled.spark.join.preprocessor.Repartitioner.RepartitionerConfig
+import me.kosik.interwalled.spark.join.preprocessor.Salter.SalterConfig
 
 import scala.language.postfixOps
 
