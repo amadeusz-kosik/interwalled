@@ -7,53 +7,57 @@ import me.kosik.interwalled.benchmark.test.data.model.{IntervalLength, IntervalM
 
 
 object TestCases {
-  private val MAX_TEST_DATASET_SIZE: Long      = 100L * 1000L * 1000L
+  private val MAX_TEST_DATASET_SIZE: Long = 100L * 1000L * 1000L
 
-  val values: Map[String, TestCase] = Array(
-    // Point by point: (0, 0), (1, 1), (2, 2)...
-    new TestUniform("single-point-continuous", IntervalLength(0), IntervalMargin(1), MAX_TEST_DATASET_SIZE),
+  private def uniformTestCases(datasetSizeLimit: Long, domainRightBorder: Long): Array[TestUniform] = {
+    Array(
+      // Point by point: (0, 0), (1, 1), (2, 2)...
+      new TestUniform("single-point", IntervalLength(0), IntervalMargin(1), datasetSizeLimit),
 
-    new TestUniform("single-point-continuous-negative", IntervalLength(0), IntervalMargin(1), MAX_TEST_DATASET_SIZE,
-      new TestDataMapping(row => row.copy(from = row.to * -1, to = row.from * -1)), TestDataFilter.default
-    ),
+      new TestUniform("single-point-negative", IntervalLength(0), IntervalMargin(1), datasetSizeLimit,
+        new TestDataMapping(row => row.copy(from = row.to * -1, to = row.from * -1)), TestDataFilter.default
+      ),
 
-    // Point by point, only even numbers: (0, 0), (2, 2), (4, 4)...
-    new TestUniform("single-point-even", IntervalLength(0), IntervalMargin(1), MAX_TEST_DATASET_SIZE,
-      TestDataMapping.default, TestDataFilter(row => row.from % 2 == 0)
-    ),
+      // Point by point, only even numbers: (0, 0), (2, 2), (4, 4)...
+      new TestUniform("single-point-even", IntervalLength(0), IntervalMargin(1), datasetSizeLimit,
+        TestDataMapping.default, TestDataFilter(row => row.from % 2 == 0)
+      ),
 
-    // Point by point, only odd numbers: (1, 1), (3, 3), (5, 5)...
-    new TestUniform("single-point-odd", IntervalLength(0), IntervalMargin(1), MAX_TEST_DATASET_SIZE,
-      TestDataMapping.default, TestDataFilter(row => row.from % 2 == 1)
-    ),
+      // Point by point, only odd numbers: (1, 1), (3, 3), (5, 5)...
+      new TestUniform("single-point-odd", IntervalLength(0), IntervalMargin(1), datasetSizeLimit,
+        TestDataMapping.default, TestDataFilter(row => row.from % 2 == 1)
+      ),
 
-    // Short spans, overlap of 2: (0, 10), (5, 15), (10, 20)...
-    new TestUniform("short-overlap", IntervalLength(10), IntervalMargin(-5), MAX_TEST_DATASET_SIZE),
+      // Short spans, overlap of 2: (0, 10), (5, 15), (10, 20)...
+      new TestUniform("short-overlap", IntervalLength(10), IntervalMargin(-5), datasetSizeLimit),
 
-    // Short spans, no overlap: (0, 9), (10, 19), (20, 29)...
-    new TestUniform("short-continuous", IntervalLength(9), IntervalMargin(1), MAX_TEST_DATASET_SIZE),
+      // Short spans, no overlap: (0, 9), (10, 19), (20, 29)...
+      new TestUniform("short-continuous", IntervalLength(9), IntervalMargin(1), datasetSizeLimit),
 
-    // Short spans, short margins: (0, 9), (20, 29), (40, 49)...
-    new TestUniform("short-separated", IntervalLength(9), IntervalMargin(11), MAX_TEST_DATASET_SIZE),
+      // Short spans, short margins: (0, 9), (20, 29), (40, 49)...
+      new TestUniform("short-separated", IntervalLength(9), IntervalMargin(11), datasetSizeLimit),
 
-    // Short spans, long margins: (0, 9), (100, 109), (200, 209)...
-    new TestUniform("short-sparse", IntervalLength(9), IntervalMargin(91), MAX_TEST_DATASET_SIZE),
+      // Short spans, long margins: (0, 9), (100, 109), (200, 209)...
+      new TestUniform("short-sparse", IntervalLength(9), IntervalMargin(91), datasetSizeLimit),
 
-    // Long spans, overlap of 2: (0, 10 000), (5 000, 15 000), (10 000, 20 000)...
-    new TestUniform("long-overlap", IntervalLength(10000), IntervalMargin(-5000), MAX_TEST_DATASET_SIZE),
+      // Long spans, overlap of 2: (0, 10 000), (5 000, 15 000), (10 000, 20 000)...
+      new TestUniform("long-overlap", IntervalLength(10000), IntervalMargin(-5000), datasetSizeLimit),
 
-    // Long spans, short margins: (0, 9 999), (10 000, 19 999), (20 000, 29 999)...
-    new TestUniform("long-continuous", IntervalLength(9999), IntervalMargin(1), MAX_TEST_DATASET_SIZE),
+      // Long spans, short margins: (0, 9 999), (10 000, 19 999), (20 000, 29 999)...
+      new TestUniform("long-continuous", IntervalLength(9999), IntervalMargin(1), datasetSizeLimit),
 
-    // Long spans, long margins: (0, 10 000), (20 000, 30 000), (40 000, 50 000)...
-    new TestUniform("long-sparse", IntervalLength(10000), IntervalMargin(10000), MAX_TEST_DATASET_SIZE),
+      // Long spans, long margins: (0, 10 000), (20 000, 30 000), (40 000, 50 000)...
+      new TestUniform("long-sparse", IntervalLength(10000), IntervalMargin(10000), datasetSizeLimit),
 
-    // 1/10 - 1 of domain length
-    new TestUniform("sparse-10", IntervalLength(MAX_TEST_DATASET_SIZE.toInt / 10 - 1), IntervalMargin(1), MAX_TEST_DATASET_SIZE),
+      // 1/10 - 1 of domain length
+      new TestUniform("sparse-10", IntervalLength(domainRightBorder.toInt / 10 - 1), IntervalMargin(1), domainRightBorder),
 
-    // Full domain length
-    new TestUniform("sparse-01", IntervalLength(MAX_TEST_DATASET_SIZE.toInt), IntervalMargin(1), MAX_TEST_DATASET_SIZE),
+      // Full domain length
+      new TestUniform("sparse-01", IntervalLength(domainRightBorder.toInt), IntervalMargin(1), domainRightBorder)
+    )
+  }
 
+  val values: Map[String, TestCase] = (uniformTestCases(MAX_TEST_DATASET_SIZE, MAX_TEST_DATASET_SIZE) ++ Array(
     // Random - normal distribution, single points
     new TestRandomNormal("random-normal-single", IntervalLength(0), MAX_TEST_DATASET_SIZE),
 
@@ -73,5 +77,5 @@ object TestCases {
 
     // Random - unform distribution, short spans
     new TestRandomUniform("random-uniform-short", IntervalLength(10), MAX_TEST_DATASET_SIZE),
-  ).map(testCase => testCase.testCaseName -> testCase).toMap
+  )).map(testCase => testCase.testCaseName -> testCase).toMap
 }

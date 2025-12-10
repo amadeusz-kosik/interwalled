@@ -10,7 +10,7 @@ class TestUniform(
   name: String,
   length: IntervalLength,
   margin: IntervalMargin,
-  totalRowsCount: Long,
+  rowsLimitRight: Long,
   additionalMapping: TestDataMapping = TestDataMapping.default,
   additionalFilter: TestDataFilter = TestDataFilter.default
 ) extends TestCase with Serializable {
@@ -21,11 +21,11 @@ class TestUniform(
     import sparkSession.implicits._
 
     sparkSession.sparkContext
-      .range(0L, totalRowsCount)
+      .range(0L, rowsLimitRight)
       .map(i => RawTestDataRow(i * (length.value + margin.value), i * (length.value + margin.value) + length.value))
       .map(additionalMapping.fn)
-      .filter(_.from <= totalRowsCount)
-      .filter(_.to   <= totalRowsCount)
+      .filter(_.from <= rowsLimitRight)
+      .filter(_.to   <= rowsLimitRight)
       .filter(additionalFilter.fn)
       .toDS()
   }
