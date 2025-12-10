@@ -1,8 +1,9 @@
 package me.kosik.interwalled.benchmark.test.data.datasets
 
 import me.kosik.interwalled.benchmark.test.data.datasets.deterministic.TestUniform
+import me.kosik.interwalled.benchmark.test.data.datasets.deterministic.TestUniform.{TestDataFilter, TestDataMapping}
 import me.kosik.interwalled.benchmark.test.data.datasets.random.{TestRandomNormal, TestRandomPoisson, TestRandomUniform}
-import me.kosik.interwalled.benchmark.test.data.model.{IntervalLength, IntervalMargin, TestDataFilter}
+import me.kosik.interwalled.benchmark.test.data.model.{IntervalLength, IntervalMargin}
 
 
 object TestCases {
@@ -12,11 +13,19 @@ object TestCases {
     // Point by point: (0, 0), (1, 1), (2, 2)...
     new TestUniform("single-point-continuous", IntervalLength(0), IntervalMargin(1), MAX_TEST_DATASET_SIZE),
 
+    new TestUniform("single-point-continuous-negative", IntervalLength(0), IntervalMargin(1), MAX_TEST_DATASET_SIZE,
+      new TestDataMapping(row => row.copy(from = row.to * -1, to = row.from * -1)), TestDataFilter.default
+    ),
+
     // Point by point, only even numbers: (0, 0), (2, 2), (4, 4)...
-    new TestUniform("single-point-even", IntervalLength(0), IntervalMargin(1), MAX_TEST_DATASET_SIZE, TestDataFilter(row => row.from % 2 == 0)),
+    new TestUniform("single-point-even", IntervalLength(0), IntervalMargin(1), MAX_TEST_DATASET_SIZE,
+      TestDataMapping.default, TestDataFilter(row => row.from % 2 == 0)
+    ),
 
     // Point by point, only odd numbers: (1, 1), (3, 3), (5, 5)...
-    new TestUniform("single-point-odd", IntervalLength(0), IntervalMargin(1), MAX_TEST_DATASET_SIZE, TestDataFilter(row => row.from % 2 == 1)),
+    new TestUniform("single-point-odd", IntervalLength(0), IntervalMargin(1), MAX_TEST_DATASET_SIZE,
+      TestDataMapping.default, TestDataFilter(row => row.from % 2 == 1)
+    ),
 
     // Short spans, overlap of 2: (0, 10), (5, 15), (10, 20)...
     new TestUniform("short-overlap", IntervalLength(10), IntervalMargin(-5), MAX_TEST_DATASET_SIZE),
