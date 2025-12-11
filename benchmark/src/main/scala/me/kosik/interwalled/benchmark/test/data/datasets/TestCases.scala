@@ -7,7 +7,8 @@ import me.kosik.interwalled.benchmark.test.data.model.{IntervalLength, IntervalM
 
 
 object TestCases {
-  private val MAX_TEST_DATASET_SIZE: Long = 100L * 1000L * 1000L
+  private val MAX_BENCHMARK_DATASET_SIZE: Long = 100L * 1000L * 1000L
+  private val MAX_UNIT_TEST_DATASET_SIZE: Long =          10L * 1000L
 
   private def uniformTestCases(datasetSizeLimit: Long, domainRightBorder: Long): Array[TestUniform] = {
     Array(
@@ -57,25 +58,28 @@ object TestCases {
     )
   }
 
-  val values: Map[String, TestCase] = (uniformTestCases(MAX_TEST_DATASET_SIZE, MAX_TEST_DATASET_SIZE) ++ Array(
+  val benchmarkData: Seq[TestCase] = (uniformTestCases(MAX_BENCHMARK_DATASET_SIZE, MAX_BENCHMARK_DATASET_SIZE) ++ Array(
     // Random - normal distribution, single points
-    new TestRandomNormal("random-normal-single", IntervalLength(0), MAX_TEST_DATASET_SIZE),
+    new TestRandomNormal("random-normal-single", IntervalLength(0), MAX_BENCHMARK_DATASET_SIZE),
 
     // Random - normal distribution, short spans
-    new TestRandomNormal("random-normal-short", IntervalLength(10), MAX_TEST_DATASET_SIZE),
+    new TestRandomNormal("random-normal-short", IntervalLength(10), MAX_BENCHMARK_DATASET_SIZE),
 
     // Poisson is too slow ATM, so it is set to 1/10 of others
 
     // Random - poisson distribution, single points
-    new TestRandomPoisson("random-poisson-single", IntervalLength(0), MAX_TEST_DATASET_SIZE / 10),
+    new TestRandomPoisson("random-poisson-single", IntervalLength(0), MAX_BENCHMARK_DATASET_SIZE / 10),
 
     // Random - poisson distribution, short spans
-    new TestRandomPoisson("random-poisson-short", IntervalLength(10), MAX_TEST_DATASET_SIZE / 10),
+    new TestRandomPoisson("random-poisson-short", IntervalLength(10), MAX_BENCHMARK_DATASET_SIZE / 10),
 
     // Random - unform distribution, single points
-    new TestRandomUniform("random-uniform-single", IntervalLength(0), MAX_TEST_DATASET_SIZE),
+    new TestRandomUniform("random-uniform-single", IntervalLength(0), MAX_BENCHMARK_DATASET_SIZE),
 
     // Random - unform distribution, short spans
-    new TestRandomUniform("random-uniform-short", IntervalLength(10), MAX_TEST_DATASET_SIZE),
-  )).map(testCase => testCase.testCaseName -> testCase).toMap
+    new TestRandomUniform("random-uniform-short", IntervalLength(10), MAX_BENCHMARK_DATASET_SIZE),
+  ))
+
+  val unitTestData: Seq[TestCase] = uniformTestCases(MAX_UNIT_TEST_DATASET_SIZE, MAX_UNIT_TEST_DATASET_SIZE)
+
 }

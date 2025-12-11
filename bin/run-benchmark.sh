@@ -125,6 +125,19 @@ function build() {
   sbt clean compile benchmark/assembly
 }
 
+function local_run_generator() {
+  export IW_APP_COMMAND="test-data-generator"
+  export IW_DATA="unit-test-data"
+  export IW_BENCHMARK=""
+
+  export IW_DRIVER_MEMORY="4G"
+  export IW_TOTAL_EXECUTOR_CORES="20"
+  export IW_EXECUTOR_CORES="10"
+  export IW_EXECUTOR_MEMORY="10G"
+
+  cd "./docker/" && docker compose up spark-driver && cd ../
+}
+
 function local_run_benchmark() {
   export IW_APP_COMMAND="interval-join-benchmark"
   export IW_DATA="$1"

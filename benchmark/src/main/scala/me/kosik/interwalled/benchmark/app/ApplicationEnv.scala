@@ -22,7 +22,7 @@ object ApplicationEnv {
   def buildTest(applicationName: String): ApplicationEnv = {
     val testDirectories = Map(
       ("INTERWALLED_CSV_DIRECTORY",  sys.env.getOrElse("INTERWALLED_CSV_DIRECTORY",  "/dev/null")),
-      ("INTERWALLED_DATA_DIRECTORY", sys.env.getOrElse("INTERWALLED_DATA_DIRECTORY", "data/test-data/"))
+      ("INTERWALLED_DATA_DIRECTORY", sys.env.getOrElse("INTERWALLED_DATA_DIRECTORY", "data/"))
     )
 
     ApplicationEnv.build(applicationName, sys.env ++ testDirectories)

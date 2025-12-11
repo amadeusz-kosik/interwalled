@@ -25,7 +25,7 @@ object TestDataSuiteReader {
         F.uuid().as(VALUE)
       )
     },
-    "test-data" -> { df =>
+    "unit-test-data" -> { df =>
       import IntervalColumns._
 
       df.select(
