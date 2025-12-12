@@ -1,0 +1,13 @@
+version: "1.0"
+
+projectJDK: "17"
+
+profile:
+  name: qodana.recommended
+
+include:
+  - name: "category:Java"
+  - name: "category:sbt"
+  - name: "category:Scala"
+
+linter: jetbrains/qodana-jvm:2025.3
