@@ -5,6 +5,7 @@ import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.config.AIListConfig
 import me.kosik.interwalled.spark.join.implementation.NativeAIListIntervalJoin.Config
 import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorConfig
+import me.kosik.interwalled.utility.IntervalParser
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession, functions => F}
@@ -83,23 +84,7 @@ abstract class NativeAIListIntervalJoin(override val config: Config) extends Exe
           .takeWhile(row => row.getAs[Long](FROM) <= queryTo)
           .filter(row => row.getAs[Long](TO) >= queryFrom)
 
-        matching map { row =>
-          val lhsInterval = Interval(
-            key,
-            row.getAs[Long](FROM),
-            row.getAs[Long](TO),
-            row.getAs(VALUE),
-          )
-
-          val rhsInterval = Interval(
-            key,
-            query.getAs[Long](FROM),
-            query.getAs[Long](TO),
-            query.getAs(VALUE),
-          )
-
-          IntervalsPair(key, lhsInterval, rhsInterval)
-        }
+        matching map { row => IntervalParser.rowToIntervalsPair(key, row, query) }
       }
     }
 

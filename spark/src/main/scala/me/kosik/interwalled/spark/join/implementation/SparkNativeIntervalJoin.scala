@@ -1,10 +1,10 @@
 package me.kosik.interwalled.spark.join.implementation
 
-import me.kosik.interwalled.ailist.{IntervalColumns, IntervalsPair}
+import me.kosik.interwalled.ailist.{BucketedInterval, IntervalColumns, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
-import me.kosik.interwalled.spark.join.implementation.SparkNativeIntervalJoin.Config
+import me.kosik.interwalled.spark.join.implementation.SparkNativeIntervalJoin.{Config, rowToIntervalStruct}
 import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorConfig
-import org.apache.spark.sql.{Dataset, functions => F}
+import org.apache.spark.sql.{Column, Dataset, Row, functions => F}
 
 
 class SparkNativeIntervalJoin(override val config: Config) extends ExecutorIntervalJoin {
@@ -32,20 +32,8 @@ class SparkNativeIntervalJoin(override val config: Config) extends ExecutorInter
       )
       .select(
         lhsInputPrepared.col(IntervalColumns.KEY)     .alias("key"),
-
-        F.struct(
-          lhsInputPrepared.col(IntervalColumns.KEY)   .alias(s"${IntervalColumns.KEY}"),
-          lhsInputPrepared.col(IntervalColumns.FROM)  .alias(f"${IntervalColumns.FROM}"),
-          lhsInputPrepared.col(IntervalColumns.TO)    .alias(f"${IntervalColumns.TO}"),
-          lhsInputPrepared.col(IntervalColumns.VALUE) .alias(f"${IntervalColumns.VALUE}")
-        ).alias("lhs"),
-
-        F.struct(
-          rhsInputPrepared.col(IntervalColumns.KEY)   .alias(s"${IntervalColumns.KEY}"),
-          rhsInputPrepared.col(IntervalColumns.FROM)  .alias(f"${IntervalColumns.FROM}"),
-          rhsInputPrepared.col(IntervalColumns.TO)    .alias(f"${IntervalColumns.TO}"),
-          rhsInputPrepared.col(IntervalColumns.VALUE) .alias(f"${IntervalColumns.VALUE}")
-        ).alias("rhs")
+        rowToIntervalStruct(lhsInputPrepared)         .alias("lhs"),
+        rowToIntervalStruct(rhsInputPrepared)         .alias("rhs")
       )
       .as[IntervalsPair]
   }
@@ -54,4 +42,11 @@ class SparkNativeIntervalJoin(override val config: Config) extends ExecutorInter
 object SparkNativeIntervalJoin {
   case class Config(override val preprocessorConfig: PreprocessorConfig)
     extends ExecutorConfig
+
+  def rowToIntervalStruct(dataset: Dataset[BucketedInterval]): Column = F.struct(
+    dataset.col(IntervalColumns.KEY)   .alias(s"${IntervalColumns.KEY}"),
+    dataset.col(IntervalColumns.FROM)  .alias(f"${IntervalColumns.FROM}"),
+    dataset.col(IntervalColumns.TO)    .alias(f"${IntervalColumns.TO}"),
+    dataset.col(IntervalColumns.VALUE) .alias(f"${IntervalColumns.VALUE}")
+  )
 }
