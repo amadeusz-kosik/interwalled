@@ -3,7 +3,7 @@ package me.kosik.interwalled.spark.join.implementation
 import me.kosik.interwalled.ailist.{IntervalColumns, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.implementation.SparkNativeIntervalJoin.Config
-import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorConfig
+import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorConfig
 import org.apache.spark.sql.{Dataset, functions => F}
 
 

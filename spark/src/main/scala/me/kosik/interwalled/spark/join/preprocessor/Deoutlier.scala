@@ -3,7 +3,7 @@ package me.kosik.interwalled.spark.join.preprocessor
 import me.kosik.interwalled.ailist.{BucketedInterval, IntervalColumns}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.preprocessor.Deoutlier.DeoutlierConfig
-import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorStep
+import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorStep
 import org.apache.spark.sql.{Dataset, functions => F}
 import org.slf4j.LoggerFactory
 

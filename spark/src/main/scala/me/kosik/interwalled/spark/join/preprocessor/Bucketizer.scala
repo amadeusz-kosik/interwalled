@@ -3,7 +3,7 @@ package me.kosik.interwalled.spark.join.preprocessor
 import me.kosik.interwalled.ailist.{BucketedInterval, IntervalColumns, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.preprocessor.Bucketizer.BucketizerConfig
-import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorStep
+import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorStep
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.types.DataTypes
 import org.apache.spark.sql.{Dataset, functions => F}
