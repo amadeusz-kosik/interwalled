@@ -5,9 +5,9 @@ import me.kosik.interwalled.spark.join.config.AIListConfig
 import me.kosik.interwalled.spark.join.implementation.{DriverAIListIntervalJoin, NativeAIListIntervalJoin, RDDAIListIntervalJoin, SparkNativeIntervalJoin}
 import me.kosik.interwalled.spark.join.implementation.ailist.native.ailist.{CachedNativeAIListIntervalJoin, CheckpointedNativeAIListIntervalJoin}
 import me.kosik.interwalled.spark.join.preprocessor.Bucketizer.BucketizerConfig
-import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorConfig
 import me.kosik.interwalled.spark.join.preprocessor.Repartitioner.RepartitionerConfig
 import me.kosik.interwalled.spark.join.preprocessor.Salter.SalterConfig
+import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorConfig
 
 
 object JoinStrategies {
@@ -22,38 +22,25 @@ object JoinStrategies {
     //    minimumComponentSize              = 64
   )
 
-  private val emptyPreprocessorConfig = new PreprocessorConfig(
-    bucketizerConfig    = None,
-    salterConfig        = None,
-    deoutlierConfig     = None,
-    repartitionerConfig = Some(RepartitionerConfig(true))
-  )
+  private val emptyPreprocessorConfig = PreprocessorConfig.empty
 
-  private val bucketPer1000PreprocessorConfig = new PreprocessorConfig(
+  private val bucketPer1000PreprocessorConfig = emptyPreprocessorConfig.copy(
     bucketizerConfig    = Some(BucketizerConfig(1000L)),
-    salterConfig        = None,
-    deoutlierConfig     = None,
     repartitionerConfig = Some(RepartitionerConfig(true))
   )
 
-  private val bucketPer1000000PreprocessorConfig = new PreprocessorConfig(
+  private val bucketPer1000000PreprocessorConfig = emptyPreprocessorConfig.copy(
     bucketizerConfig    = Some(BucketizerConfig(1000000L)),
-    salterConfig        = None,
-    deoutlierConfig     = None,
     repartitionerConfig = Some(RepartitionerConfig(true))
   )
 
-  private val saltPer1000000PreprocessorConfig = new PreprocessorConfig(
-    bucketizerConfig    = None,
+  private val saltPer1000000PreprocessorConfig = emptyPreprocessorConfig.copy(
     salterConfig        = Some(SalterConfig(1000000L)),
-    deoutlierConfig     = None,
     repartitionerConfig = Some(RepartitionerConfig(true))
   )
 
-  private val saltPer10000000PreprocessorConfig = new PreprocessorConfig(
-    bucketizerConfig    = None,
+  private val saltPer10000000PreprocessorConfig = emptyPreprocessorConfig.copy(
     salterConfig        = Some(SalterConfig(10000000L)),
-    deoutlierConfig     = None,
     repartitionerConfig = Some(RepartitionerConfig(true))
   )
 

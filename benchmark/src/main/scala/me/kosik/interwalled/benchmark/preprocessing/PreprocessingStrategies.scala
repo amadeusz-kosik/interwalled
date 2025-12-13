@@ -3,10 +3,10 @@ package me.kosik.interwalled.benchmark.preprocessing
 import me.kosik.interwalled.benchmark.utils.Implicits._
 import me.kosik.interwalled.spark.join.preprocessor.Bucketizer.BucketizerConfig
 import me.kosik.interwalled.spark.join.preprocessor.Deoutlier.DeoutlierConfig
-import me.kosik.interwalled.spark.join.preprocessor.Preprocessor
-import me.kosik.interwalled.spark.join.preprocessor.Preprocessor.PreprocessorConfig
 import me.kosik.interwalled.spark.join.preprocessor.Repartitioner.RepartitionerConfig
 import me.kosik.interwalled.spark.join.preprocessor.Salter.SalterConfig
+import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor
+import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorConfig
 
 import scala.language.postfixOps
 
@@ -47,7 +47,7 @@ object PreprocessingStrategies {
     saltingConfig       <- saltingConfigs
     deoutlierConfig     <- deoutlierConfigs
     repartitionerConfig <- repartitionerConfigs
-  } yield PreprocessorConfig(bucketingConfig, saltingConfig, deoutlierConfig, repartitionerConfig)
+  } yield PreprocessorConfig(bucketingConfig, saltingConfig, deoutlierConfig, repartitionerConfig, None)
 
 
   val values: Map[String, Preprocessor] = {
