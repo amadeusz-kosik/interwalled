@@ -10,4 +10,4 @@ include:
   - name: "category:sbt"
   - name: "category:Scala"
 
-linter: jetbrains/qodana-jvm:2025.3
+linter: jetbrains/qodana-jvm:2025.2
