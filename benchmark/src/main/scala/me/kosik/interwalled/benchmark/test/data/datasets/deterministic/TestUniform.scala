@@ -44,5 +44,4 @@ object TestUniform {
   object TestDataFilter {
     def default: TestDataFilter = TestDataFilter(_ => true)
   }
-
 }
