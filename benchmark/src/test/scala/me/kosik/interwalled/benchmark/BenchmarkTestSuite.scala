@@ -27,7 +27,7 @@ class BenchmarkTestSuite extends AnyFunSuite with DatasetSuiteBase {
     unitTestDataSuite                 <- UnitTestDataSuite.ALL_SUITES
   } yield {
 
-    test(s"Example test, edge case: ${joinStrategyName} on ${unitTestDataSuite.name}") {
+    test(s"Example test, edge case: $joinStrategyName on ${unitTestDataSuite.name}") {
       val database = unitTestDataSuite.loadDatabase(env)
       val query    = unitTestDataSuite.loadQuery(env)
 

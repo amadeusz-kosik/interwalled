@@ -37,7 +37,7 @@ object TestDataGenerator {
       logger.info(s"Generating ${testCaseCallback.testCaseName} data.")
 
       val generatedData = testCaseCallback.generate()
-      val writePath = s"${env.dataDirectory}/${path}/${testCaseCallback.testCaseName}.parquet"
+      val writePath = s"${env.dataDirectory}/$path/${testCaseCallback.testCaseName}.parquet"
 
       generatedData
         .repartition(partitions)
@@ -54,7 +54,7 @@ object TestDataGenerator {
       logger.info(s"Generating ${testCaseResultsCallback.testCaseName} data results.")
 
       val generatedData = testCaseResultsCallback.generate()
-      val writePath = s"${env.dataDirectory}/${path}-results/${testCaseResultsCallback.testCaseName}.parquet"
+      val writePath = s"${env.dataDirectory}/$path-results/${testCaseResultsCallback.testCaseName}.parquet"
 
       generatedData
         .write
