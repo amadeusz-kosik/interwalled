@@ -181,3 +181,8 @@ Please see [the Basic benchmark](notebooks/main.ipynb) jupyter notebook for exec
 - [Original AIList implementation on GitHub](https://github.com/databio/AIList/)
 - [IITII implementation on Apache Spark - 1](https://github.com/Wychowany/mgr-iitii/tree/main)
 - [IITII implementation on Apache Spark - 2](https://github.com/Wychowany/mgr-code/tree/main)
+
+
+## License
+This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a><img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;">.
+See [LICENSE](LICENSE) file for full license text.
