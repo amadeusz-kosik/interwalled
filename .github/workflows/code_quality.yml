@@ -1,4 +1,5 @@
-name: Qodana
+name: Unit tests
+
 on:
   push:
     branches: [ master ]
@@ -7,18 +8,27 @@ on:
   workflow_dispatch:
 
 jobs:
-  qodana:
+  test:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      checks: write
+    env:
+      # define Java options for both official sbt and sbt-extras
+      JAVA_OPTS: --add-exports java.base/sun.nio.ch=ALL-UNNAMED --add-exports java.base/sun.security.action=ALL-UNNAMED
+      JVM_OPTS:  --add-exports java.base/sun.nio.ch=ALL-UNNAMED --add-exports java.base/sun.security.action=ALL-UNNAMED
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0
-      - name: Qodana Scan
-        uses: JetBrains/qodana-action@v2025.2
-        env:
-          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup SBT
+        uses: sbt/setup-sbt@v1
+
+      - name: Run tests for 'spark' module
+        run: sbt "spark/test"
+
+      - name: Run tests for 'benchmark' module
+        run: sbt "benchmark/test"

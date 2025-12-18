@@ -1,6 +1,5 @@
 # Interval join helper for Apache Spark
-[![CI](https://github.com/amadeusz-kosik/interwalled/actions/workflows/unit_tests.yml/badge.svg)](https://github.com/amadeusz-kosik/interwalled/actions/workflows/unit_tests.yml)
-[![Qodana](https://github.com/amadeusz-kosik/interwalled/actions/workflows/code_quality.yml/badge.svg)](https://github.com/amadeusz-kosik/interwalled/actions/workflows/code_quality.yml)
+[![Unit tests](https://github.com/amadeusz-kosik/interwalled/actions/workflows/code_quality.yml/badge.svg)](https://github.com/amadeusz-kosik/interwalled/actions/workflows/code_quality.yml)
 
 This repository contains all components to implement, use and benchmark a few implementations for interval join 
     in Apache Spark library. The interval join is defined as a join with following conditions 
