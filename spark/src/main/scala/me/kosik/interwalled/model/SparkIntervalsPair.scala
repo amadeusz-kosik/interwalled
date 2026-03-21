@@ -3,15 +3,15 @@ package me.kosik.interwalled.model
 import me.kosik.interwalled.ailist.model.Interval
 
 case class SparkIntervalsPair(
-  key:    String,
+  key:        String,
 
-  leftFrom:   Long,
-  leftTo:     Long,
-  leftValue:  String,
+  lhsFrom:    Long,
+  lhsTo:      Long,
+  lhsValue:   String,
 
-  rightFrom:  Long,
-  rightTo:    Long,
-  rightValue: String
+  rhsFrom:    Long,
+  rhsTo:      Long,
+  rhsValue:   String
 )
 
 object SparkIntervalsPair {

@@ -16,7 +16,7 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DatasetSui
 
   def assertDataEquals(expected: Dataset[SparkIntervalsPair], actual: Dataset[SparkIntervalsPair]): Unit = {
     def prepareResult(data: Dataset[SparkIntervalsPair]) = data
-      .sort(F.col("key"), F.col("lhs.from"), F.col("lhs.to"), F.col("rhs.from"), F.col("rhs.to"))
+      .sort(F.col("key"), F.col("lhsFrom"), F.col("lhsTo"), F.col("rhsFrom"), F.col("rhsTo"))
 
     assertDatasetEquals(expected = prepareResult(expected), result = prepareResult(actual))
   }

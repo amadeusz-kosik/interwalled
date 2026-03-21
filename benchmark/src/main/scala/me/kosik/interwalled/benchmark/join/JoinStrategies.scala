@@ -1,7 +1,7 @@
 package me.kosik.interwalled.benchmark.join
 
+import me.kosik.interwalled.ailist.model.AIListConfiguration
 import me.kosik.interwalled.spark.join.api.IntervalJoin
-import me.kosik.interwalled.spark.join.config.AIListConfig
 import me.kosik.interwalled.spark.join.implementation.{DriverAIListIntervalJoin, NativeAIListIntervalJoin, RDDAIListIntervalJoin, SparkNativeIntervalJoin}
 import me.kosik.interwalled.spark.join.implementation.ailist.native.ailist.{CachedNativeAIListIntervalJoin, CheckpointedNativeAIListIntervalJoin}
 import me.kosik.interwalled.spark.join.preprocessor.Bucketizer.BucketizerConfig
@@ -14,14 +14,7 @@ object JoinStrategies {
 
   private val checkpointDir = "/mnt/temporary/checkpoint.parquet"
 
-  private val defaultAIListConfig = AIListConfig(
-    // Default values:
-    //    maximumComponentsCount            = 10,
-    //    intervalsCountToCheckLookahead    = 20,
-    //    intervalsCountToTriggerExtraction = 10,
-    //    minimumComponentSize              = 64
-  )
-
+  private val defaultAIListConfig = AIListConfiguration.DEFAULT
   private val emptyPreprocessorConfig = PreprocessorConfig.empty
 
   private val bucketPer1000PreprocessorConfig = emptyPreprocessorConfig.copy(

@@ -1,6 +1,8 @@
 package me.kosik.interwalled.ailist.model;
 
 
+import java.io.Serializable;
+
 /**
  *
  * @param maximumComponentsCount
@@ -16,7 +18,7 @@ public record AIListConfiguration(
         int maximumComponentSize,
         boolean checkLookbehindCoverage,
         boolean isInputDataSorted
-) {
+) implements Serializable {
 
     final public static AIListConfiguration DEFAULT =
             new AIListConfiguration(32, 24, 16, 64, false, false);

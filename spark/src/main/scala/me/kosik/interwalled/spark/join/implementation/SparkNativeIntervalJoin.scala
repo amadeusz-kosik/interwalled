@@ -34,8 +34,12 @@ class SparkNativeIntervalJoin(override val config: Config) extends ExecutorInter
       )
       .select(
         lhsInputPrepared.col(IntervalColumns.KEY)     .alias("key"),
-        rowToIntervalStruct(lhsInputPrepared)         .alias("lhs"),
-        rowToIntervalStruct(rhsInputPrepared)         .alias("rhs")
+        lhsInputPrepared.col(IntervalColumns.FROM)    .alias("lhsFrom"),
+        lhsInputPrepared.col(IntervalColumns.TO)      .alias("lhsTo"),
+        lhsInputPrepared.col(IntervalColumns.VALUE)   .alias("lhsValue"),
+        rhsInputPrepared.col(IntervalColumns.FROM)    .alias("rhsFrom"),
+        rhsInputPrepared.col(IntervalColumns.TO)      .alias("rhsTo"),
+        rhsInputPrepared.col(IntervalColumns.VALUE)   .alias("rhsValue")
       )
       .as[SparkIntervalsPair]
   }

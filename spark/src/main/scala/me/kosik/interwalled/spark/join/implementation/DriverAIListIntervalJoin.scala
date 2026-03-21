@@ -1,6 +1,6 @@
 package me.kosik.interwalled.spark.join.implementation
 
-import me.kosik.interwalled.ailist.model.{AIListConfiguration, IntervalsPair}
+import me.kosik.interwalled.ailist.model.AIListConfiguration
 import me.kosik.interwalled.ailist.{AIList, AIListBuilder}
 import me.kosik.interwalled.model.SparkIntervalsPair
 import me.kosik.interwalled.spark.join.api.IntervalJoin
@@ -39,7 +39,15 @@ object DriverAIListIntervalJoin extends IntervalJoin {
           aiList
             .overlapping(rhsInterval.toAIListInterval)
             .asScala
-            .map(lhsInterval => SparkIntervalsPair(lhsInterval, rhsInterval.toAIListInterval))
+            .map(lhsInterval => SparkIntervalsPair(
+              lhsInterval.key,
+              lhsInterval.from(),
+              lhsInterval.to(),
+              lhsInterval.value(),
+              rhsInterval.from,
+              rhsInterval.to,
+              rhsInterval.value
+            ))
 
         case None =>
           Iterator.empty

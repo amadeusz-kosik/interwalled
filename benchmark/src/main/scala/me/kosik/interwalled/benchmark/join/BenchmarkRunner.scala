@@ -1,9 +1,9 @@
 package me.kosik.interwalled.benchmark.join
 
-import me.kosik.interwalled.ailist.Interval
 import me.kosik.interwalled.benchmark.app.ApplicationEnv
 import me.kosik.interwalled.benchmark.test.suite.TestDataSuiteReader
 import me.kosik.interwalled.benchmark.utils.timer.{Timer, TimerResult}
+import me.kosik.interwalled.model.SparkInterval
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin
 import me.kosik.interwalled.utility.stats.model.IntervalJoinRunStats
@@ -24,7 +24,7 @@ object BenchmarkRunner {
     // FIXME
     val benchmarkInputData = {
       import env.sparkSession.implicits._
-      IntervalJoin.Input(database.as[Interval], query.as[Interval])
+      IntervalJoin.Input(database.as[SparkInterval], query.as[SparkInterval])
     }
 
     runBenchmark(benchmarkInputData, request.join, env.timeoutAfter)
