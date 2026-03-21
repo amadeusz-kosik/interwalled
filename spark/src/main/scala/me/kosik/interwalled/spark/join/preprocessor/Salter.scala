@@ -1,6 +1,7 @@
 package me.kosik.interwalled.spark.join.preprocessor
 
-import me.kosik.interwalled.ailist.{BucketedInterval, IntervalColumns}
+import me.kosik.interwalled.ailist.IntervalColumns
+import me.kosik.interwalled.model.BucketedInterval
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.preprocessor.Salter.SalterConfig
 import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorStep

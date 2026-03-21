@@ -1,22 +1,23 @@
 package me.kosik.interwalled.ailist;
 
+import me.kosik.interwalled.ailist.model.Interval;
 import me.kosik.interwalled.ailist.utils.BinarySearch;
 import java.util.Iterator;
 
-public class AIListIterator implements Iterator<Interval>
+public class AIListIterator<T> implements Iterator<Interval<T>>
 {
     private final long queryStart;
     private final long queryEnd;
 
-    private final AIList parentAIList;
+    private final AIList<T> parentAIList;
     private final long parentAIListComponentsCount;
 
     private int currentComponentIndex = -1;
     private int currentIntervalIndex = -1;
 
-    private Interval currentInterval;
+    private Interval<T> currentInterval;
 
-    public AIListIterator(final long queryStart, final long queryEnd, final AIList parentAIList)
+    public AIListIterator(final long queryStart, final long queryEnd, final AIList<T> parentAIList)
     {
         this.queryStart = queryStart;
         this.queryEnd = queryEnd;
@@ -32,8 +33,8 @@ public class AIListIterator implements Iterator<Interval>
     }
 
     @Override
-    public Interval next() {
-        Interval currentReturn = currentInterval;
+    public Interval<T> next() {
+        Interval<T> currentReturn = currentInterval;
 
         if(currentInterval != null)
             findNextInterval();
@@ -52,10 +53,10 @@ public class AIListIterator implements Iterator<Interval>
             return;
         }
 
-        final int  currentComponentStartIndex = currentComponentStartIndex();
-        final int  currentComponentLength     = currentComponentLength();
+        final int  currentComponentStartIndex = parentAIList.getComponentStartIndex(currentComponentIndex);
+        final int  currentComponentLength     = parentAIList.getComponentLength(currentComponentIndex);
         final int  currentComponentEndIndex   = currentComponentStartIndex + currentComponentLength - 1;
-        final long currentComponentMaxEnd     = currentComponentMaxEnd();
+        final long currentComponentMaxEnd     = parentAIList.getComponentMaxEnd(currentComponentIndex);
 
         // Shortcut for completely disjoint intervals.
         //  1/ if components_max < query.start, skip
@@ -72,7 +73,7 @@ public class AIListIterator implements Iterator<Interval>
         }
 
         // Find the rightmost element satisfying interval.start < queryEnd condition:
-        int rightmostIntervalIndex = BinarySearch.findRightmost(
+        int rightmostIntervalIndex = BinarySearch.findRightmostBinary(
                 parentAIList.getIntervals(),
                 currentComponentStartIndex,
                 currentComponentEndIndex,
@@ -96,13 +97,13 @@ public class AIListIterator implements Iterator<Interval>
             return;
         }
 
-        final int currentComponentStartIndex = currentComponentStartIndex();
+        final int currentComponentStartIndex = parentAIList.getComponentStartIndex(currentComponentIndex);
 
         // Try picking next interval in the current component.
         //  In fact, try picking _previous_ interval, as the algorithm goes from right to left.
         //  Do not go beyond the current component
         int _nextIntervalIndex = currentIntervalIndex - 1;
-        Interval _nextInterval = null;
+        Interval<T> _nextInterval = null;
 
         // Iterate from right to left
         while(_nextIntervalIndex >= currentComponentStartIndex) {
@@ -110,7 +111,7 @@ public class AIListIterator implements Iterator<Interval>
 
             if (_nextInterval.from() <= queryEnd && _nextInterval.to() >= queryStart) {
                 break;
-            } else if(intervalMaxEnd(_nextIntervalIndex) < queryStart) {
+            } else if(parentAIList.getIntervalMaxEnd(_nextIntervalIndex) < queryStart) {
                 _nextInterval = null;
                 _nextIntervalIndex -= 1;
 
@@ -127,21 +128,5 @@ public class AIListIterator implements Iterator<Interval>
         } else {
             checkNextComponent();
         }
-    }
-
-    private int currentComponentStartIndex() {
-        return parentAIList.getComponentStartIndex(currentComponentIndex);
-    }
-
-    private int currentComponentLength() {
-        return parentAIList.getComponentLength(currentComponentIndex);
-    }
-
-    private long currentComponentMaxEnd() {
-        return parentAIList.getComponentMaxEnd(currentComponentIndex);
-    }
-
-    private long intervalMaxEnd(final int intervalIndex) {
-        return parentAIList.getIntervalMaxEnd(intervalIndex);
     }
 }

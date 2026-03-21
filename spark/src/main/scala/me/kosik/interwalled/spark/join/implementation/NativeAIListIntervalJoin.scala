@@ -1,8 +1,9 @@
 package me.kosik.interwalled.spark.join.implementation
 
-import me.kosik.interwalled.ailist.{Interval, IntervalColumns, IntervalsPair}
+import me.kosik.interwalled.ailist.IntervalColumns
+import me.kosik.interwalled.ailist.model.AIListConfiguration
+import me.kosik.interwalled.model.{SparkInterval, SparkIntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
-import me.kosik.interwalled.spark.join.config.AIListConfig
 import me.kosik.interwalled.spark.join.implementation.NativeAIListIntervalJoin.Config
 import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorConfig
 import me.kosik.interwalled.utility.IntervalParser
@@ -13,15 +14,16 @@ import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession, functions =>
 
 abstract class NativeAIListIntervalJoin(override val config: Config) extends ExecutorIntervalJoin {
 
-  override protected def doJoin(input: PreparedInput): Dataset[IntervalsPair] = {
+  override protected def doJoin(input: PreparedInput): Dataset[SparkIntervalsPair] = {
     import IntervalColumns._
     val lhsInputPrepared = input.lhsData
     val rhsInputPrepared = input.rhsData
+
     import lhsInputPrepared.sparkSession.implicits._
 
     val joinDatabase = {
       val emptyDF = lhsInputPrepared.sparkSession
-        .emptyDataset[Interval]
+        .emptyDataset[SparkInterval]
         .toDF()
         .withColumn(BUCKET, F.lit(""))
         .withColumn(_COMPONENT, F.lit(0))
@@ -44,7 +46,7 @@ abstract class NativeAIListIntervalJoin(override val config: Config) extends Exe
       .map(row => (row.getAs[String](KEY), row.getAs[String](BUCKET)) -> row)
 
     computeJoin(lhsInputPrepared.sparkSession, joinDatabase, joinQuery)
-      .as[IntervalsPair]
+      .as[SparkIntervalsPair]
   }
 
   private def computeJoin(sparkSession: SparkSession, joinDatabase: RDD[((String, String), Row)], joinQuery: RDD[((String, String), Row)]): DataFrame = {
@@ -74,7 +76,7 @@ abstract class NativeAIListIntervalJoin(override val config: Config) extends Exe
     val crossJoinProduct: RDD[((String, String, Int), (Iterable[Row], Iterable[Row]))] =
       databaseWithComponent.cogroup(queryWithComponent)
 
-    val joinResultRDD: RDD[IntervalsPair] = crossJoinProduct.flatMap { case ((key, _, _), (aiList, queries)) =>
+    val joinResultRDD: RDD[SparkIntervalsPair] = crossJoinProduct.flatMap { case ((key, _, _), (aiList, queries)) =>
       queries flatMap { query =>
         val queryFrom = query.getAs[Long](FROM)
         val queryTo = query.getAs[Long](TO)
@@ -147,6 +149,6 @@ abstract class NativeAIListIntervalJoin(override val config: Config) extends Exe
 }
 
 object NativeAIListIntervalJoin {
-  case class Config(aiListConfig: AIListConfig, override val preprocessorConfig: PreprocessorConfig)
+  case class Config(aiListConfig: AIListConfiguration, override val preprocessorConfig: PreprocessorConfig)
     extends ExecutorConfig
 }

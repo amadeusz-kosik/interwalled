@@ -1,8 +1,9 @@
 package me.kosik.interwalled.benchmark.test.suite.unit
 
-import me.kosik.interwalled.ailist.{Interval, IntervalsPair}
+import me.kosik.interwalled.ailist.model.{Interval, IntervalsPair}
 import me.kosik.interwalled.benchmark.app.ApplicationEnv
 import org.apache.spark.sql.Dataset
+
 import scala.reflect.runtime.universe._
 
 
@@ -21,14 +22,14 @@ case class UnitTestDataSuite(
       .as[T]
   }
 
-  def loadDatabase(env: ApplicationEnv): Dataset[Interval] =
-    loadInput[Interval](f"unit-test-data/$databasePath.parquet", env)
+  def loadDatabase(env: ApplicationEnv): Dataset[Interval[String]] =
+    loadInput[Interval[String]](f"unit-test-data/$databasePath.parquet", env)
 
-  def loadQuery(env: ApplicationEnv): Dataset[Interval] =
-    loadInput[Interval](f"unit-test-data/$queryPath.parquet", env)
+  def loadQuery(env: ApplicationEnv): Dataset[Interval[String]] =
+    loadInput[Interval[String]](f"unit-test-data/$queryPath.parquet", env)
 
   def loadResults(env: ApplicationEnv): Dataset[IntervalsPair] =
-    loadInput[IntervalsPair](f"unit-test-data-results/$resultPath.parquet", env)
+    loadInput[IntervalsPair[String, String]](f"unit-test-data-results/$resultPath.parquet", env)
 }
 
 object UnitTestDataSuite {

@@ -1,18 +1,20 @@
 package me.kosik.interwalled.spark.join.implementation
 
-import me.kosik.interwalled.ailist.{BucketedInterval, IntervalColumns, IntervalsPair}
+import me.kosik.interwalled.ailist.IntervalColumns
+import me.kosik.interwalled.model.{BucketedInterval, SparkIntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.implementation.SparkNativeIntervalJoin.{Config, rowToIntervalStruct}
 import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorConfig
-import org.apache.spark.sql.{Column, Dataset, Row, functions => F}
+import org.apache.spark.sql.{Column, Dataset, functions => F}
 
 
 class SparkNativeIntervalJoin(override val config: Config) extends ExecutorIntervalJoin {
 
   protected val name: String = "spark-native"
 
-  override protected def doJoin(input: PreparedInput): Dataset[IntervalsPair] = {
+  override protected def doJoin(input: PreparedInput): Dataset[SparkIntervalsPair] = {
     import input.lhsData.sparkSession.implicits._
+
     val lhsInputPrepared = input.lhsData
     val rhsInputPrepared = input.rhsData
 
@@ -35,7 +37,7 @@ class SparkNativeIntervalJoin(override val config: Config) extends ExecutorInter
         rowToIntervalStruct(lhsInputPrepared)         .alias("lhs"),
         rowToIntervalStruct(rhsInputPrepared)         .alias("rhs")
       )
-      .as[IntervalsPair]
+      .as[SparkIntervalsPair]
   }
 }
 

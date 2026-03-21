@@ -1,7 +1,8 @@
 package me.kosik.interwalled.spark.join.api.model
 
 
-import me.kosik.interwalled.ailist.{BucketedInterval, Interval, IntervalColumns, IntervalsPair}
+import me.kosik.interwalled.ailist.IntervalColumns
+import me.kosik.interwalled.model.{BucketedInterval, SparkInterval, SparkIntervalsPair}
 import me.kosik.interwalled.utility.stats.model.IntervalJoinRunStats
 import org.apache.spark.sql.{Column, Dataset, functions => F}
 
@@ -9,8 +10,8 @@ import org.apache.spark.sql.{Column, Dataset, functions => F}
 object IntervalJoin {
 
   case class Input(
-    lhsData: Dataset[Interval],
-    rhsData: Dataset[Interval]
+    lhsData: Dataset[SparkInterval],
+    rhsData: Dataset[SparkInterval]
   ) {
     def toPreparedInput: PreparedInput = {
       import lhsData.sparkSession.implicits._
@@ -34,7 +35,7 @@ object IntervalJoin {
   }
 
   case class Result(
-    data: Dataset[IntervalsPair],
+    data: Dataset[SparkIntervalsPair],
     statistics: Option[IntervalJoinRunStats]
   )
 }

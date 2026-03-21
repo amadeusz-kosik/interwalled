@@ -1,7 +1,7 @@
 package me.kosik.interwalled.spark.join
 
 import com.holdenkarau.spark.testing.DatasetSuiteBase
-import me.kosik.interwalled.ailist.{Interval, IntervalsPair}
+import me.kosik.interwalled.model.{SparkInterval, SparkIntervalsPair}
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.Input
 import org.apache.spark.sql.{Dataset, functions => F}
@@ -14,8 +14,8 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DatasetSui
 
   // ---------------------------------------------------------------------------------------------------------------- //
 
-  def assertDataEquals(expected: Dataset[IntervalsPair], actual: Dataset[IntervalsPair]): Unit = {
-    def prepareResult(data: Dataset[IntervalsPair]) = data
+  def assertDataEquals(expected: Dataset[SparkIntervalsPair], actual: Dataset[SparkIntervalsPair]): Unit = {
+    def prepareResult(data: Dataset[SparkIntervalsPair]) = data
       .sort(F.col("key"), F.col("lhs.from"), F.col("lhs.to"), F.col("rhs.from"), F.col("rhs.to"))
 
     assertDatasetEquals(expected = prepareResult(expected), result = prepareResult(actual))
@@ -29,7 +29,7 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DatasetSui
     val lhs = {
       spark.sparkContext
         .range(1L, 100000L + 1L, 10L)
-        .map(i => Interval("KEY", i, i + 9, f"KEY($i - ${i + 9})"))
+        .map(i => SparkInterval("KEY", i, i + 9, f"KEY($i - ${i + 9})"))
         .toDS()
     }
 
@@ -37,16 +37,16 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DatasetSui
       spark.sparkContext
         .range(1L, 100000L + 1L, 10L)
         .map(_ + 5L)
-        .map(i => Interval("KEY", i, i, f"KEY($i - $i})"))
+        .map(i => SparkInterval("KEY", i, i, f"KEY($i - $i})"))
         .toDS()
     }
 
     val expected = {
       spark.sparkContext
         .range(1L, 100000L + 1L, 10L)
-        .map(i => IntervalsPair("KEY",
-          Interval("KEY", i,     i + 9, f"KEY($i - ${i + 9})"),
-          Interval("KEY", i + 5, i + 5, f"KEY(${i + 5} - ${i + 5}})")
+        .map(i => SparkIntervalsPair(
+          SparkInterval("KEY", i,     i + 9, f"KEY($i - ${i + 9})"),
+          SparkInterval("KEY", i + 5, i + 5, f"KEY(${i + 5} - ${i + 5}})")
         ))
         .toDS()
     }

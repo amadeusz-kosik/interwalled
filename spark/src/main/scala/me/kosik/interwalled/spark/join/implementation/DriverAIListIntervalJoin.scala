@@ -1,6 +1,8 @@
 package me.kosik.interwalled.spark.join.implementation
 
-import me.kosik.interwalled.ailist.{AIList, AIListBuilder, AIListConfig, IntervalsPair}
+import me.kosik.interwalled.ailist.model.{AIListConfiguration, IntervalsPair}
+import me.kosik.interwalled.ailist.{AIList, AIListBuilder}
+import me.kosik.interwalled.model.SparkIntervalsPair
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{PreparedInput, Result}
 import org.apache.spark.sql._
@@ -16,15 +18,15 @@ object DriverAIListIntervalJoin extends IntervalJoin {
 
   override protected def prepareInput(input: PreparedInput): PreparedInput = input
 
-  override protected def doJoin(input: PreparedInput): Dataset[IntervalsPair] = {
+  override protected def doJoin(input: PreparedInput): Dataset[SparkIntervalsPair] = {
     implicit val spark: SparkSession = input.lhsData.sparkSession
     import spark.implicits._
 
-    val aiLists: Map[String, AIList] = input.lhsData.collect()
+    val aiLists: Map[String, AIList[String]] = input.lhsData.collect()
       .groupBy(_.key)
       .map { case (key, intervalsArray) =>
-        val aiListBuilder = new AIListBuilder(AIListConfig.DEFAULT)
-        intervalsArray.map(_.toInterval).foreach(aiListBuilder.put)
+        val aiListBuilder = new AIListBuilder[String](AIListConfiguration.DEFAULT)
+        intervalsArray.map(_.toAIListInterval).foreach(aiListBuilder.put)
         (key, aiListBuilder.build())
       }
 
@@ -35,9 +37,9 @@ object DriverAIListIntervalJoin extends IntervalJoin {
       intervalListsBroadcast.value.get(rhsInterval.key) match {
         case Some(aiList) =>
           aiList
-            .overlapping(rhsInterval.toInterval)
+            .overlapping(rhsInterval.toAIListInterval)
             .asScala
-            .map(lhsInterval => IntervalsPair(lhsInterval.key, lhsInterval, rhsInterval.toInterval))
+            .map(lhsInterval => SparkIntervalsPair(lhsInterval, rhsInterval.toAIListInterval))
 
         case None =>
           Iterator.empty
@@ -46,7 +48,7 @@ object DriverAIListIntervalJoin extends IntervalJoin {
 
     joinedRDD
       .toDF()
-      .as[IntervalsPair]
+      .as[SparkIntervalsPair]
   }
 
   override protected def finalizeResult(result: Result): Result =

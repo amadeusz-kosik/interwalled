@@ -1,16 +1,5 @@
 package me.kosik.interwalled.ailist
 
-case class BucketedInterval(
-  bucket:   String,
-  key:      String,
-  from:     Long,
-  to:       Long,
-  value:    String
-) {
-
-  def toInterval: Interval =
-    Interval(key, from, to, value)
-}
 
 object IntervalColumns {
   val BUCKET : String = "bucket"

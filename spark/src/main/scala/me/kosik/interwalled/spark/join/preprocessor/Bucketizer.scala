@@ -1,6 +1,7 @@
 package me.kosik.interwalled.spark.join.preprocessor
 
-import me.kosik.interwalled.ailist.{BucketedInterval, IntervalColumns, IntervalsPair}
+import me.kosik.interwalled.ailist.IntervalColumns
+import me.kosik.interwalled.model.{BucketedInterval, SparkIntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.preprocessor.Bucketizer.BucketizerConfig
 import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorStep
@@ -53,7 +54,7 @@ class Bucketizer(config: BucketizerConfig) extends PreprocessorStep {
     )
   }
 
-  def processOutput(input: Dataset[IntervalsPair]): Dataset[IntervalsPair] = {
+  def processOutput(input: Dataset[SparkIntervalsPair]): Dataset[SparkIntervalsPair] = {
     input.distinct()
   }
 

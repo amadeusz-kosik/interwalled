@@ -11,7 +11,7 @@ class CheckpointedNativeAIListIntervalJoin(override val config: NativeAIListInte
   extends NativeAIListIntervalJoin(config) {
 
   protected val name: String =
-    s"checkpointed-native-ailist-${config.aiListConfig.toShortString}"
+    s"checkpointed-native-ailist-${config.aiListConfig}" // FIXME
 
   @tailrec
   final override protected def iterate(sourceDF: DataFrame, alreadyExtracted: DataFrame, iteration: Int): DataFrame = {

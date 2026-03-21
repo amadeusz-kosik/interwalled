@@ -1,6 +1,6 @@
 package me.kosik.interwalled.spark.join.api
 
-import me.kosik.interwalled.ailist.IntervalsPair
+import me.kosik.interwalled.model.SparkIntervalsPair
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{Input, PreparedInput, Result}
 import me.kosik.interwalled.utility.stats.IntervalJoinRunStatsHelper
 import me.kosik.interwalled.utility.stats.model.IntervalJoinRunStats
@@ -34,7 +34,7 @@ trait IntervalJoin extends Logging with Serializable {
 
   protected def prepareInput(input: PreparedInput): PreparedInput
 
-  protected def doJoin(input: PreparedInput): Dataset[IntervalsPair]
+  protected def doJoin(input: PreparedInput): Dataset[SparkIntervalsPair]
 
   protected def finalizeResult(result: Result): Result
 }

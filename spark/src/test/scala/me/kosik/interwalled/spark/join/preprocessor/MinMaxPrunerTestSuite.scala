@@ -1,7 +1,7 @@
 package me.kosik.interwalled.spark.join.preprocessor
 
 import com.holdenkarau.spark.testing.DatasetSuiteBase
-import me.kosik.interwalled.ailist.BucketedInterval
+import me.kosik.interwalled.model.BucketedInterval
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.preprocessor.MinMaxPruner.MinMaxPrunerConfig
 import org.scalactic.source

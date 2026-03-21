@@ -1,31 +1,41 @@
 package me.kosik.interwalled.ailist;
 
+import me.kosik.interwalled.ailist.model.AIListConfiguration;
+import me.kosik.interwalled.ailist.model.Interval;
+import me.kosik.interwalled.ailist.model.IntervalComparator;
+import me.kosik.interwalled.ailist.model.Intervals;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 
-public class AIListBuilder implements Serializable {
+public class AIListBuilder<T> implements Serializable {
 
-    private final AIListConfig config;
-    private final ArrayList<Interval> intervals = new ArrayList<>();
+    private final AIListConfiguration config;
+    private final ArrayList<Interval<T>> intervals;
 
-    public AIListBuilder() {
-        this.config = AIListConfig.DEFAULT;
+    public AIListBuilder(final AIListConfiguration config) {
+        this.config    = config;
+        this.intervals = new ArrayList<>();
     }
 
-    public AIListBuilder(final AIListConfig config) {
-        this.config = config;
+    public AIListBuilder(final AIListConfiguration config, final ArrayList<Interval<T>> intervals) {
+        this.config    = config;
+        this.intervals = intervals;
     }
 
-    public AIList build() {
-        intervals.sort(Comparator.comparingLong(Interval::from));
+    public AIList<T> build() {
+        assert config.intervalsCountToCheckLookahead() >= config.intervalsCountToTriggerExtraction();
+        assert config.maximumComponentsCount() == 1 || (config.intervalsCountToCheckLookahead() > 0);
+
+        if(! config.isInputDataSorted()) {
+            intervals.sort(IntervalComparator.comparing());
+        }
 
         int componentsCount = 0;
         ArrayList<Integer> componentsLengths = new ArrayList<>();
         ArrayList<Integer> componentsStartIndexes = new ArrayList<>();
-        ArrayList<Long> componentsMaxEnds = new ArrayList<>();
 
-        if (intervals.size() <= config.minimumComponentSize || config.maximumComponentsCount == 1) {
+        if (intervals.size() <= config.maximumComponentSize() || config.maximumComponentsCount() == 1) {
             // Edge case: at start of the algorithm assign everything to a single component.
             componentsCount = 1;
             componentsLengths.add(intervals.size());
@@ -38,41 +48,23 @@ public class AIListBuilder implements Serializable {
 
             int lastAssignedIndex = -1;
 
-            for(int componentIndex = 0; componentIndex < config.maximumComponentsCount - 1; ++ componentIndex) {
+            for(int componentIndex = 0; componentIndex < config.maximumComponentsCount() - 1; ++ componentIndex) {
                 // If the number of intervals left is smaller than expected minimal component size, then break.
-                if(lastAssignedIndex  >= (intervals.size() - config.minimumComponentSize)) {
+                if(lastAssignedIndex  >= (intervals.size() - config.maximumComponentSize())) {
                     break;
                 }
 
                 int currentComponentStartIndex = lastAssignedIndex + 1;
                 int currentComponentLength = 0;
 
-                ArrayList<Interval> extractedIntervals = new ArrayList<>();
+                ArrayList<Interval<T>> extractedIntervals = new ArrayList<>();
 
                 for(int currentIntervalIndex = currentComponentStartIndex; currentIntervalIndex < intervals.size(); ) {
-                    final Interval currentInterval = intervals.get(currentIntervalIndex);
-                    int coverage = 0;
+                    final Interval<T> currentInterval = intervals.get(currentIntervalIndex);
 
-                    // Count interval's coverage: how many further intervals are "covered" by the current one's length.
-                    for(int lookaheadOffset = 1; lookaheadOffset <= config.intervalsCountToCheckLookahead; ++ lookaheadOffset) {
-                        int lookaheadIndex = lookaheadOffset + currentIntervalIndex;
+                    boolean coverage = computeCoverage(currentComponentStartIndex, currentIntervalIndex, intervals);
 
-                        // Guard against going outside the intervals' list.
-                        //  Break if all intervals are already visited.
-                        if (lookaheadIndex >= intervals.size())
-                            break;
-
-                        // If current interval is reaching further than the checked
-                        //  one, increment coverage
-                        if (intervals.get(lookaheadIndex).to() <= currentInterval.to())
-                            coverage++;
-
-                        // If enough intervals are already covered, skip browsing the rest.
-                        if (coverage >= config.intervalsCountToTriggerExtraction)
-                            break;
-                    }
-
-                    if(coverage == config.intervalsCountToTriggerExtraction) {
+                    if(! coverage) {
                         // Move the current interval to the extracted ones.
                         extractedIntervals.add(currentInterval);
                         intervals.remove(currentIntervalIndex);
@@ -87,7 +79,7 @@ public class AIListBuilder implements Serializable {
 
                 // Save new component
                 ++ componentsCount;
-                componentsStartIndexes.add(currentComponentStartIndex); // ERROR
+                componentsStartIndexes.add(currentComponentStartIndex);
                 componentsLengths.add(currentComponentLength);
 
                 // Re-add extracted intervals back to the original list.
@@ -105,29 +97,77 @@ public class AIListBuilder implements Serializable {
             }
         }
 
+        long[] componentsMaxEnds = new long[intervals.size()];
+
         for (int i = 0; i < componentsCount; i ++) {
             final int componentStart = componentsStartIndexes.get(i);
-            final int componentEnd   = componentStart + componentsLengths.get(i);
+            final int componentEnd   = componentStart + componentsLengths.get(i) - 1;
 
             long maxEnd = intervals.get(componentStart).to();
-            componentsMaxEnds.add(maxEnd);
+            componentsMaxEnds[componentStart] = maxEnd;
 
-            for (int j = componentStart + 1; j < componentEnd; j ++) {
+            for (int j = componentStart + 1; j <= componentEnd; j ++) {
                 maxEnd = Math.max(intervals.get(j).to(), maxEnd);
-                componentsMaxEnds.add(maxEnd);
+                componentsMaxEnds[j] = maxEnd;
             }
         }
 
-        return new AIList(
-            intervals,
+        return new AIList<>(
+            new Intervals<>(intervals),
             componentsCount,
-            componentsLengths,
-            componentsStartIndexes,
+            componentsLengths.stream().mapToInt(Integer::valueOf).toArray(),
+            componentsStartIndexes.stream().mapToInt(Integer::valueOf).toArray(),
             componentsMaxEnds
         );
     }
 
-    public void put(final Interval interval) {
+    private boolean computeCoverage(
+            final int componentStartIndex,
+            final int currentIntervalIndex,
+            final ArrayList<Interval<T>> intervals
+    ) {
+        if(config.checkLookbehindCoverage()) {
+            // Check all intervals from (last - intervalsCountToCheckLookahead) to last
+            int _from = Math.max(componentStartIndex, currentIntervalIndex - config.intervalsCountToCheckLookahead());
+            int _to = currentIntervalIndex;
+
+            int lookbehindCoverage = 0;
+
+            for(int lookbehindIndex = _from; lookbehindIndex < _to; lookbehindIndex += 1) {
+                if(intervals.get(lookbehindIndex).to() >= intervals.get(currentIntervalIndex).to()) {
+                    lookbehindCoverage += 1;
+                }
+            }
+
+            if(lookbehindCoverage >= config.intervalsCountToTriggerExtraction())
+                return false;
+        }
+
+        int lookaheadCoverage = 0;
+
+        // Count interval's coverage: how many further intervals are "covered" by the current one's length.
+        for(int lookaheadOffset = 1; lookaheadOffset <= config.intervalsCountToCheckLookahead(); ++ lookaheadOffset) {
+            int lookaheadIndex = lookaheadOffset + currentIntervalIndex;
+
+            // Guard against going outside the intervals' list.
+            //  Break if all intervals are already visited.
+            if (lookaheadIndex >= intervals.size())
+                break;
+
+            // If current interval is reaching further than the checked
+            //  one, increment coverage
+            if (intervals.get(lookaheadIndex).to() <= intervals.get(currentIntervalIndex).to())
+                lookaheadCoverage ++;
+
+            // If enough intervals are already covered, skip browsing the rest.
+            if (lookaheadCoverage >= config.intervalsCountToTriggerExtraction())
+                break;
+        }
+
+        return lookaheadCoverage < config.intervalsCountToTriggerExtraction();
+    }
+
+    public void put(final Interval<T> interval) {
         intervals.add(interval);
     }
 }
