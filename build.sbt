@@ -23,14 +23,14 @@ val sparkJobAssemblyMergeStrategy: String => sbtassembly.MergeStrategy = {
 
 // Libraries' versions
 val SparkVersion            = "3.5.3"
-val SparkTestingBaseVersion = "2.0.1"
+val SparkTestingBaseVersion = f"${SparkVersion}_2.0.1"
 
-lazy val aiList = (project in file("ailist"))
+lazy val ailist = (project in file("ailist"))
   .settings(name := "ailist")
 
 lazy val spark = (project in file("spark"))
   .settings(name := "spark")
-  .dependsOn(aiList)
+  .dependsOn(ailist)
 
 lazy val benchmark = (project in file("benchmark"))
   .settings(
@@ -43,22 +43,22 @@ lazy val benchmark = (project in file("benchmark"))
   .dependsOn(spark)
 
 lazy val root = (project in file("."))
-  .aggregate(spark, benchmark)
+  .aggregate(ailist, spark, benchmark)
   .settings(name := "interwalled")
 
 
-aiList / libraryDependencies += "com.github.sbt.junit" % "jupiter-interface" % "0.16.0" % Test
+ailist / libraryDependencies += "com.github.sbt.junit" %  "jupiter-interface"   % "0.16.0"                  % Test
 
 benchmark / Compile / run / mainClass := Some("me.kosik.interwalled.benchmark.Main")
 benchmark / parallelExecution in Test := false
-benchmark / libraryDependencies += "org.apache.spark"  %% "spark-core"          % SparkVersion                                  % "provided"
-benchmark / libraryDependencies += "org.apache.spark"  %% "spark-mllib"         % SparkVersion                                  % "provided"
-benchmark / libraryDependencies += "org.apache.spark"  %% "spark-sql"           % SparkVersion                                  % "provided"
-benchmark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"  % f"${SparkVersion}_${SparkTestingBaseVersion}" % "test"
+benchmark / libraryDependencies += "org.apache.spark"  %% "spark-core"          % SparkVersion              % Provided
+benchmark / libraryDependencies += "org.apache.spark"  %% "spark-mllib"         % SparkVersion              % Provided
+benchmark / libraryDependencies += "org.apache.spark"  %% "spark-sql"           % SparkVersion              % Provided
+benchmark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"  % SparkTestingBaseVersion   % Test
 
 spark / Test / parallelExecution := false
-spark / libraryDependencies += "org.apache.spark"  %% "spark-core"              % SparkVersion                                  % "provided"
-spark / libraryDependencies += "org.apache.spark"  %% "spark-sql"               % SparkVersion                                  % "provided"
-spark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"      % f"${SparkVersion}_${SparkTestingBaseVersion}" % "test"
+spark / libraryDependencies += "org.apache.spark"  %% "spark-core"              % SparkVersion              % Provided
+spark / libraryDependencies += "org.apache.spark"  %% "spark-sql"               % SparkVersion              % Provided
+spark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"      % SparkTestingBaseVersion   % Test
 
 

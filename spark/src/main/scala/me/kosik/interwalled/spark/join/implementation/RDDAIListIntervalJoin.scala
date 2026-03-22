@@ -16,7 +16,7 @@ import scala.collection.JavaConverters._
 class RDDAIListIntervalJoin(override val config: Config) extends ExecutorIntervalJoin {
 
   protected val name: String =
-    s"rdd-ailist-${config.aiListConfig}" // FIXME
+    s"rdd-ailist" // FIXME
 
   protected def doJoin(input: PreparedInput): Dataset[SparkIntervalsPair] = {
     import input.lhsData.sparkSession.implicits._

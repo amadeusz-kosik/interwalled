@@ -13,12 +13,13 @@ export PATH="$JAVA_HOME/bin:$PATH"
 
 # Available benchmarks and data suites.
 BENCHMARKS=(
+  "rdd-ailist"
 #    "cached-native-ailist-10-20-10-64"
 #    "checkpointed-native-ailist-10-20-10-64"
 #    "rdd-ailist-10-20-10-64"
 #    "spark-native"
-  "bucket-per-1000-deoutlier-995-rdd-ailist-10-20-10-64"
-  "bucket-per-1000-deoutlier-999-rdd-ailist-10-20-10-64"
+#  "bucket-per-1000-deoutlier-995-rdd-ailist-10-20-10-64"
+#  "bucket-per-1000-deoutlier-999-rdd-ailist-10-20-10-64"
 # ----------------------------------------------------------------------------------------------------------------------
 #  "driver-ailist"
 #  "bucket-per-1000-rdd-ailist-10-20-10-64"
@@ -114,10 +115,10 @@ DATA_SUITES=(
   "databio-s-1-0"    # Expected output count:       321 138
   "databio-m-7-0"    # Expected output count:     2 764 185
   "databio-m-7-3"    # Expected output count:     4 410 928
-  "databio-l-0-8"    # Expected output count:   164 214 743
-  "databio-l-4-8"    # Expected output count:   227 869 400
-  "databio-l-7-8"    # Expected output count:   307 298 107
-  "databio-xl-3-0"   # Expected output count: 1 087 646 273
+#  "databio-l-0-8"    # Expected output count:   164 214 743
+#  "databio-l-4-8"    # Expected output count:   227 869 400
+#  "databio-l-7-8"    # Expected output count:   307 298 107
+#  "databio-xl-3-0"   # Expected output count: 1 087 646 273
 )
 
 function build() {
@@ -173,7 +174,7 @@ function local_run_benchmark() {
 }
 
 function local_run_benchmarks() {
-  if [[ $"ARG_CLUSTER" == "" ]]; then
+  if [[ "$ARG_CLUSTER" == "" ]]; then
     echo "Missing parameter: cluster." >&2
     exit 127
   fi
