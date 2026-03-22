@@ -7,7 +7,7 @@ import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.implementation.RDDAIListIntervalJoin.Config
 import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorConfig
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.Dataset
+import org.apache.spark.sql.{Dataset, functions => F}
 
 import java.util
 import scala.collection.JavaConverters._
@@ -20,8 +20,15 @@ class RDDAIListIntervalJoin(override val config: Config) extends ExecutorInterva
 
   protected def doJoin(input: PreparedInput): Dataset[IntervalsPair] = {
     import input.lhsData.sparkSession.implicits._
+    val lhsRDD = input.lhsData
+      .withColumn("salt", F.floor(F.random() * F.lit(config.aiListConfig.maximumComponentsCount)))
+      .repartition(F.col(IntervalColumns.KEY), F.col(IntervalColumns.BUCKET), F.col("salt"))
+      .drop("salt")
+      .sortWithinPartitions(F.col(IntervalColumns.FROM).asc, F.col(IntervalColumns.TO).asc)
+      .as[BucketedInterval]
+      .rdd
 
-    val aiListsLHS = createAILists(input.lhsData.rdd)
+    val aiListsLHS = createAILists(lhsRDD)
     val aiListsRHS = {
       val rhsInputRDD: RDD[BucketedInterval] = input.rhsData.rdd
       rhsInputRDD.map(interval => (interval.bucket, interval.key) -> interval)

@@ -2,7 +2,6 @@ package me.kosik.interwalled.ailist;
 
 import me.kosik.interwalled.ailist.model.AIListConfiguration;
 import me.kosik.interwalled.ailist.model.Interval;
-import me.kosik.interwalled.ailist.model.IntervalComparator;
 import me.kosik.interwalled.ailist.model.Intervals;
 
 import java.io.Serializable;
@@ -26,10 +25,6 @@ public class AIListBuilder implements Serializable {
     public AIList build() {
         assert config.intervalsCountToCheckLookahead() >= config.intervalsCountToTriggerExtraction();
         assert config.maximumComponentsCount() == 1 || (config.intervalsCountToCheckLookahead() > 0);
-
-        if(! config.isInputDataSorted()) {
-            intervals.sort(IntervalComparator.comparing());
-        }
 
         int componentsCount = 0;
         ArrayList<Integer> componentsLengths = new ArrayList<>();

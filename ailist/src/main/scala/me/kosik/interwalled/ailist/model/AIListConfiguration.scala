@@ -5,8 +5,7 @@ case class AIListConfiguration(
   intervalsCountToCheckLookahead: Int,
   intervalsCountToTriggerExtraction: Int,
   maximumComponentSize: Int,
-  checkLookbehindCoverage: Boolean,
-  isInputDataSorted: Boolean
+  checkLookbehindCoverage: Boolean
 )
 
 object AIListConfiguration {
@@ -15,7 +14,6 @@ object AIListConfiguration {
     intervalsCountToCheckLookahead = 24,
     intervalsCountToTriggerExtraction = 16,
     maximumComponentSize = 64,
-    checkLookbehindCoverage = false,
-    isInputDataSorted = false
+    checkLookbehindCoverage = false
   )
 }
