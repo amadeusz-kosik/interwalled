@@ -4,9 +4,9 @@ import me.kosik.interwalled.ailist.model.IntervalsPair;
 
 import java.util.Comparator;
 
-public class IntervalsPairComparator<T, U> implements Comparator<IntervalsPair<T, U>> {
+public class IntervalsPairComparator implements Comparator<IntervalsPair> {
     @Override
-    public int compare(IntervalsPair<T, U> lhs, IntervalsPair<T, U> rhs) {
+    public int compare(IntervalsPair lhs, IntervalsPair rhs) {
         if (lhs.lhsFrom() > rhs.lhsFrom()) return  1;
         if (lhs.lhsFrom() < rhs.lhsFrom()) return -1;
 

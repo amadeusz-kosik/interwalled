@@ -13,46 +13,46 @@ import java.util.List;
 
 public class ListBuilder {
 
-    public static <T> AIList<T> buildAIList(final List<Interval<T>> list) {
-        return buildAIList(AIListConfiguration.DEFAULT, list);
+    public static AIList buildAIList(final List<Interval> list) {
+        return buildAIList(AIListConfiguration.apply(), list);
     }
 
-    public static <T> AIList<T> buildAIList(final AIListConfiguration configuration, final List<Interval<T>> list) {
-        final AIListBuilder<T> aiListBuilder = new AIListBuilder<>(configuration);
+    public static  AIList buildAIList(final AIListConfiguration configuration, final List<Interval> list) {
+        final AIListBuilder aiListBuilder = new AIListBuilder(configuration);
 
-        for (final Interval<T> interval : list) {
+        for (final Interval interval : list) {
             aiListBuilder.put(interval);
         }
 
         return aiListBuilder.build();
     }
 
-    public static <T, U> List<IntervalsPair<T, U>> buildActual(final AIList<T> lhs, final List<Interval<U>> rhs) {
-        final List<IntervalsPair<T, U>> result = new ArrayList<>();
+    public static  List<IntervalsPair> buildActual(final AIList lhs, final List<Interval> rhs) {
+        final List<IntervalsPair> result = new ArrayList<>();
 
-        for (final Interval<U> rhsInterval : rhs) {
-            AIListIterator<T> resultsIterator = lhs.overlapping(rhsInterval);
+        for (final Interval rhsInterval : rhs) {
+            AIListIterator resultsIterator = lhs.overlapping(rhsInterval);
 
             while (resultsIterator.hasNext()) {
-                Interval<T> lhsInterval = resultsIterator.next();
-                result.add(IntervalsPair.fromIntervals(lhsInterval, rhsInterval));
+                Interval lhsInterval = resultsIterator.next();
+                result.add(IntervalsPair.apply(lhsInterval, rhsInterval));
             }
         }
 
-        result.sort(new IntervalsPairComparator<>());
+        result.sort(new IntervalsPairComparator());
         return result;
     }
 
-    public static <T, U> List<IntervalsPair<T, U>> buildExpected(final List<Interval<T>> lhs, final List<Interval<U>> rhs) {
-        final List<IntervalsPair<T, U>> result = new ArrayList<>();
+    public static  List<IntervalsPair> buildExpected(final List<Interval> lhs, final List<Interval> rhs) {
+        final List<IntervalsPair> result = new ArrayList<>();
 
-        for(final Interval<T> lhsInterval : lhs) { for (final Interval<U> rhsInterval : rhs) {
+        for(final Interval lhsInterval : lhs) { for (final Interval rhsInterval : rhs) {
             if (Interval.overlaps(lhsInterval, rhsInterval)) {
-                result.add(IntervalsPair.fromIntervals(lhsInterval, rhsInterval));
+                result.add(IntervalsPair.apply(lhsInterval, rhsInterval));
             }
         }}
 
-        result.sort(new IntervalsPairComparator<>());
+        result.sort(new IntervalsPairComparator());
         return result;
     }
 }

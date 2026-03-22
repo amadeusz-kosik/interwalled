@@ -1,7 +1,7 @@
 package me.kosik.interwalled.benchmark.test.suite.unit
 
+import me.kosik.interwalled.ailist.model.{Interval, IntervalsPair}
 import me.kosik.interwalled.benchmark.app.ApplicationEnv
-import me.kosik.interwalled.model.{SparkInterval, SparkIntervalsPair}
 import org.apache.spark.sql.Dataset
 
 import scala.reflect.runtime.universe._
@@ -22,13 +22,13 @@ case class UnitTestDataSuite(
       .as[T]
   }
 
-  def loadDatabase(env: ApplicationEnv): Dataset[SparkInterval] =
-    loadInput[SparkInterval](f"unit-test-data/$databasePath.parquet", env)
+  def loadDatabase(env: ApplicationEnv): Dataset[Interval] =
+    loadInput[Interval](f"unit-test-data/$databasePath.parquet", env)
 
-  def loadQuery(env: ApplicationEnv): Dataset[SparkInterval] =
-    loadInput[SparkInterval](f"unit-test-data/$queryPath.parquet", env)
+  def loadQuery(env: ApplicationEnv): Dataset[Interval] =
+    loadInput[Interval](f"unit-test-data/$queryPath.parquet", env)
 
-  def loadResults(env: ApplicationEnv): Dataset[SparkIntervalsPair] = {
+  def loadResults(env: ApplicationEnv): Dataset[IntervalsPair] = {
     import env.sparkSession.implicits.newProductEncoder
     import org.apache.spark.sql.functions.col
 
@@ -43,7 +43,7 @@ case class UnitTestDataSuite(
         col("rhs.to")   .as("rhsTo"),
         col("rhs.value").as("rhsValue")
       )
-      .as[SparkIntervalsPair]
+      .as[IntervalsPair]
   }
 }
 

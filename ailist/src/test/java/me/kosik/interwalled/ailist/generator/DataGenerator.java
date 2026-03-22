@@ -9,11 +9,11 @@ import java.util.function.Function;
 
 public class DataGenerator {
 
-    public static <T> List<Interval<T>> generateIntervals(
+    public static List<Interval> generateIntervals(
             final int rowsCount,
-            final Function <Integer, Interval<T>> intervalFn
+            final Function <Integer, Interval> intervalFn
     ) {
-        List<Interval<T>> result = new ArrayList<>(rowsCount);
+        List<Interval> result = new ArrayList<>(rowsCount);
 
         for(int i = 0; i < rowsCount; i++) {
             result.add(intervalFn.apply(i));

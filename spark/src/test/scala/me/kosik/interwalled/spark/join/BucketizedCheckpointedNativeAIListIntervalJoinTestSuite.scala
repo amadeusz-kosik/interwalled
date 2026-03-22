@@ -11,7 +11,7 @@ import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.Preproc
 class BucketizedCheckpointedNativeAIListIntervalJoinTestSuite extends AbstractIntervalJoinTestSuite {
 
   override def intervalJoin: IntervalJoin = {
-    val config = AIListConfiguration.DEFAULT
+    val config = AIListConfiguration.apply
     val preprocessorConfig = PreprocessorConfig.empty.copy(bucketizerConfig = Some(BucketizerConfig(1000)))
     new CheckpointedNativeAIListIntervalJoin(NativeAIListIntervalJoin.Config(config, preprocessorConfig), "temporary/interwalled-chkpt")
   }

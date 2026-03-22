@@ -8,22 +8,22 @@ import me.kosik.interwalled.ailist.model.Intervals;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class AIListBuilder<T> implements Serializable {
+public class AIListBuilder implements Serializable {
 
     private final AIListConfiguration config;
-    private final ArrayList<Interval<T>> intervals;
+    private final ArrayList<Interval> intervals;
 
     public AIListBuilder(final AIListConfiguration config) {
         this.config    = config;
         this.intervals = new ArrayList<>();
     }
 
-    public AIListBuilder(final AIListConfiguration config, final ArrayList<Interval<T>> intervals) {
+    public AIListBuilder(final AIListConfiguration config, final ArrayList<Interval> intervals) {
         this.config    = config;
         this.intervals = intervals;
     }
 
-    public AIList<T> build() {
+    public AIList build() {
         assert config.intervalsCountToCheckLookahead() >= config.intervalsCountToTriggerExtraction();
         assert config.maximumComponentsCount() == 1 || (config.intervalsCountToCheckLookahead() > 0);
 
@@ -57,10 +57,10 @@ public class AIListBuilder<T> implements Serializable {
                 int currentComponentStartIndex = lastAssignedIndex + 1;
                 int currentComponentLength = 0;
 
-                ArrayList<Interval<T>> extractedIntervals = new ArrayList<>();
+                ArrayList<Interval> extractedIntervals = new ArrayList<>();
 
                 for(int currentIntervalIndex = currentComponentStartIndex; currentIntervalIndex < intervals.size(); ) {
-                    final Interval<T> currentInterval = intervals.get(currentIntervalIndex);
+                    final Interval currentInterval = intervals.get(currentIntervalIndex);
 
                     boolean coverage = computeCoverage(currentComponentStartIndex, currentIntervalIndex, intervals);
 
@@ -112,8 +112,8 @@ public class AIListBuilder<T> implements Serializable {
             }
         }
 
-        return new AIList<>(
-            new Intervals<>(intervals),
+        return new AIList(
+            new Intervals(intervals),
             componentsCount,
             componentsLengths.stream().mapToInt(Integer::valueOf).toArray(),
             componentsStartIndexes.stream().mapToInt(Integer::valueOf).toArray(),
@@ -124,7 +124,7 @@ public class AIListBuilder<T> implements Serializable {
     private boolean computeCoverage(
             final int componentStartIndex,
             final int currentIntervalIndex,
-            final ArrayList<Interval<T>> intervals
+            final ArrayList<Interval> intervals
     ) {
         if(config.checkLookbehindCoverage()) {
             // Check all intervals from (last - intervalsCountToCheckLookahead) to last
@@ -167,7 +167,7 @@ public class AIListBuilder<T> implements Serializable {
         return lookaheadCoverage < config.intervalsCountToTriggerExtraction();
     }
 
-    public void put(final Interval<T> interval) {
+    public void put(final Interval interval) {
         intervals.add(interval);
     }
 }

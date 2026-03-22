@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 public class LinearSearch {
 
-    public static <T> int findRightmost(
-            final Intervals<T> intervals,
+    public static int findRightmost(
+            final Intervals intervals,
             final int leftBound,
             final int rightBound,
             final long queryEnd

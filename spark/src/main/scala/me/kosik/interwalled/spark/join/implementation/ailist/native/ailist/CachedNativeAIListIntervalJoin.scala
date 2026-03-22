@@ -1,7 +1,7 @@
 package me.kosik.interwalled.spark.join.implementation.ailist.native.ailist
 
 import me.kosik.interwalled.ailist.IntervalColumns
-import me.kosik.interwalled.model.SparkIntervalsPair
+import me.kosik.interwalled.ailist.model.IntervalsPair
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.implementation.NativeAIListIntervalJoin
 import org.apache.spark.sql.{DataFrame, Dataset, functions => F}
@@ -15,7 +15,7 @@ class CachedNativeAIListIntervalJoin(override val config: NativeAIListIntervalJo
   protected def name: String =
     s"cached-native-ailist-${config.aiListConfig}" // FIXME
 
-  override protected def doJoin(input: PreparedInput): Dataset[SparkIntervalsPair] = {
+  override protected def doJoin(input: PreparedInput): Dataset[IntervalsPair] = {
     input.lhsData.cache()
     super.doJoin(input)
   }

@@ -1,8 +1,8 @@
 package me.kosik.interwalled.spark.join.implementation
 
-import me.kosik.interwalled.ailist.model.AIListConfiguration
+import me.kosik.interwalled.ailist.model.{AIListConfiguration, IntervalsPair}
 import me.kosik.interwalled.ailist.{AIList, AIListBuilder, IntervalColumns}
-import me.kosik.interwalled.model.{BucketedInterval, SparkIntervalsPair}
+import me.kosik.interwalled.model.BucketedInterval
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.implementation.RDDAIListIntervalJoin.Config
 import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorConfig
@@ -18,7 +18,7 @@ class RDDAIListIntervalJoin(override val config: Config) extends ExecutorInterva
   protected val name: String =
     s"rdd-ailist" // FIXME
 
-  protected def doJoin(input: PreparedInput): Dataset[SparkIntervalsPair] = {
+  protected def doJoin(input: PreparedInput): Dataset[IntervalsPair] = {
     import input.lhsData.sparkSession.implicits._
 
     val aiListsLHS = createAILists(input.lhsData.rdd)
@@ -33,12 +33,12 @@ class RDDAIListIntervalJoin(override val config: Config) extends ExecutorInterva
         val aiLists = lhsAIListsIterator
         val rhsIntervals = rhsIntervalsIterator
 
-        val intervalsPairs: Iterable[SparkIntervalsPair] = for {
-          aiList            <- aiLists
-          rhsSparkInterval  <- rhsIntervals
-          rhsInterval        = rhsSparkInterval.toAIListInterval
-          lhsInterval       <- aiList.overlapping(rhsInterval).asScala
-        } yield SparkIntervalsPair(lhsInterval, rhsInterval)
+        val intervalsPairs: Iterable[IntervalsPair] = for {
+          aiList              <- aiLists
+          rhsBucketedInterval <- rhsIntervals
+          rhsInterval          = rhsBucketedInterval.withoutBucketing
+          lhsInterval         <- aiList.overlapping(rhsInterval).asScala
+        } yield IntervalsPair(lhsInterval, rhsInterval)
 
         logDebug(s"Intervals pairs computed for $bucket.")
         intervalsPairs
@@ -50,12 +50,12 @@ class RDDAIListIntervalJoin(override val config: Config) extends ExecutorInterva
         input.lhsData.col(IntervalColumns.BUCKET),
         input.rhsData.col(IntervalColumns.BUCKET)
       )
-      .as[SparkIntervalsPair]
+      .as[IntervalsPair]
 
     joined
   }
 
-  private def createAILists(inputRDD: RDD[BucketedInterval]): RDD[((String, String), AIList[String])] = {
+  private def createAILists(inputRDD: RDD[BucketedInterval]): RDD[((String, String), AIList)] = {
     val grouped = inputRDD.mapPartitions { partition =>
       partition
         .toList
@@ -66,8 +66,8 @@ class RDDAIListIntervalJoin(override val config: Config) extends ExecutorInterva
     val mapped = grouped.mapPartitions { partition =>
       partition
         .map { case ((key, _bucket), intervals) =>
-          val aiListBuilder: AIListBuilder[String] = new AIListBuilder[String](config.aiListConfig)
-          intervals.foreach { bucketedInterval => aiListBuilder.put(bucketedInterval.toAIListInterval) }
+          val aiListBuilder: AIListBuilder = new AIListBuilder(config.aiListConfig)
+          intervals.foreach { bucketedInterval => aiListBuilder.put(bucketedInterval.withoutBucketing) }
           ((_bucket, key), aiListBuilder.build())
         }
     }

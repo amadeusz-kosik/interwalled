@@ -18,52 +18,52 @@ public class CorrectnessTest {
 
     @Test
     void noOverlappingIntervals() {
-        final List<Interval<String>> lhs = DataGenerators.consecutiveIntervals(100);
-        final List<Interval<String>> rhs = DataGenerators.consecutiveIntervals(200, 100);
+        final List<Interval> lhs = DataGenerators.consecutiveIntervals(100);
+        final List<Interval> rhs = DataGenerators.consecutiveIntervals(200, 100);
 
-        final AIList<String> aiList = ListBuilder.buildAIList(lhs);
+        final AIList aiList = ListBuilder.buildAIList(lhs);
 
-        final List<IntervalsPair<String, String>> actual   = ListBuilder.buildActual(aiList, rhs);
-        final List<IntervalsPair<String, String>> expected = ListBuilder.buildExpected(lhs, rhs);
+        final List<IntervalsPair> actual   = ListBuilder.buildActual(aiList, rhs);
+        final List<IntervalsPair> expected = ListBuilder.buildExpected(lhs, rhs);
 
         assertIterableEquals(expected, actual);
     }
 
     @Test
     void oneToOneIntervals() {
-        final List<Interval<String>> lhs = DataGenerators.consecutiveIntervals(100);
-        final List<Interval<String>> rhs = DataGenerators.consecutiveIntervals(100);
+        final List<Interval> lhs = DataGenerators.consecutiveIntervals(100);
+        final List<Interval> rhs = DataGenerators.consecutiveIntervals(100);
 
-        final AIList<String> aiList = ListBuilder.buildAIList(lhs);
+        final AIList aiList = ListBuilder.buildAIList(lhs);
 
-        final List<IntervalsPair<String, String>> actual   = ListBuilder.buildActual(aiList, rhs);
-        final List<IntervalsPair<String, String>> expected = ListBuilder.buildExpected(lhs, rhs);
+        final List<IntervalsPair> actual   = ListBuilder.buildActual(aiList, rhs);
+        final List<IntervalsPair> expected = ListBuilder.buildExpected(lhs, rhs);
 
         assertIterableEquals(expected, actual);
     }
 
     @Test
     void allToOneIntervals() {
-        final List<Interval<String>> lhs = DataGenerators.consecutiveIntervals(100);
-        final List<Interval<String>> rhs = DataGenerators.consecutiveIntervals(0, 100, 1);
+        final List<Interval> lhs = DataGenerators.consecutiveIntervals(100);
+        final List<Interval> rhs = DataGenerators.consecutiveIntervals(0, 100, 1);
 
-        final AIList<String> aiList = ListBuilder.buildAIList(lhs);
+        final AIList aiList = ListBuilder.buildAIList(lhs);
 
-        final List<IntervalsPair<String, String>> actual   = ListBuilder.buildActual(aiList, rhs);
-        final List<IntervalsPair<String, String>> expected = ListBuilder.buildExpected(lhs, rhs);
+        final List<IntervalsPair> actual   = ListBuilder.buildActual(aiList, rhs);
+        final List<IntervalsPair> expected = ListBuilder.buildExpected(lhs, rhs);
 
         assertIterableEquals(expected, actual);
     }
 
     @Test
     void oneToAllIntervals() {
-        final List<Interval<String>> lhs = DataGenerators.consecutiveIntervals(0, 101, 1);
-        final List<Interval<String>> rhs = DataGenerators.consecutiveIntervals(100);
+        final List<Interval> lhs = DataGenerators.consecutiveIntervals(0, 101, 1);
+        final List<Interval> rhs = DataGenerators.consecutiveIntervals(100);
 
-        final AIList<String> aiList = ListBuilder.buildAIList(lhs);
+        final AIList aiList = ListBuilder.buildAIList(lhs);
 
-        final List<IntervalsPair<String, String>> actual   = ListBuilder.buildActual(aiList, rhs);
-        final List<IntervalsPair<String, String>> expected = ListBuilder.buildExpected(lhs, rhs);
+        final List<IntervalsPair> actual   = ListBuilder.buildActual(aiList, rhs);
+        final List<IntervalsPair> expected = ListBuilder.buildExpected(lhs, rhs);
 
         assertIterableEquals(expected, actual);
     }

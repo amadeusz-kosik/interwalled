@@ -27,13 +27,13 @@ public class ConfigurationTest {
                 false,
                 false
         );
-        final List<Interval<String>> lhs = DataGenerators.consecutiveIntervals(100);
-        final List<Interval<String>> rhs = DataGenerators.consecutiveIntervals(100);
+        final List<Interval> lhs = DataGenerators.consecutiveIntervals(100);
+        final List<Interval> rhs = DataGenerators.consecutiveIntervals(100);
 
-        final AIList<String> aiList = ListBuilder.buildAIList(configuration, lhs);
+        final AIList aiList = ListBuilder.buildAIList(configuration, lhs);
 
-        final List<IntervalsPair<String, String>> actual   = ListBuilder.buildActual(aiList, rhs);
-        final List<IntervalsPair<String, String>> expected = ListBuilder.buildExpected(lhs, rhs);
+        final List<IntervalsPair> actual   = ListBuilder.buildActual(aiList, rhs);
+        final List<IntervalsPair> expected = ListBuilder.buildExpected(lhs, rhs);
 
         assertIterableEquals(expected, actual);
     }

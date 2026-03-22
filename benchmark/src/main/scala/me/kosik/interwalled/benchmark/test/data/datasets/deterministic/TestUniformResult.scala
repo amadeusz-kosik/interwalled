@@ -1,6 +1,7 @@
 package me.kosik.interwalled.benchmark.test.data.datasets.deterministic
 
-import me.kosik.interwalled.model.{SparkInterval, SparkIntervalsPair}
+
+import me.kosik.interwalled.ailist.model.{Interval, IntervalsPair}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.Input
 import me.kosik.interwalled.spark.join.implementation.SparkNativeIntervalJoin
 import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorConfig
@@ -11,13 +12,13 @@ class TestUniformResult(leftSource: TestUniform, rightSource: TestUniform) {
 
   def testCaseName: String = f"${leftSource.testCaseName}-${rightSource.testCaseName}-result"
 
-  def generate()(implicit sparkSession: SparkSession): Dataset[SparkIntervalsPair] = {
+  def generate()(implicit sparkSession: SparkSession): Dataset[IntervalsPair] = {
     import SparkNativeIntervalJoin.Config
     import sparkSession.implicits._
 
     val input = {
-      val getSource: TestUniform => Dataset[SparkInterval] = { testCase =>
-        testCase.generate().as[SparkInterval]
+      val getSource: TestUniform => Dataset[Interval] = { testCase =>
+        testCase.generate().as[Interval]
       }
 
       Input(getSource(leftSource), getSource(rightSource))

@@ -10,6 +10,6 @@ case class BucketedInterval(
   value:    String
 ) {
 
-  def toAIListInterval: Interval[String] =
+  def withoutBucketing: Interval =
     new Interval(key, from, to, value)
 }

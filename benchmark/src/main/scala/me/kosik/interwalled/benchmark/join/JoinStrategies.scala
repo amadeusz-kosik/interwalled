@@ -14,7 +14,7 @@ object JoinStrategies {
 
   private val checkpointDir = "/mnt/temporary/checkpoint.parquet"
 
-  private val defaultAIListConfig = AIListConfiguration.DEFAULT
+  private val defaultAIListConfig = AIListConfiguration.apply
   private val emptyPreprocessorConfig = PreprocessorConfig.empty
 
   private val bucketPer1000PreprocessorConfig = emptyPreprocessorConfig.copy(
