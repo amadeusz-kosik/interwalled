@@ -1,7 +1,8 @@
 package me.kosik.interwalled.ailist;
 
 import me.kosik.interwalled.ailist.model.Interval;
-import me.kosik.interwalled.ailist.utils.BinarySearch;
+import me.kosik.interwalled.ailist.utils.SearchUtils;
+
 import java.util.Iterator;
 
 public class AIListIterator implements Iterator<Interval>
@@ -73,7 +74,7 @@ public class AIListIterator implements Iterator<Interval>
         }
 
         // Find the rightmost element satisfying interval.start < queryEnd condition:
-        int rightmostIntervalIndex = BinarySearch.findRightmostBinary(
+        int rightmostIntervalIndex = SearchUtils.findRightmost(
                 parentAIList.getIntervals(),
                 currentComponentStartIndex,
                 currentComponentEndIndex,
