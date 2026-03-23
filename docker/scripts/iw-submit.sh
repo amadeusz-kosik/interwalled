@@ -8,12 +8,14 @@ IW_APP_COMMAND="$5"
 IW_DATA="$6"
 IW_BENCHMARK="$7"
 
-/opt/spark/bin/spark-submit                   \
+/opt/spark/bin/spark-submit                           \
   --master spark://spark-master:7077                  \
   --deploy-mode client                                \
   --driver-memory   "$IW_DRIVER_MEMORY"               \
   --executor-memory "$IW_EXECUTOR_MEMORY"             \
   --executor-cores  "$IW_EXECUTOR_CORES"              \
+  --conf spark.eventLog.enabled=true                  \
+  --conf spark.eventLog.dir=file:/mnt/spark-events    \
   --total-executor-cores "$IW_TOTAL_EXECUTOR_CORES"   \
   --class me.kosik.interwalled.benchmark.Main         \
   /mnt/jar/interwalled-benchmark.jar                  \
