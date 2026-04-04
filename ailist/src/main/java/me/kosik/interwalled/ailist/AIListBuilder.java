@@ -55,6 +55,11 @@ public class AIListBuilder implements Serializable {
                 ArrayList<Interval> extractedIntervals = new ArrayList<>();
 
                 for(int currentIntervalIndex = currentComponentStartIndex; currentIntervalIndex < intervals.size(); ) {
+                    // If the component is already full, break.
+                    if(currentComponentLength >= config.maximumComponentSize()) {
+                        break;
+                    }
+
                     final Interval currentInterval = intervals.get(currentIntervalIndex);
 
                     boolean coverage = computeCoverage(currentComponentStartIndex, currentIntervalIndex, intervals);

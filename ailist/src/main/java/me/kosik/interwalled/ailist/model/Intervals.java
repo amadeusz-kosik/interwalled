@@ -5,7 +5,11 @@ import java.util.ArrayList;
 
 public class Intervals implements Serializable {
 
-    final private Interval[] intervals;
+    final public Interval[] intervals;
+
+    public Intervals(final Interval[] intervals) {
+        this.intervals = intervals;
+    }
 
     public Intervals(final ArrayList<Interval> intervals) {
         this.intervals = intervals.toArray((Interval []) new Interval[0]);

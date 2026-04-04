@@ -1,10 +1,10 @@
 package me.kosik.interwalled.spark.join.implementation
 
 import me.kosik.interwalled.ailist.model.{AIListConfiguration, IntervalsPair}
-import me.kosik.interwalled.ailist.{AIList, AIListBuilder}
+import me.kosik.interwalled.ailist.{AIList, AIListBuilder, IntervalColumns}
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{PreparedInput, Result}
-import org.apache.spark.sql._
+import org.apache.spark.sql.{functions => F, _}
 
 import scala.collection.JavaConverters._
 
@@ -21,7 +21,9 @@ object DriverAIListIntervalJoin extends IntervalJoin {
     implicit val spark: SparkSession = input.lhsData.sparkSession
     import spark.implicits._
 
-    val aiLists: Map[String, AIList] = input.lhsData.collect()
+    val aiLists: Map[String, AIList] = input.lhsData
+      .sort(F.col(IntervalColumns.FROM).asc, F.col(IntervalColumns.TO).asc)
+      .collect()
       .groupBy(_.key)
       .map { case (key, intervalsArray) =>
         val aiListBuilder = new AIListBuilder(AIListConfiguration.apply)

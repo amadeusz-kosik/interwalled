@@ -5,7 +5,7 @@ import me.kosik.interwalled.ailist.IntervalColumns
 import me.kosik.interwalled.ailist.model.{Interval, IntervalsPair}
 import me.kosik.interwalled.model.BucketedInterval
 import me.kosik.interwalled.utility.stats.model.IntervalJoinRunStats
-import org.apache.spark.sql.{Column, Dataset, functions => F}
+import org.apache.spark.sql.{Dataset, functions => F}
 
 
 object IntervalJoin {
@@ -28,12 +28,7 @@ object IntervalJoin {
   case class PreparedInput(
     lhsData: Dataset[BucketedInterval],
     rhsData: Dataset[BucketedInterval]
-  ) {
-    def repartition(partitionExpressions: Column *): PreparedInput = this.copy(
-      lhsData = lhsData.repartition(partitionExpressions :_*),
-      rhsData = rhsData.repartition(partitionExpressions :_*)
-    )
-  }
+  )
 
   case class Result(
     data: Dataset[IntervalsPair],

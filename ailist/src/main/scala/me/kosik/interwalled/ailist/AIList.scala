@@ -18,7 +18,8 @@ case class AIList(
 
   override def toString: String = {
     val componentsStr = componentsLengths.mkString(", ")
-    f"AIList { Components: $componentsCount { $componentsStr }}"
+    val itemsStr = componentsStartIndexes.map(idx => intervals.get(idx).value).mkString("->")
+    f"AIList { components: $componentsCount { $componentsStr }, items: $itemsStr}"
   }
 
   /* OverlapIterator interface. */

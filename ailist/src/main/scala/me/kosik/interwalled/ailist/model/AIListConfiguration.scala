@@ -10,10 +10,10 @@ case class AIListConfiguration(
 
 object AIListConfiguration {
   def apply: AIListConfiguration = AIListConfiguration(
-    maximumComponentsCount = 32,
+    maximumComponentsCount = 256,
     intervalsCountToCheckLookahead = 24,
     intervalsCountToTriggerExtraction = 16,
-    maximumComponentSize = 64,
+    maximumComponentSize = 24000,
     checkLookbehindCoverage = false
   )
 }
