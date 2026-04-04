@@ -63,6 +63,7 @@ services:
       - "${IW_APP_COMMAND}"
       - "${IW_DATA}"
       - "${IW_BENCHMARK}"
+    user: "185:185"
 
     volumes:
       - ../data/:/mnt/data/
