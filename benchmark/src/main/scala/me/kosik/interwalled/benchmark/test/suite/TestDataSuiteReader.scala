@@ -3,6 +3,7 @@ package me.kosik.interwalled.benchmark.test.suite
 import me.kosik.interwalled.benchmark.app.ApplicationEnv
 import me.kosik.interwalled.ailist.IntervalColumns
 import me.kosik.interwalled.ailist.test.TestDataRow
+import me.kosik.interwalled.benchmark.common.test.data.{DataPaths, TestDataSuite}
 import org.apache.spark.sql.{DataFrame, Dataset, functions => F}
 
 
@@ -38,7 +39,7 @@ object TestDataSuiteReader {
   )
 
   // FixMe refactor
-  private def read(suite: TestDataSuite, paths: Array[String], env: ApplicationEnv): Dataset[TestDataRow] = {
+  private def read(suite: TestDataSuite, paths: DataPaths, env: ApplicationEnv): Dataset[TestDataRow] = {
 
     def doRead(path: String): Dataset[TestDataRow] = {
       import env.sparkSession.implicits._
@@ -61,6 +62,6 @@ object TestDataSuiteReader {
     }
 
     import env.sparkSession.implicits._
-    paths.foldLeft(env.sparkSession.emptyDataset[TestDataRow])((datasets, path) => datasets.unionByName(doRead(path)))
+    paths.paths.foldLeft(env.sparkSession.emptyDataset[TestDataRow])((datasets, path) => datasets.unionByName(doRead(path)))
   }
 }

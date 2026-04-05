@@ -1,6 +1,6 @@
 package me.kosik.interwalled.benchmark.join
 
-import me.kosik.interwalled.benchmark.test.suite.TestDataSuite
+import me.kosik.interwalled.benchmark.common.test.data.TestDataSuite
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 
 

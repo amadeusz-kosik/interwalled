@@ -1,7 +1,7 @@
 package me.kosik.interwalled.benchmark.app
 
+import me.kosik.interwalled.benchmark.common.test.data.TestDataSuites
 import me.kosik.interwalled.benchmark.join._
-import me.kosik.interwalled.benchmark.test.suite.TestDataSuites
 import me.kosik.interwalled.benchmark.utils.csv.{BenchmarkCSVFormatter, CSVWriter}
 import org.slf4j.LoggerFactory
 

@@ -1,4 +1,4 @@
-package me.kosik.interwalled.benchmark.test.suite
+package me.kosik.interwalled.benchmark.common.test.data
 
 
 object TestDataSuites {

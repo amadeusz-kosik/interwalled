@@ -4,6 +4,8 @@ ThisBuild / organization := "me.kosik.interwalled"
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
 
+val DefaultScalacOptions = Seq("-deprecation", "-unchecked", "-Xlint", "-Xdisable-assertions")
+
 // Deduplication (assemblyMergeStrategy) for sbt-assembly
 val sparkJobAssemblyMergeStrategy: String => sbtassembly.MergeStrategy = {
   // Do not erase log4j files
@@ -32,15 +34,27 @@ lazy val spark = (project in file("spark"))
   .settings(name := "spark")
   .dependsOn(ailist)
 
+lazy val benchmarkCommon = (project in file("benchmarks/common"))
+  .settings(
+    name := "benchmark-common",
+    scalacOptions ++= DefaultScalacOptions
+  )
+
+lazy val benchmarkSequila = (project in file("benchmarks/sequila"))
+  .settings(
+    name := "benchmark-sequila",
+    scalacOptions ++= DefaultScalacOptions
+  )
+
 lazy val benchmark = (project in file("benchmark"))
   .settings(
     name := "benchmark",
-    scalacOptions ++= Seq("-deprecation", "-unchecked", "-Xlint", "-Xdisable-assertions"),
+    scalacOptions ++= DefaultScalacOptions,
     assembly / assemblyJarName := "interwalled-benchmark.jar",
     assembly / mainClass := Some("me.kosik.interwalled.benchmark.Main"),
     assembly / assemblyMergeStrategy := sparkJobAssemblyMergeStrategy
   )
-  .dependsOn(spark)
+  .dependsOn(spark, benchmarkCommon)
 
 lazy val root = (project in file("."))
   .aggregate(ailist, spark, benchmark)
@@ -61,4 +75,6 @@ spark / libraryDependencies += "org.apache.spark"  %% "spark-core"              
 spark / libraryDependencies += "org.apache.spark"  %% "spark-sql"               % SparkVersion              % Provided
 spark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"      % SparkTestingBaseVersion   % Test
 
-
+benchmarkSequila / libraryDependencies += "org.apache.spark"  %% "spark-core"   % SparkVersion              % Provided
+benchmarkSequila / libraryDependencies += "org.apache.spark"  %% "spark-sql"    % SparkVersion              % Provided
+benchmarkSequila / libraryDependencies += "org.biodatageeks"  %% "sequila"      % "1.3.6"

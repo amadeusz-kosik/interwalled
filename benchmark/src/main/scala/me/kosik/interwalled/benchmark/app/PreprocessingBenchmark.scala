@@ -1,7 +1,7 @@
 package me.kosik.interwalled.benchmark.app
 
+import me.kosik.interwalled.benchmark.common.test.data.TestDataSuites
 import me.kosik.interwalled.benchmark.preprocessing.{PreprocessingRequest, PreprocessingResult, PreprocessingRunner, PreprocessingStrategies}
-import me.kosik.interwalled.benchmark.test.suite.TestDataSuites
 import me.kosik.interwalled.benchmark.utils.csv.{CSVWriter, PreprocessingCSVFormatter}
 import org.slf4j.LoggerFactory
 
