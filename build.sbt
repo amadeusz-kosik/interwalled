@@ -45,6 +45,8 @@ lazy val benchmarkSequila = (project in file("benchmarks/sequila"))
     name := "benchmark-sequila",
     scalacOptions ++= DefaultScalacOptions
   )
+  .enablePlugins(JmhPlugin)
+  .dependsOn(benchmarkCommon)
 
 lazy val benchmark = (project in file("benchmark"))
   .settings(
@@ -64,7 +66,7 @@ lazy val root = (project in file("."))
 ailist / libraryDependencies += "com.github.sbt.junit" %  "jupiter-interface"   % "0.16.0"                  % Test
 
 benchmark / Compile / run / mainClass := Some("me.kosik.interwalled.benchmark.Main")
-benchmark / parallelExecution in Test := false
+benchmark / Test / parallelExecution := false
 benchmark / libraryDependencies += "org.apache.spark"  %% "spark-core"          % SparkVersion              % Provided
 benchmark / libraryDependencies += "org.apache.spark"  %% "spark-mllib"         % SparkVersion              % Provided
 benchmark / libraryDependencies += "org.apache.spark"  %% "spark-sql"           % SparkVersion              % Provided
@@ -74,6 +76,9 @@ spark / Test / parallelExecution := false
 spark / libraryDependencies += "org.apache.spark"  %% "spark-core"              % SparkVersion              % Provided
 spark / libraryDependencies += "org.apache.spark"  %% "spark-sql"               % SparkVersion              % Provided
 spark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"      % SparkTestingBaseVersion   % Test
+
+benchmarkCommon / libraryDependencies += "org.apache.spark"  %% "spark-core"    % SparkVersion              % Provided
+benchmarkCommon / libraryDependencies += "org.apache.spark"  %% "spark-sql"     % SparkVersion              % Provided
 
 benchmarkSequila / libraryDependencies += "org.apache.spark"  %% "spark-core"   % SparkVersion              % Provided
 benchmarkSequila / libraryDependencies += "org.apache.spark"  %% "spark-sql"    % SparkVersion              % Provided

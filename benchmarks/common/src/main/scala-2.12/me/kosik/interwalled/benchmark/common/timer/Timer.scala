@@ -1,4 +1,4 @@
-package me.kosik.interwalled.benchmark.utils.timer
+package me.kosik.interwalled.benchmark.common.timer
 
 import java.util.concurrent.TimeUnit.NANOSECONDS
 

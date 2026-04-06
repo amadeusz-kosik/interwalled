@@ -1,6 +1,6 @@
 package me.kosik.interwalled.benchmark
 
-import me.kosik.interwalled.benchmark.app.{IntervalJoinBenchmark, ApplicationEnv, PreprocessingBenchmark}
+import me.kosik.interwalled.benchmark.app.{IntervalJoinBenchmark, ApplicationEnv}
 import me.kosik.interwalled.benchmark.generator.TestDataGenerator
 import org.slf4j.LoggerFactory
 
@@ -13,9 +13,6 @@ object Main extends App {
   val app = args.headOption match {
     case Some("interval-join-benchmark") =>
       new IntervalJoinBenchmark(args.tail, env)
-
-    case Some("partitioning-benchmark") =>
-      new PreprocessingBenchmark(args.tail, env)
 
     case Some("test-data-generator") =>
       new TestDataGenerator(args.tail, env)

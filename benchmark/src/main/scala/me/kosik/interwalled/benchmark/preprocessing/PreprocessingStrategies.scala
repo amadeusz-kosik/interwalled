@@ -1,6 +1,6 @@
 package me.kosik.interwalled.benchmark.preprocessing
 
-import me.kosik.interwalled.benchmark.utils.Implicits._
+import me.kosik.interwalled.benchmark.common.utils.Implicits._
 import me.kosik.interwalled.spark.join.preprocessor.Bucketizer.BucketizerConfig
 import me.kosik.interwalled.spark.join.preprocessor.Deoutlier.DeoutlierConfig
 import me.kosik.interwalled.spark.join.preprocessor.Repartitioner.RepartitionerConfig

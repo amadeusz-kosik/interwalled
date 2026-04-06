@@ -1,8 +1,9 @@
 package me.kosik.interwalled.benchmark.app
 
-import me.kosik.interwalled.benchmark.common.test.data.TestDataSuites
+import me.kosik.interwalled.benchmark.common.results.model.{BenchmarkFailure, BenchmarkOutcome, BenchmarkSuccess}
+import me.kosik.interwalled.benchmark.common.results.{BenchmarkOutcomeCSVFormatter, CSVWriter}
 import me.kosik.interwalled.benchmark.join._
-import me.kosik.interwalled.benchmark.utils.csv.{BenchmarkCSVFormatter, CSVWriter}
+import me.kosik.interwalled.benchmark.test.suite.TestDataSuites
 import org.slf4j.LoggerFactory
 
 import scala.util.{Failure, Success}
@@ -45,8 +46,8 @@ class IntervalJoinBenchmark(args: Array[String], env: ApplicationEnv) extends Be
 
       // --------------------------------------------------------------------
 
-      val csvWriter: CSVWriter[BenchmarkResult] =
-        CSVWriter.forPath[BenchmarkResult](BenchmarkCSVFormatter)(env.csvDirectory)
+      val csvWriter: CSVWriter[BenchmarkOutcome] =
+        CSVWriter.forPath[BenchmarkOutcome](BenchmarkOutcomeCSVFormatter)(env.csvDirectory)
 
       logger.info(s"Running case $joinStrategy.")
       logger.info(s"Running on $testDataSuite.")
@@ -60,10 +61,10 @@ class IntervalJoinBenchmark(args: Array[String], env: ApplicationEnv) extends Be
       env.sparkSession.stop()
 
       benchmarkResult.result match {
-        case Success(_) =>
+        case BenchmarkSuccess(_, _) =>
           System.exit(0)
 
-        case Failure(exception) =>
+        case BenchmarkFailure(exception) =>
           logger.error("Benchmarking failed", exception)
           System.exit(4)
       }

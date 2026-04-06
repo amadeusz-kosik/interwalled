@@ -1,2 +1,5 @@
 addSbtPlugin("org.jetbrains.scala" % "sbt-ide-settings" % "1.1.2")
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "2.3.0")
+
+// JMH plugin integration for benchmarking
+addSbtPlugin("pl.project13.scala" % "sbt-jmh" % "0.4.8")

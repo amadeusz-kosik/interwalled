@@ -1,5 +1,4 @@
-package me.kosik.interwalled.benchmark.utils
-
+package me.kosik.interwalled.benchmark.common.utils
 
 object Implicits {
 

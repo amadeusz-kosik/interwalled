@@ -2,19 +2,19 @@ package me.kosik.interwalled.benchmark.preprocessing
 
 import me.kosik.interwalled.ailist.model.Interval
 import me.kosik.interwalled.benchmark.app.ApplicationEnv
-import me.kosik.interwalled.benchmark.test.suite.TestDataSuiteReader
+import me.kosik.interwalled.benchmark.common.test.data.TestDataSuiteLoader
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin
+import org.apache.spark.sql.SparkSession
 
 
 object PreprocessingRunner {
 
   def run(request: PreprocessingRequest, env: ApplicationEnv): PreprocessingResult = {
-    import env.sparkSession.implicits._
+    implicit val sparkSession: SparkSession = env.sparkSession
+    import sparkSession.implicits._
 
-    val database  = TestDataSuiteReader.readDatabase(request.dataSuite, env)
-    val query     = TestDataSuiteReader.readQuery(request.dataSuite, env)
-
-    val inputData         = IntervalJoin.Input(database.as[Interval], query.as[Interval])
+    val testData          = TestDataSuiteLoader.load(env.dataDirectory, request.dataSuite)
+    val inputData         = IntervalJoin.Input(testData.database.as[Interval], testData.query.as[Interval])
     val preparedData      = inputData.toPreparedInput
     val preprocessedData  = request.preprocessor.prepareInput(preparedData)
 

@@ -1,4 +1,4 @@
-package me.kosik.interwalled.benchmark.utils.csv
+package me.kosik.interwalled.benchmark.common.results
 
 import java.io.{File, FileOutputStream, PrintWriter, Writer}
 import java.nio.file.{Files, Path}

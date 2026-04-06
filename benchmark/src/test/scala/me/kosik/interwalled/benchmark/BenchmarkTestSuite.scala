@@ -2,9 +2,9 @@ package me.kosik.interwalled.benchmark
 
 import com.holdenkarau.spark.testing.DatasetSuiteBase
 import me.kosik.interwalled.benchmark.app.ApplicationEnv
+import me.kosik.interwalled.benchmark.common.results.{BenchmarkOutcomeCSVFormatter, CSVWriter}
 import me.kosik.interwalled.benchmark.join.JoinStrategies
 import me.kosik.interwalled.benchmark.test.suite.unit.UnitTestDataSuite
-import me.kosik.interwalled.benchmark.utils.csv.{BenchmarkCSVFormatter, CSVWriter}
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.Input
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -13,7 +13,7 @@ import java.io.PrintWriter
 
 class BenchmarkTestSuite extends AnyFunSuite with DatasetSuiteBase {
   private lazy val env = ApplicationEnv.buildTest("benchmark-test-suite")
-  private lazy val writer = CSVWriter.forWritter(BenchmarkCSVFormatter)(new PrintWriter(System.out))
+  private lazy val writer = CSVWriter.forWritter(BenchmarkOutcomeCSVFormatter)(new PrintWriter(System.out))
 
   // ---------------------------------------------------------------------------------------------------------------- //
 

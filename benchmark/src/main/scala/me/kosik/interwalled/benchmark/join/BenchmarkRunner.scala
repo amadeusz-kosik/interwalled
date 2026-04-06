@@ -2,8 +2,9 @@ package me.kosik.interwalled.benchmark.join
 
 import me.kosik.interwalled.ailist.model.Interval
 import me.kosik.interwalled.benchmark.app.ApplicationEnv
-import me.kosik.interwalled.benchmark.test.suite.TestDataSuiteReader
-import me.kosik.interwalled.benchmark.utils.timer.{Timer, TimerResult}
+import me.kosik.interwalled.benchmark.common.results.model.{BenchmarkFailure, BenchmarkOutcome, BenchmarkSuccess}
+import me.kosik.interwalled.benchmark.common.test.data.TestDataSuiteLoader
+import me.kosik.interwalled.benchmark.common.timer.{Timer, TimerResult}
 import me.kosik.interwalled.spark.join.api.IntervalJoin
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin
 import me.kosik.interwalled.utility.stats.model.IntervalJoinRunStats
@@ -17,41 +18,31 @@ import scala.util.{Failure, Success, Try}
 object BenchmarkRunner {
   private lazy val logger = LoggerFactory.getLogger(getClass)
 
-  def run(request: BenchmarkRequest, env: ApplicationEnv): BenchmarkResult = {
-    val database  = TestDataSuiteReader.readDatabase(request.dataSuite, env)
-    val query     = TestDataSuiteReader.readQuery(request.dataSuite, env)
+  def run(request: BenchmarkRequest, env: ApplicationEnv): BenchmarkOutcome = {
+    val testData = TestDataSuiteLoader.load(env.dataDirectory, request.dataSuite)(env.sparkSession)
 
     // FIXME
     val benchmarkInputData = {
       import env.sparkSession.implicits._
-      IntervalJoin.Input(database.as[Interval], query.as[Interval])
+      IntervalJoin.Input(testData.database.as[Interval], testData.query.as[Interval])
     }
 
-    runBenchmark(benchmarkInputData, request.join, env.timeoutAfter)
+    val benchmarkResult = runBenchmark(benchmarkInputData, request.join, env.timeoutAfter)
       .map { timeElapsed =>
         logger.info("Computation done, running stats gathering.")
 
         val statistics = gatherStatistics(benchmarkInputData, request.join)
         (timeElapsed, statistics)
       } match {
-        case Success((timeElapsed, statistics)) =>
-          BenchmarkResult(
-            request.dataSuite,
-            request.join,
-            Success(timeElapsed),
-            statistics
-          )
+        case Success((timeElapsed, statistics)) => // FIXME get
+          BenchmarkSuccess(timeElapsed, statistics.get.resultRowsCount)
 
         case Failure(exception) =>
           logger.info("Benchmark failed, still running gathering input statistics.")
-
-          BenchmarkResult(
-            request.dataSuite,
-            request.join,
-            Failure[TimerResult](exception),
-            None
-          )
+          BenchmarkFailure(exception)
       }
+
+    BenchmarkOutcome(request.join.toString, request.dataSuite.suite, benchmarkResult)
   }
 
   private def runBenchmark(inputData: IntervalJoin.Input, join: IntervalJoin, timeout: Duration): Try[TimerResult] = {
