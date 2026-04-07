@@ -27,6 +27,11 @@ val sparkJobAssemblyMergeStrategy: String => sbtassembly.MergeStrategy = {
 val SparkVersion            = "3.5.3"
 val SparkTestingBaseVersion = f"${SparkVersion}_2.0.1"
 
+// Sequila has support for Spark up to 3.4.3
+val SequilaSparkVersion = "3.4.1"
+val SequilaSparkTestingBaseVersion = f"${SequilaSparkVersion}_1.4.4"
+
+
 lazy val ailist = (project in file("ailist"))
   .settings(name := "ailist")
 
@@ -76,9 +81,7 @@ spark / libraryDependencies += "org.apache.spark"  %% "spark-core"              
 spark / libraryDependencies += "org.apache.spark"  %% "spark-sql"               % SparkVersion              % Provided
 spark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"      % SparkTestingBaseVersion   % Test
 
-benchmarkCommon / libraryDependencies += "org.apache.spark"  %% "spark-core"    % SparkVersion              % Provided
-benchmarkCommon / libraryDependencies += "org.apache.spark"  %% "spark-sql"     % SparkVersion              % Provided
-
-benchmarkSequila / libraryDependencies += "org.apache.spark"  %% "spark-core"   % SparkVersion              % Provided
-benchmarkSequila / libraryDependencies += "org.apache.spark"  %% "spark-sql"    % SparkVersion              % Provided
-benchmarkSequila / libraryDependencies += "org.biodatageeks"  %% "sequila"      % "1.3.6"
+benchmarkSequila / libraryDependencies += "org.apache.spark"  %% "spark-core"           % SequilaSparkVersion             % Provided
+benchmarkSequila / libraryDependencies += "org.apache.spark"  %% "spark-sql"            % SequilaSparkVersion             % Provided
+benchmarkSequila / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"   % SequilaSparkTestingBaseVersion  % Test
+benchmarkSequila / libraryDependencies += "org.biodatageeks"  %% "sequila"              % "1.3.6"

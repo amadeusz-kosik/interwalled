@@ -1,6 +1,7 @@
-package me.kosik.interwalled.benchmark.common.test.data
+package me.kosik.interwalled.benchmark.sequila.data
 
-import me.kosik.interwalled.benchmark.common.test.data.model.TestDataRow
+import me.kosik.interwalled.benchmark.common.test.data.{DataPaths, TestDataSuiteMetadata}
+import me.kosik.interwalled.benchmark.common.test.data.model.{TestDataRow, TestDataSizeLimit}
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession, functions => F}
 
 
@@ -13,7 +14,7 @@ object TestDataSuiteLoader {
     TestDataSuite(suite, databaseData, queryData)
   }
 
-  private def load(dataDirectory: String, paths: DataPaths, limit: Option[Long])(implicit sparkSession: SparkSession): Dataset[TestDataRow] = {
+  private def load(dataDirectory: String, paths: DataPaths, limit: TestDataSizeLimit)(implicit sparkSession: SparkSession): Dataset[TestDataRow] = {
     val loaders: Map[String, DataFrame => DataFrame] = Map(
       "databio-8p" -> { df =>
 
@@ -21,7 +22,7 @@ object TestDataSuiteLoader {
           F.col("contig").as("key"),
           F.col("pos_start").as("from"),
           F.col("pos_end").as("to"),
-          F.uuid().as("value")
+          F.expr("uuid()").as("value")
         )
       },
 
@@ -40,11 +41,11 @@ object TestDataSuiteLoader {
 
       val inputPathPrefix = path.split("/")(0)
       val inputDataset = sparkSession.read
-        .parquet(f"${dataDirectory}/$path")
+        .parquet(f"$dataDirectory/$path")
         .transform(loaders.getOrElse(inputPathPrefix, throw new IllegalArgumentException("Unknown test data prefix.")))
         .as[TestDataRow]
 
-      limit match {
+      limit.limit match {
         case Some(limitValue) =>
           inputDataset
             .filter(F.col("from") <= limitValue)

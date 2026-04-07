@@ -1,5 +1,6 @@
 package me.kosik.interwalled.benchmark.common.test.data
 
+
 sealed trait DataPaths {
   def paths: Array[String]
 }
