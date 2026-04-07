@@ -45,7 +45,6 @@ lazy val benchmarkSequila = (project in file("benchmarks/sequila"))
     name := "benchmark-sequila",
     scalacOptions ++= DefaultScalacOptions
   )
-  .enablePlugins(JmhPlugin)
   .dependsOn(benchmarkCommon)
 
 lazy val benchmark = (project in file("benchmark"))

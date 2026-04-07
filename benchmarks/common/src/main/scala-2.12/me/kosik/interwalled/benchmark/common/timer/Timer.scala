@@ -6,6 +6,12 @@ import java.util.concurrent.TimeUnit.NANOSECONDS
 object Timer {
   def start(): Timer =
     new Timer(System.nanoTime())
+
+  def timed(block: => Unit): TimerResult = {
+    val timer = start()
+    block
+    timer.millisElapsed()
+  }
 }
 
 class Timer(private val startTime: Long) {

@@ -1,53 +1,38 @@
 package me.kosik.interwalled.benchmark.sequila
 
-import org.apache.spark.sql
-import org.apache.spark.sql.DataFrame
+import me.kosik.interwalled.benchmark.common.test.data.{TestDataSuiteLoader, TestDataSuites}
+import me.kosik.interwalled.benchmark.common.timer.Timer
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.SequilaSession
-import org.apache.spark.sql.{functions => F}
+import org.slf4j.LoggerFactory
 
 
 object Main {
+  private val logger = LoggerFactory.getLogger(getClass)
 
-  val path = "/Users/iw-user/Git/FEIT/Interwalled/interwalled-data-generator/data/maximum-size-of-input"
+  private val spark          = SparkSession.builder().appName("Sequila benchmark").getOrCreate()
+  private val sequilaSession = SequilaSession(spark)
 
-  private val spark      = SparkSession.builder().appName("Sequila benchmark").getOrCreate()
-  private val sqlsession = SequilaSession(spark)
+  private val testDataSuites = TestDataSuites.databioSuites // FIXME
 
-  def parse(input: DataFrame): DataFrame =
-    input
-      .withColumn("text", F.split(F.col("value"), "\\s+"))
-      .select(
-        F.col("text").getItem(0).alias("contig"),
-        F.col("text").getItem(1).alias("pos_start"),
-        F.col("text").getItem(2).alias("pos_end"),
+  testDataSuites foreach { testDataSuiteMetadata =>
+    logger.info(s"Running test data suite: $testDataSuiteMetadata.")
+
+    val testData = TestDataSuiteLoader.load("/mnt/data", testDataSuiteMetadata)(spark)
+
+    val database = testData.database.alias("database")
+    val query    = testData.query.alias("query")
+
+    val timerResult = Timer.timed {
+      val joined = database.join(query,
+        (database.col("from") <= query.col("to")) &&
+        (database.col("to")   >= query.col("from")) &&
+        (database.col("key") === query.col("key"))
       )
 
-  val database   = sqlsession.read
-    .text(path + "/input-80M.bed")
-    .transform(parse)
-    .alias("database")
+      joined.foreach(_ => ())
+    }
 
-  val query      = sqlsession.read
-    .text(path + "/input-80M.bed")
-    .transform(parse)
-    .alias("query")
-
-
-  database
-    .join(query,
-      (database.col("pos_start") <= query.col("pos_end")) &&
-        (database.col("pos_end") >= query.col("pos_start")) &&
-        (database.col("contig") === query.col("contig"))
-    )
-    .select(
-      database.col("pos_start").alias("lhs_start"),
-      database.col("pos_end").alias("lhs_end"),
-      query.col("pos_start").alias("rhs_start"),
-      query.col("pos_end").alias("rhs_end"),
-      database.col("contig")
-    )
-    .foreach (_ => ())
-
-  scala.io.StdIn.readLine()
+    logger.info(s"Test data suite completed in $timerResult ms.")
+  }
 }
