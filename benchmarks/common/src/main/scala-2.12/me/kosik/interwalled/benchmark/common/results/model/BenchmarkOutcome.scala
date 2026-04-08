@@ -1,7 +1,10 @@
 package me.kosik.interwalled.benchmark.common.results.model
 
-case class BenchmarkOutcome(
-  benchmarkName: String, // FIXME
-  dataSuiteName: String, // FIXME
-  result:        BenchmarkResult
+import me.kosik.interwalled.benchmark.common.test.data.TestDataSuiteMetadata
+
+
+case class BenchmarkOutcome[T](
+  benchmarkName:        String,
+  dataSuiteMetadata:    TestDataSuiteMetadata,
+  result:               BenchmarkResult[T]
 )

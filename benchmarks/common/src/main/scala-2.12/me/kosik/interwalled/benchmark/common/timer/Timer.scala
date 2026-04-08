@@ -7,10 +7,12 @@ object Timer {
   def start(): Timer =
     new Timer(System.nanoTime())
 
-  def timed(block: => Unit): TimerResult = {
+  def timed[T](block: => T): (TimerResult, T) = {
     val timer = start()
-    block
-    timer.millisElapsed()
+    val result = block
+    val timerResult = timer.millisElapsed()
+
+    (timerResult, result)
   }
 }
 

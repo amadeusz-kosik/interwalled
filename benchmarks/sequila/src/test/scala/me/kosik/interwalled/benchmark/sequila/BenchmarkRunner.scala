@@ -11,6 +11,6 @@ class BenchmarkRunner extends AnyFunSuite with DatasetSuiteBase {
   private val testDataSuites = TestDataSuites.databioSuites.filter(_.suite.startsWith("databio-s")).take(1)
 
   test(s"Testing small databio data sets: ${testDataSuites.mkString("Array(", ", ", ")")}.") {
-    Benchmark.runBenchmark(testDataPath, testDataSuites)
+    Benchmark.runBenchmark(testDataPath, testDataSuites)(spark)
   }
 }
