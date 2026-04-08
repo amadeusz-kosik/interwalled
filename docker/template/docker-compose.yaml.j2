@@ -1,6 +1,6 @@
 services:
   spark-master:
-    image: spark:3.5.7-java17-scala
+    image: spark:{{ spark_version }}
     entrypoint: ['/opt/spark/sbin/start-master.sh']
     environment:
       - SPARK_NO_DAEMONIZE=true
@@ -25,7 +25,7 @@ services:
       - spark-events:/mnt/spark-events/
 
   spark-history-server:
-    image: spark:3.5.7-java17-scala
+    image: spark:{{ spark_version }}
     entrypoint: ['/opt/spark/sbin/start-history-server.sh']
     environment:
       - SPARK_NO_DAEMONIZE=true
@@ -38,7 +38,7 @@ services:
       - spark-events:/mnt/spark-events/
 
   spark-driver:
-    image: spark:3.5.7-java17-scala
+    image: spark:{{ spark_version }}
     environment:
       - SPARK_NO_DAEMONIZE=true
       - INTERWALLED_CSV_DIRECTORY=/mnt/results/default.csv
@@ -51,25 +51,24 @@ services:
       - SPARK_USER=spark
       - SPARK_EVENTLOG_ENABLED=true
       - SPARK_EVENTLOG_DIR=file:/mnt/spark-events
+      - IW_DRIVER_MEMORY=4G
+      - IW_EXECUTOR_MEMORY=$IW_EXECUTOR_MEMORY
+      - IW_EXECUTOR_CORES=$IW_EXECUTOR_CORES
+      - IW_TOTAL_EXECUTOR_CORES=$IW_TOTAL_EXECUTOR_CORES
     hostname: spark-driver
     ports:
       - '4040:4040'
     command:
       - "/mnt/scripts/iw-submit.sh"
-      - "${IW_DRIVER_MEMORY}"
-      - "${IW_EXECUTOR_CORES}"
-      - "${IW_TOTAL_EXECUTOR_CORES}"
-      - "${IW_EXECUTOR_MEMORY}"
-      - "${IW_APP_COMMAND}"
-      - "${IW_DATA}"
-      - "${IW_BENCHMARK}"
+      - "${JAR_FILE_PATH}"
+      - "${CLASS_NAME}"
     user: "185:185"
 
     volumes:
       - ../data/:/mnt/data/
       - ../results/:/mnt/results/
       - ../docker/scripts/:/mnt/scripts/
-      - ../benchmark/target/scala-2.12/:/mnt/jar/
+      - ../benchmarks/sequila/target/scala-2.12/:/mnt/jar/benchmark-sequila/
       - ../temporary:/mnt/temporary/
       - spark-events:/mnt/spark-events/
 
@@ -79,7 +78,7 @@ services:
           memory: 4G
 
   spark-worker:
-    image: spark:3.5.7-java17-scala
+    image: spark:{{ spark_version }}
     deploy:
       replicas: 4
     entrypoint: ['/opt/spark/sbin/start-worker.sh', 'spark://spark-master:7077']

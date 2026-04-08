@@ -1,6 +1,7 @@
 package me.kosik.interwalled.benchmark.generator
 
-import me.kosik.interwalled.benchmark.app.{ApplicationEnv, BenchmarkApp}
+import me.kosik.interwalled.benchmark.app.BenchmarkApp
+import me.kosik.interwalled.benchmark.common.env.ApplicationEnv
 import me.kosik.interwalled.benchmark.test.data.datasets.{TestCase, TestCases}
 import org.apache.spark.sql.{SaveMode, SparkSession}
 import org.slf4j.LoggerFactory
@@ -32,7 +33,7 @@ object TestDataGenerator {
 
   def generate(path: String, testCases: Iterable[TestCase], partitions: Int, env: ApplicationEnv): Unit = {
     testCases foreach { testCaseCallback =>
-      implicit val spark: SparkSession = env.sparkSession
+      implicit val spark: SparkSession = SparkSession.builder().appName("Test data generator").getOrCreate()
 
       logger.info(s"Generating ${testCaseCallback.testCaseName} data.")
 
@@ -49,7 +50,7 @@ object TestDataGenerator {
 
   def generateResults(path: String, env: ApplicationEnv): Unit = {
     TestCases.unitResults foreach { testCaseResultsCallback =>
-      implicit val spark: SparkSession = env.sparkSession
+      implicit val spark: SparkSession = SparkSession.builder().appName("Test data generator").getOrCreate()
 
       logger.info(s"Generating ${testCaseResultsCallback.testCaseName} data results.")
 

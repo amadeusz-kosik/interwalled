@@ -18,22 +18,20 @@ class CSVWriter[T](formatter: CSVFormatter[T], fileWriter: Writer) {
 
 object CSVWriter {
 
-  def forPath[T](formatter: CSVFormatter[T])(csvFilePath: String): CSVWriter[T] = forWritter[T](formatter) {
-    val absolutePath = Path.of(csvFilePath).toAbsolutePath
-
-    if(! Files.exists(absolutePath)) {
-      val writer = new PrintWriter(absolutePath.toString)
+  def forPath[T](formatter: CSVFormatter[T])(csvFilePath: Path): CSVWriter[T] = forWriter[T](formatter) {
+    if(! Files.exists(csvFilePath)) {
+      val writer = new PrintWriter(csvFilePath.toString)
       writer.write(formatter.header)
       writer.flush()
 
       writer
     } else {
-      val stream = new FileOutputStream(new File(absolutePath.toString), true)
+      val stream = new FileOutputStream(new File(csvFilePath.toString), true)
       val writer = new PrintWriter(stream)
 
       writer
     }
   }
 
-  def forWritter[T](formatter: CSVFormatter[T])(writer: Writer): CSVWriter[T] = new CSVWriter(formatter, writer)
+  def forWriter[T](formatter: CSVFormatter[T])(writer: Writer): CSVWriter[T] = new CSVWriter(formatter, writer)
 }

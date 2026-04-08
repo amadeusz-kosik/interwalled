@@ -4,17 +4,19 @@ import me.kosik.interwalled.benchmark.common.test.data.{DataPaths, TestDataSuite
 import me.kosik.interwalled.benchmark.common.test.data.model.{TestDataRow, TestDataSizeLimit}
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession, functions => F}
 
+import java.nio.file.Path
+
 
 object TestDataSuiteLoader {
 
-  def load(dataDirectory: String, suite: TestDataSuiteMetadata)(implicit sparkSession: SparkSession): TestDataSuite = {
+  def load(dataDirectory: Path, suite: TestDataSuiteMetadata)(implicit sparkSession: SparkSession): TestDataSuite = {
     val databaseData = load(dataDirectory, suite.databasePaths, suite.limit)
     val queryData    = load(dataDirectory, suite.queryPaths, suite.limit)
 
     TestDataSuite(suite, databaseData, queryData)
   }
 
-  private def load(dataDirectory: String, paths: DataPaths, limit: TestDataSizeLimit)(implicit sparkSession: SparkSession): Dataset[TestDataRow] = {
+  private def load(dataDirectory: Path, paths: DataPaths, limit: TestDataSizeLimit)(implicit sparkSession: SparkSession): Dataset[TestDataRow] = {
     val loaders: Map[String, DataFrame => DataFrame] = Map(
       "databio-8p" -> { df =>
 

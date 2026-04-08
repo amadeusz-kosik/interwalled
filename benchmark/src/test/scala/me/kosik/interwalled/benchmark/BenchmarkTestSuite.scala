@@ -13,7 +13,7 @@ import java.io.PrintWriter
 
 class BenchmarkTestSuite extends AnyFunSuite with DatasetSuiteBase {
   private lazy val env = ApplicationEnv.buildTest("benchmark-test-suite")
-  private lazy val writer = CSVWriter.forWritter(BenchmarkOutcomeCSVFormatter)(new PrintWriter(System.out))
+  private lazy val writer = CSVWriter.forWriter(BenchmarkOutcomeCSVFormatter)(new PrintWriter(System.out))
 
   // ---------------------------------------------------------------------------------------------------------------- //
 
