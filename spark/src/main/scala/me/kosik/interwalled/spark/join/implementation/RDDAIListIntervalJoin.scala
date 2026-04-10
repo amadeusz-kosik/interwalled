@@ -22,14 +22,22 @@ class RDDAIListIntervalJoin(override val config: Config) extends ExecutorInterva
   protected def doJoin(input: PreparedInput): Dataset[IntervalsPair] = {
     import input.lhsData.sparkSession.implicits._
 
+    val (lhsData, rhsData) = {
+      // Detect which dataset is bigger, use _smaller_ one as the dataset.
+      //  The idea is to keep AI List computation smaller to create smaller partitions.
+      if(input.lhsData.rdd.count() < input.rhsData.count())
+        (input.lhsData, input.rhsData)
+      else
+        (input.rhsData, input.lhsData)
+    }
 
-    val lhsRDD = input.lhsData
+    val lhsRDD = lhsData
       .repartition(F.col(IntervalColumns.KEY), F.col(IntervalColumns.BUCKET))
       .sortWithinPartitions(F.col(IntervalColumns.FROM).asc, F.col(IntervalColumns.TO).asc)
       .rdd
 
     val aiListsLHS = createAILists(lhsRDD)
-    val aiListsRHS = input.rhsData
+    val aiListsRHS = rhsData
       .repartition(F.col(IntervalColumns.KEY), F.col(IntervalColumns.BUCKET))
       .rdd
       .map(interval => (interval.bucket, interval.key) -> interval)
