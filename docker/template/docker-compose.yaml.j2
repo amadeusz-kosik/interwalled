@@ -63,11 +63,11 @@ services:
       - "${JAR_FILE_PATH}"
       - "${CLASS_NAME}"
     user: "185:185"
-
     volumes:
       - ../data/:/mnt/data/
       - ../results/:/mnt/results/
       - ../docker/scripts/:/mnt/scripts/
+      - ../benchmarks/interwalled/target/scala-2.12/:/mnt/jar/benchmark-interwalled/
       - ../benchmarks/sequila/target/scala-2.12/:/mnt/jar/benchmark-sequila/
       - ../temporary:/mnt/temporary/
       - spark-events:/mnt/spark-events/

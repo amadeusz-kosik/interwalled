@@ -33,7 +33,10 @@ val SequilaSparkTestingBaseVersion = f"${SequilaSparkVersion}_1.4.4"
 
 
 lazy val ailist = (project in file("ailist"))
-  .settings(name := "ailist")
+  .settings(
+    name := "ailist",
+    javacOptions ++= Seq("-source", "17", "-target", "17")
+  )
 
 lazy val spark = (project in file("spark")) // FIXME: rename to interwalled
   .settings(name := "spark")
