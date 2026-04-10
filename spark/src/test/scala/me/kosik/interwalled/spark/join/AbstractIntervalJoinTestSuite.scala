@@ -51,7 +51,7 @@ abstract class AbstractIntervalJoinTestSuite extends AnyFunSuite with DatasetSui
         .toDS()
     }
 
-    val actual = intervalJoin.join(Input(lhs, rhs)).data
+    val actual = intervalJoin.join(Input(lhs, rhs))
     assertDataEquals(expected = expected, actual = actual)
   }
 }

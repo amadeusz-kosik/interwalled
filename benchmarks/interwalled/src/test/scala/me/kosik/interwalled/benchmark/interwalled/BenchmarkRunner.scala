@@ -1,4 +1,4 @@
-package me.kosik.interwalled.benchmark.sequila
+package me.kosik.interwalled.benchmark.interwalled
 
 import com.holdenkarau.spark.testing.DatasetSuiteBase
 import me.kosik.interwalled.benchmark.common.test.data.TestDataSuites

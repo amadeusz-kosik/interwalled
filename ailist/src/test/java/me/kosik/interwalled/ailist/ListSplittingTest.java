@@ -44,7 +44,7 @@ public class ListSplittingTest {
     @Test
     void basicSplitting() {
         final AIListConfiguration aiListConfig =
-            new AIListConfiguration(10, 5, 5, 3, true, false);
+            new AIListConfiguration(10, 5, 5, 3, true);
 
         final AIList aiList =
             ListBuilder.buildAIList(aiListConfig, basicData);
@@ -56,7 +56,7 @@ public class ListSplittingTest {
     @Test
     void forceMinimalComponentLength() {
         final AIListConfiguration aiListConfig =
-            new AIListConfiguration(10, 5, 5, 25, true, false);
+            new AIListConfiguration(10, 5, 5, 25, true);
 
         final AIList aiList =
             ListBuilder.buildAIList(aiListConfig, basicData);
@@ -68,7 +68,7 @@ public class ListSplittingTest {
     @Test
     void forceMaximalComponentsCount() {
         final AIListConfiguration aiListConfig =
-                new AIListConfiguration(1, 5, 5, 3, true, false);
+                new AIListConfiguration(1, 5, 5, 3, true);
 
         final AIList aiList =
             ListBuilder.buildAIList(aiListConfig, basicData);
@@ -80,7 +80,7 @@ public class ListSplittingTest {
     @Test
     void splitInitialOutlier() {
         final AIList aiList = ListBuilder.buildAIList(
-            new AIListConfiguration(4, 6, 4, 4, true, false),
+            new AIListConfiguration(4, 6, 4, 4, true),
             Arrays.asList(
                 new Interval("CH1",   0,  64, "NIL"),
                 new Interval("CH1",   0,  96, "NIL"),

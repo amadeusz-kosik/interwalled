@@ -1,6 +1,7 @@
 package me.kosik.interwalled.spark.join.preprocessor.generic
 
-import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{PreparedInput, Result}
+import me.kosik.interwalled.ailist.model.IntervalsPair
+import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.preprocessor.Bucketizer.BucketizerConfig
 import me.kosik.interwalled.spark.join.preprocessor.Deoutlier.DeoutlierConfig
 import me.kosik.interwalled.spark.join.preprocessor.MinMaxPruner.MinMaxPrunerConfig
@@ -8,6 +9,7 @@ import me.kosik.interwalled.spark.join.preprocessor.Repartitioner.RepartitionerC
 import me.kosik.interwalled.spark.join.preprocessor.Salter.SalterConfig
 import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorConfig
 import me.kosik.interwalled.spark.join.preprocessor.{Bucketizer, Deoutlier, MinMaxPruner, Repartitioner, Salter}
+import org.apache.spark.sql.Dataset
 
 
 class Preprocessor(config: PreprocessorConfig) extends Serializable {
@@ -30,7 +32,7 @@ class Preprocessor(config: PreprocessorConfig) extends Serializable {
   def prepareInput(input: PreparedInput): PreparedInput =
     transformers(input)
 
-  def finalizeResult(results: Result): Result =
+  def finalizeResult(results: Dataset[IntervalsPair]): Dataset[IntervalsPair] =
     transformers(results)
 }
 
@@ -39,7 +41,7 @@ object Preprocessor {
     def processInput(input: PreparedInput): PreparedInput =
       input
 
-    def processResult(result: Result): Result =
+    def processResult(result: Dataset[IntervalsPair]): Dataset[IntervalsPair] =
       result
   }
 

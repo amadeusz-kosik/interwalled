@@ -35,7 +35,7 @@ val SequilaSparkTestingBaseVersion = f"${SequilaSparkVersion}_1.4.4"
 lazy val ailist = (project in file("ailist"))
   .settings(name := "ailist")
 
-lazy val spark = (project in file("spark"))
+lazy val spark = (project in file("spark")) // FIXME: rename to interwalled
   .settings(name := "spark")
   .dependsOn(ailist)
 
@@ -55,6 +55,16 @@ lazy val benchmarkSequila = (project in file("benchmarks/sequila"))
   )
   .dependsOn(benchmarkCommon)
 
+lazy val benchmarkInterwalled = (project in file("benchmarks/interwalled"))
+  .settings(
+    name := "benchmark-interwalled",
+    scalacOptions ++= DefaultScalacOptions,
+    assembly / assemblyJarName := "benchmark-interwalled.jar",
+    assembly / mainClass := Some("me.kosik.interwalled.benchmark.interwalled.Main"),
+    assembly / assemblyMergeStrategy := sparkJobAssemblyMergeStrategy
+  )
+  .dependsOn(benchmarkCommon, spark)
+
 lazy val root = (project in file("."))
   .aggregate(ailist, spark, benchmarkSequila)
   .settings(name := "interwalled")
@@ -68,8 +78,12 @@ spark / libraryDependencies += "org.apache.spark"  %% "spark-core"              
 spark / libraryDependencies += "org.apache.spark"  %% "spark-sql"               % SparkVersion              % Provided
 spark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"      % SparkTestingBaseVersion   % Test
 
+benchmarkInterwalled / Test / parallelExecution := false
+benchmarkInterwalled / libraryDependencies += "org.apache.spark"      %% "spark-core"           % SparkVersion                    % Provided
+benchmarkInterwalled / libraryDependencies += "org.apache.spark"      %% "spark-sql"            % SparkVersion                    % Provided
+benchmarkInterwalled / libraryDependencies += "com.holdenkarau"       %% "spark-testing-base"   % SparkTestingBaseVersion         % Test
+
 benchmarkSequila / Test / parallelExecution := false
-benchmarkSequila / resolvers += "jitpack" at "https://jitpack.io"
 benchmarkSequila / libraryDependencies += "org.apache.spark"          %% "spark-core"           % SequilaSparkVersion             % Provided
 benchmarkSequila / libraryDependencies += "org.apache.spark"          %% "spark-sql"            % SequilaSparkVersion             % Provided
 benchmarkSequila / libraryDependencies += "com.holdenkarau"           %% "spark-testing-base"   % SequilaSparkTestingBaseVersion  % Test

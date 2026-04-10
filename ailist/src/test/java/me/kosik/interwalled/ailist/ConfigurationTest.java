@@ -24,7 +24,6 @@ public class ConfigurationTest {
                 0,
                 0,
                 64,
-                false,
                 false
         );
         final List<Interval> lhs = DataGenerators.consecutiveIntervals(100);

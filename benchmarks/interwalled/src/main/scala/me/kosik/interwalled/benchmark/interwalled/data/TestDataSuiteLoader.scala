@@ -1,4 +1,4 @@
-package me.kosik.interwalled.benchmark.sequila.data
+package me.kosik.interwalled.benchmark.interwalled.data
 
 import me.kosik.interwalled.benchmark.common.test.data.{DataPaths, TestDataSuiteMetadata}
 import me.kosik.interwalled.benchmark.common.test.data.model.{TestDataRow, TestDataSizeLimit}

@@ -3,7 +3,7 @@ package me.kosik.interwalled.spark.join.implementation
 import me.kosik.interwalled.ailist.model.{AIListConfiguration, IntervalsPair}
 import me.kosik.interwalled.ailist.{AIList, AIListBuilder, IntervalColumns}
 import me.kosik.interwalled.spark.join.api.IntervalJoin
-import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{PreparedInput, Result}
+import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{PreparedInput}
 import org.apache.spark.sql.{functions => F, _}
 
 import scala.collection.JavaConverters._
@@ -60,6 +60,6 @@ object DriverAIListIntervalJoin extends IntervalJoin {
       .as[IntervalsPair]
   }
 
-  override protected def finalizeResult(result: Result): Result =
+  override protected def finalizeResult(result: Dataset[IntervalsPair]): Dataset[IntervalsPair] =
     result
 }

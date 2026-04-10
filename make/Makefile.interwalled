@@ -1,0 +1,7 @@
+#include make/Makefile.sequila-2g
+#include make/Makefile.sequila-5g
+#include make/Makefile.sequila-10g
+
+interwalled-jar:
+	echo "Build Interwalled JAR file."
+	sbt benchmarkInterwalled/assembly

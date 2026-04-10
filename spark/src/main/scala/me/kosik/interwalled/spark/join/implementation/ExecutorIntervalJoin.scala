@@ -1,8 +1,10 @@
 package me.kosik.interwalled.spark.join.implementation
 
+import me.kosik.interwalled.ailist.model.IntervalsPair
 import me.kosik.interwalled.spark.join.api.IntervalJoin
-import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{PreparedInput, Result}
+import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{PreparedInput}
 import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor
+import org.apache.spark.sql.Dataset
 
 
 trait ExecutorIntervalJoin extends IntervalJoin {
@@ -19,6 +21,6 @@ trait ExecutorIntervalJoin extends IntervalJoin {
   override protected def prepareInput(input: PreparedInput): PreparedInput =
     preprocessor.prepareInput(input)
 
-  override protected def finalizeResult(results: Result): Result =
+  override protected def finalizeResult(results: Dataset[IntervalsPair]): Dataset[IntervalsPair] =
     preprocessor.finalizeResult(results)
 }

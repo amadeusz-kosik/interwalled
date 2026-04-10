@@ -1,10 +1,14 @@
-package me.kosik.interwalled.benchmark.sequila
+package me.kosik.interwalled.benchmark.interwalled
 
+import me.kosik.interwalled.ailist.model.{AIListConfiguration, Interval}
 import me.kosik.interwalled.benchmark.common.results.model.{BenchmarkFailure, BenchmarkOutcome, BenchmarkResult, BenchmarkSuccess}
 import me.kosik.interwalled.benchmark.common.test.data.TestDataSuiteMetadata
 import me.kosik.interwalled.benchmark.common.timer.Timer
-import me.kosik.interwalled.benchmark.sequila.data.TestDataSuiteLoader
-import org.apache.spark.sql.{DataFrame, SequilaSession, SparkSession}
+import me.kosik.interwalled.benchmark.interwalled.data.TestDataSuiteLoader
+import me.kosik.interwalled.spark.join.api.model.IntervalJoin
+import me.kosik.interwalled.spark.join.implementation.RDDAIListIntervalJoin
+import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorConfig
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.slf4j.LoggerFactory
 
 import java.nio.file.Path
@@ -18,22 +22,26 @@ object Benchmark {
     testDataSuites: Array[TestDataSuiteMetadata],
     onBenchmarkCompleted: BenchmarkOutcome[DataFrame] => Unit
   )(implicit sparkSession: SparkSession): Array[BenchmarkOutcome[DataFrame]] = {
-    SequilaSession(sparkSession)
+
 
     val results = testDataSuites map { testDataSuiteMetadata =>
       logger.info(s"Running test data suite: $testDataSuiteMetadata.")
 
       val testData = TestDataSuiteLoader.load(dataDirectory, testDataSuiteMetadata)(sparkSession)
 
-      val database = testData.database.alias("database")
-      val query    = testData.query.alias("query")
+      val (database, query) = {
+        import sparkSession.implicits._
+        (testData.database.as[Interval], testData.query.as[Interval])
+      }
 
       val (timerResult, joinedData) = Timer.timed {
-        val joined = database.join(query,
-          (database.col("from") <= query.col("to")) &&
-            (database.col("to")   >= query.col("from")) &&
-            (database.col("key") === query.col("key"))
-        )
+        val joined = {
+          val interwalled = new RDDAIListIntervalJoin(RDDAIListIntervalJoin.Config(
+            AIListConfiguration.apply,
+            PreprocessorConfig.empty
+          ))
+          interwalled.join(IntervalJoin.Input(database, query))
+        }
 
         // Force Spark to compute the data.
         joined.foreach(_ => ())
@@ -46,11 +54,11 @@ object Benchmark {
 
       val benchmarkResult: BenchmarkResult[DataFrame] = {
         if(joinedDataRowsCount == testDataSuiteMetadata.expectedOutput)
-          BenchmarkSuccess(timerResult, joinedDataRowsCount, joinedData)
+          BenchmarkSuccess(timerResult, joinedDataRowsCount, joinedData.toDF)
         else
           BenchmarkFailure(timerResult, joinedDataRowsCount, new Exception(s"Expected: ${testDataSuiteMetadata.expectedOutput} rows; Actual: $joinedDataRowsCount rows."))
       }
-      val benchmarkOutcome = BenchmarkOutcome("sequila", testDataSuiteMetadata, benchmarkResult)
+      val benchmarkOutcome = BenchmarkOutcome("interwalled", testDataSuiteMetadata, benchmarkResult)
 
       onBenchmarkCompleted(benchmarkOutcome)
       benchmarkOutcome

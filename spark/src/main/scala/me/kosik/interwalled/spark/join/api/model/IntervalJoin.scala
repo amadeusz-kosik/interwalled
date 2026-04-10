@@ -29,9 +29,4 @@ object IntervalJoin {
     lhsData: Dataset[BucketedInterval],
     rhsData: Dataset[BucketedInterval]
   )
-
-  case class Result(
-    data: Dataset[IntervalsPair],
-    statistics: Option[IntervalJoinRunStats]
-  )
 }

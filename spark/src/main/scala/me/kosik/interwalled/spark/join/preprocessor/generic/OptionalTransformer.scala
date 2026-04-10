@@ -1,12 +1,14 @@
 package me.kosik.interwalled.spark.join.preprocessor.generic
 
-import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{PreparedInput, Result}
+import me.kosik.interwalled.ailist.model.IntervalsPair
+import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{PreparedInput}
 import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorStep
+import org.apache.spark.sql.Dataset
 
 
 sealed trait OptionalTransformer {
   def apply(input: PreparedInput): PreparedInput
-  def apply(input: Result): Result
+  def apply(input: Dataset[IntervalsPair]): Dataset[IntervalsPair]
 }
 
 object OptionalTransformer {
@@ -22,7 +24,7 @@ object OptionalTransformer {
     override def apply(input: PreparedInput): PreparedInput =
       transformer.processInput(input)
 
-    override def apply(result: Result): Result =
+    override def apply(result: Dataset[IntervalsPair]): Dataset[IntervalsPair] =
       transformer.processResult(result)
   }
 
@@ -30,7 +32,7 @@ object OptionalTransformer {
     override def apply(input: PreparedInput): PreparedInput =
       input
 
-    override def apply(result: Result): Result =
+    override def apply(result: Dataset[IntervalsPair]): Dataset[IntervalsPair] =
       result
   }
 }
