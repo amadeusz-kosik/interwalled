@@ -1,6 +1,6 @@
 package me.kosik.interwalled.benchmark.sequila
 
-import me.kosik.interwalled.benchmark.common.results.model.{BenchmarkOutcome, BenchmarkSuccess}
+import me.kosik.interwalled.benchmark.common.results.model.{BenchmarkFailure, BenchmarkOutcome, BenchmarkResult, BenchmarkSuccess}
 import me.kosik.interwalled.benchmark.common.test.data.TestDataSuiteMetadata
 import me.kosik.interwalled.benchmark.common.timer.Timer
 import me.kosik.interwalled.benchmark.sequila.data.TestDataSuiteLoader
@@ -44,9 +44,15 @@ object Benchmark {
 
       logger.info(s"Test data suite completed in $timerResult ms.")
 
-      val benchmarkOutcome = BenchmarkOutcome("sequila", testDataSuiteMetadata, BenchmarkSuccess(timerResult, joinedDataRowsCount, joinedData))
-      onBenchmarkCompleted(benchmarkOutcome)
+      val benchmarkResult: BenchmarkResult[DataFrame] = {
+        if(joinedDataRowsCount == testDataSuiteMetadata.expectedOutput)
+          BenchmarkSuccess(timerResult, joinedDataRowsCount, joinedData)
+        else
+          BenchmarkFailure(timerResult, joinedDataRowsCount, new Exception(s"Expected: ${testDataSuiteMetadata.expectedOutput} rows; Actual: $joinedDataRowsCount rows."))
+      }
+      val benchmarkOutcome = BenchmarkOutcome("sequila", testDataSuiteMetadata, benchmarkResult)
 
+      onBenchmarkCompleted(benchmarkOutcome)
       benchmarkOutcome
     }
 

@@ -23,8 +23,17 @@ object BenchmarkOutcomeCSVFormatter extends CSVFormatter[BenchmarkOutcome[_]] {
       outcome.benchmarkName,
       outcome.dataSuiteMetadata.suite
     ) ++ { outcome.result match {
-      case BenchmarkSuccess(timeElapsed, resultsRowCount, _)  => Seq("true", timeElapsed.milliseconds.toString, resultsRowCount.toString, "")
-      case BenchmarkFailure(error)                            => Seq("false", "", "", error.getMessage.split(",").head)
+      case BenchmarkSuccess(timeElapsed, resultsRowCount, _) =>
+        Seq("true", timeElapsed.milliseconds.toString, resultsRowCount.toString, "")
+
+      case BenchmarkFailure(Some(timeElapsed), Some(resultsRowCount), error) =>
+        Seq("false", timeElapsed.milliseconds.toString, resultsRowCount.toString, error.getMessage.split(",").head)
+
+      case BenchmarkFailure(None, None, error) =>
+        Seq("false", "", "", error.getMessage.split(",").head)
+
+      case anyOther =>
+        Seq("false", "", "", "Unknown outcome: " + anyOther.toString.replaceAll(",", ";"))
     }}
 
     fields.mkString(DELIMITER) + "\n"

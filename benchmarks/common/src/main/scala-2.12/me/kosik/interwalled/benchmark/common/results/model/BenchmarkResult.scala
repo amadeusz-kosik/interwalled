@@ -7,7 +7,7 @@ import me.kosik.interwalled.benchmark.common.timer.TimerResult
  *  Sequila can be loaded with a different version of Spark than the whole project.
  */
 
-sealed trait BenchmarkResult[T]
+sealed trait BenchmarkResult[+T]
 
 case class BenchmarkSuccess[T](
   timeElapsed:      TimerResult,
@@ -16,5 +16,15 @@ case class BenchmarkSuccess[T](
 ) extends BenchmarkResult[T]
 
 case class BenchmarkFailure(
+  timeElapsed:      Option[TimerResult],
+  resultRowsCount:  Option[Long],
   error: Throwable
-) extends BenchmarkResult[Any]
+) extends BenchmarkResult[Nothing]
+
+object BenchmarkFailure {
+  def apply(error: Throwable): BenchmarkFailure =
+    BenchmarkFailure(None, None, error)
+
+  def apply(timerResult: TimerResult, resultRowsCount: Long, error: Throwable): BenchmarkFailure =
+    BenchmarkFailure(Some(timerResult), Some(resultRowsCount), error)
+}

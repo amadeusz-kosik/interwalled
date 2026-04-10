@@ -1,0 +1,46 @@
+sequila-docker-cluster-2g:
+	echo "Create docker compose file."
+	cat ./docker/template/docker-compose.yaml.j2                        | \
+		sed 's/{{ spark_version }}/3.4.3-scala2.12-java11-r-ubuntu/g'   | \
+		sed 's/{{ driver_memory }}/2G/g'                                  \
+		> ./docker/docker-compose-sequila-2g.yaml
+	echo "Start Apache Spark cluster."
+	docker compose -f docker/docker-compose-sequila-2g.yaml up spark-master -d
+	docker compose -f docker/docker-compose-sequila-2g.yaml up spark-worker -d
+	docker compose -f docker/docker-compose-sequila-2g.yaml up spark-history-server -d
+
+sequila-benchmark-2g-10:
+	export JAR_FILE_PATH="/mnt/jar/benchmark-sequila/benchmark-sequila.jar"	&& \
+	export CLASS_NAME="me.kosik.interwalled.benchmark.sequila.Main"    		&& \
+	export IW_DRIVER_MEMORY="2G"											&& \
+	export IW_EXECUTOR_CORES="2"											&& \
+	export IW_TOTAL_EXECUTOR_CORES="10"										&& \
+	export IW_EXECUTOR_MEMORY="2G"											&& \
+	docker compose -f docker/docker-compose-sequila-2g.yaml up spark-driver
+
+sequila-benchmark-2g-20:
+	export JAR_FILE_PATH="/mnt/jar/benchmark-sequila/benchmark-sequila.jar"	&& \
+	export CLASS_NAME="me.kosik.interwalled.benchmark.sequila.Main"    		&& \
+	export IW_DRIVER_MEMORY="2G"											&& \
+	export IW_EXECUTOR_CORES="2"											&& \
+	export IW_TOTAL_EXECUTOR_CORES="20"										&& \
+	export IW_EXECUTOR_MEMORY="2G"											&& \
+	docker compose -f docker/docker-compose-sequila-2g.yaml up spark-driver
+
+sequila-benchmark-2g-30:
+	export JAR_FILE_PATH="/mnt/jar/benchmark-sequila/benchmark-sequila.jar"	&& \
+	export CLASS_NAME="me.kosik.interwalled.benchmark.sequila.Main"    		&& \
+	export IW_DRIVER_MEMORY="2G"											&& \
+	export IW_EXECUTOR_CORES="2"											&& \
+	export IW_TOTAL_EXECUTOR_CORES="30"										&& \
+	export IW_EXECUTOR_MEMORY="2G"											&& \
+	docker compose -f docker/docker-compose-sequila-2g.yaml up spark-driver
+
+sequila-benchmark-2g-40:
+	export JAR_FILE_PATH="/mnt/jar/benchmark-sequila/benchmark-sequila.jar"	&& \
+	export CLASS_NAME="me.kosik.interwalled.benchmark.sequila.Main"    		&& \
+	export IW_DRIVER_MEMORY="2G"											&& \
+	export IW_EXECUTOR_CORES="2"											&& \
+	export IW_TOTAL_EXECUTOR_CORES="40"										&& \
+	export IW_EXECUTOR_MEMORY="2G"											&& \
+	docker compose -f docker/docker-compose-sequila-2g.yaml up spark-driver

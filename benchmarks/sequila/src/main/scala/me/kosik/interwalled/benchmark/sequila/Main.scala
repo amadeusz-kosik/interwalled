@@ -19,6 +19,5 @@ object Main extends App {
   private val csvWriter =
     CSVWriter.forPath(BenchmarkOutcomeCSVFormatter)(applicationEnv.csvDirectory)
 
-  // TODO: Skip 6
   Benchmark.runBenchmark(applicationEnv.dataDirectory, TestDataSuites.databioSuites, csvWriter.write)(sparkSession)
 }

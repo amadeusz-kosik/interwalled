@@ -26,61 +26,71 @@ object TestDataSuites {
         "one-to-one",
         "test-data/single-point-continuous.parquet",
         "test-data/single-point-continuous.parquet",
-        None
+        None,
+        100L // FIXME
       ),
       TestDataSuiteMetadata(
         "one-to-even",
         "test-data/single-point-continuous.parquet",
         "test-data/single-point-even.parquet",
-        None
+        None,
+        100L // FIXME
       ),
       TestDataSuiteMetadata(
         "odd-to-even",
         "test-data/single-point-odd.parquet",
         "test-data/single-point-even.parquet",
-        None
+        None,
+        100L // FIXME
       ),
       TestDataSuiteMetadata(
         "one-to-long-continuous",
         "test-data/single-point-continuous.parquet",
         "test-data/long-continuous.parquet",
-        None
+        None,
+        100L // FIXME
       ),
       TestDataSuiteMetadata(
         "one-to-long-overlap",
         "test-data/single-point-continuous.parquet",
         "test-data/long-overlap.parquet",
-        None
+        None,
+        100L // FIXME
       ),
       TestDataSuiteMetadata(
         "short-continuous-to-short-overlap",
         "test-data/short-continuous.parquet",
         "test-data/short-overlap.parquet",
-        None
+        None,
+        100L // FIXME
       ),
       TestDataSuiteMetadata(
         "short-continuous-to-long-overlap",
         "test-data/short-continuous.parquet",
         "test-data/long-overlap.parquet",
-        None
+        None,
+        100L // FIXME
       ),
       TestDataSuiteMetadata(
         "short-continuous-to-random-normal-short",
         "test-data/short-continuous.parquet",
         "test-data/random-normal-short.parquet",
-        None
+        None,
+        100L // FIXME
       ),
       TestDataSuiteMetadata(
         "short-continuous-to-random-poisson-short",
         "test-data/short-continuous.parquet",
         "test-data/random-poisson-short.parquet",
-        None
+        None,
+        100L // FIXME
       ),
       TestDataSuiteMetadata(
         "short-continuous-to-random-uniform-short",
         "test-data/short-continuous.parquet",
         "test-data/random-uniform-short.parquet",
-        None
+        None,
+        100L // FIXME
       )
     )
 
@@ -88,68 +98,103 @@ object TestDataSuites {
       rawSuite <- suites
       size     <- sizes
       suite     = TestDataSuiteMetadata(
-        suite         = f"${rawSuite.suite}-$size",
-        databasePaths = rawSuite.databasePaths,
-        queryPaths    = rawSuite.queryPaths,
-        limit         = TestDataSizeLimit(size)
+        suite          = f"${rawSuite.suite}-$size",
+        databasePaths  = rawSuite.databasePaths,
+        queryPaths     = rawSuite.queryPaths,
+        limit          = TestDataSizeLimit(size),
+        expectedOutput =  100L // FIXME
       )
     } yield suite
   }
 
   val databioSuites: Array[TestDataSuiteMetadata] = Array(
+
+    // -- small -- //
     TestDataSuiteMetadata(
-      "databio-s-1-2",
-      "databio-8p/fBrain-DS14718/",
+      "databio-s-36",
+      "databio-8p/fBrain/",
       "databio-8p/exons/",
-      None
+      None,
+      54246L
     ),
     TestDataSuiteMetadata(
-      "databio-s-2-7",
+      "databio-s-35",
+      "databio-8p/fBrain/",
+      "databio-8p/ex-anno/",
+      None,
+      73437
+    ),
+    TestDataSuiteMetadata(
+      "databio-s-34",
       "databio-8p/exons/",
       "databio-8p/ex-anno/",
-      None
+      None,
+      273500L
     ),
     TestDataSuiteMetadata(
-      "databio-s-1-0",
-      "databio-8p/fBrain-DS14718/",
+      "databio-s-33",
       "databio-8p/chainRn4/",
-      None
+      "databio-8p/fBrain/",
+      None,
+      320955L
     ),
     TestDataSuiteMetadata(
-      "databio-m-7-0",
-      "databio-8p/ex-anno/",
-      "databio-8p/chainRn4/",
-      None
-    ),
-    TestDataSuiteMetadata(
-      "databio-m-7-3",
-      "databio-8p/ex-anno/",
-      "databio-8p/chainOrnAna1/",
-      None
-    ),
-    TestDataSuiteMetadata(
-      "databio-l-0-8",
-      "databio-8p/chainRn4/",
-      "databio-8p/ex-rna/",
-      None
-    ),
-    TestDataSuiteMetadata(
-      "databio-l-4-8",
+      "databio-s-32",
+      "databio-8p/fBrain/",
       "databio-8p/chainVicPac2/",
-      "databio-8p/ex-rna/",
-      None
+      None,
+      357564L
     ),
     TestDataSuiteMetadata(
-      "databio-l-7-8",
-      "databio-8p/ex-anno/",
-      "databio-8p/ex-rna/",
-      None
-    ),
-    TestDataSuiteMetadata(
-      "databio-xl-3-0",
+      "databio-s-31",
+      "databio-8p/fBrain/",
       "databio-8p/chainOrnAna1/",
-      "databio-8p/chainRn4/",
-      None
-    )
+      None,
+      398738L
+    ),
+    TestDataSuiteMetadata(
+      "databio-s-30",
+      "databio-8p/fBrain/",
+      "databio-8p/chainXenTro3Link/",
+      None,
+      625718L
+    ),
+
+//    // -- medium -- //
+//    TestDataSuiteMetadata(
+//      "databio-m-29",
+//      "databio-8p/fBrain/",
+//      "databio-8p/chainMonDom5Link/",
+//      None,
+//      2380147L
+//    ),
+//    TestDataSuiteMetadata(
+//      "databio-s-28",
+//      "databio-8p/chainRn4/",
+//      "databio-8p/exons/",
+//      None,
+//      2633098L
+//    ),
+//    TestDataSuiteMetadata(
+//      "databio-s-27",
+//      "databio-8p/chainRn4/",
+//      "databio-8p/ex-anno/",
+//      None,
+//      2761621L
+//    ),
+//    TestDataSuiteMetadata(
+//      "databio-s-26",
+//      "databio-8p/exons/",
+//      "databio-8p/chainOrnAna1/",
+//      None,
+//      3255513L
+//    ),
+//    TestDataSuiteMetadata(
+//      "databio-s-25",
+//      "databio-8p/chainOrnAna1/",
+//      "databio-8p/ex-anno/",
+//      None,
+//      4408383L
+//    )
   )
 }

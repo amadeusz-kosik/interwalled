@@ -51,7 +51,7 @@ services:
       - SPARK_USER=spark
       - SPARK_EVENTLOG_ENABLED=true
       - SPARK_EVENTLOG_DIR=file:/mnt/spark-events
-      - IW_DRIVER_MEMORY=4G
+      - IW_DRIVER_MEMORY={{ driver_memory }}
       - IW_EXECUTOR_MEMORY=$IW_EXECUTOR_MEMORY
       - IW_EXECUTOR_CORES=$IW_EXECUTOR_CORES
       - IW_TOTAL_EXECUTOR_CORES=$IW_TOTAL_EXECUTOR_CORES
@@ -75,7 +75,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 4G
+          memory: {{ driver_memory }}
 
   spark-worker:
     image: spark:{{ spark_version }}
