@@ -12,6 +12,7 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.slf4j.LoggerFactory
 
 import java.nio.file.Path
+import scala.util.{Failure, Success, Try}
 
 
 object Benchmark {
@@ -34,7 +35,7 @@ object Benchmark {
         (testData.database.as[Interval], testData.query.as[Interval])
       }
 
-      val (timerResult, joinedData) = Timer.timed {
+      val jobResult = Try { Timer.timed {
         val joined = {
           val interwalled = new RDDAIListIntervalJoin(RDDAIListIntervalJoin.Config(
             AIListConfiguration.apply,
@@ -46,18 +47,21 @@ object Benchmark {
         // Force Spark to compute the data.
         joined.foreach(_ => ())
         joined
+      }}
+
+      val benchmarkResult: BenchmarkResult[DataFrame] =  jobResult match {
+        case Success((timerResult, joinedData)) =>
+          val joinedDataRowsCount = joinedData.count()
+
+          if(joinedDataRowsCount == testDataSuiteMetadata.expectedOutput)
+            BenchmarkSuccess(timerResult, joinedDataRowsCount, joinedData.toDF)
+          else
+            BenchmarkFailure(timerResult, joinedDataRowsCount, new Exception(s"Expected: ${testDataSuiteMetadata.expectedOutput} rows; Actual: $joinedDataRowsCount rows."))
+
+        case Failure(exception) =>
+          BenchmarkFailure(exception)
       }
 
-      val joinedDataRowsCount = joinedData.count()
-
-      logger.info(s"Test data suite completed in $timerResult ms.")
-
-      val benchmarkResult: BenchmarkResult[DataFrame] = {
-        if(joinedDataRowsCount == testDataSuiteMetadata.expectedOutput)
-          BenchmarkSuccess(timerResult, joinedDataRowsCount, joinedData.toDF)
-        else
-          BenchmarkFailure(timerResult, joinedDataRowsCount, new Exception(s"Expected: ${testDataSuiteMetadata.expectedOutput} rows; Actual: $joinedDataRowsCount rows."))
-      }
       val benchmarkOutcome = BenchmarkOutcome("interwalled", testDataSuiteMetadata, benchmarkResult)
 
       onBenchmarkCompleted(benchmarkOutcome)

@@ -10,6 +10,7 @@ TOTAL_CORES="$4"
 
 export JAR_FILE_PATH="/mnt/jar/benchmark-$PROJECT_NAME/benchmark-$PROJECT_NAME.jar"
 export CLASS_NAME="me.kosik.interwalled.benchmark.$PROJECT_NAME.Main"
+export IW_CSV_DIRECTORY="/mnt/results/$PROJECT_NAME-benchmark-$MEMORY-$TOTAL_CORES.csv"
 export IW_DRIVER_MEMORY="$MEMORY"
 export IW_EXECUTOR_CORES="$CORES"
 export IW_TOTAL_EXECUTOR_CORES="$TOTAL_CORES"

@@ -41,8 +41,8 @@ services:
     image: spark:{{ spark_version }}
     environment:
       - SPARK_NO_DAEMONIZE=true
-      - INTERWALLED_CSV_DIRECTORY=/mnt/results/default.csv
-      - INTERWALLED_DATA_DIRECTORY=/mnt/data
+      - IW_CSV_DIRECTORY=$IW_CSV_DIRECTORY
+      - IW_DATA_DIRECTORY=/mnt/data
       - SPARK_MODE=driver
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
       - SPARK_RPC_ENCRYPTION_ENABLED=no

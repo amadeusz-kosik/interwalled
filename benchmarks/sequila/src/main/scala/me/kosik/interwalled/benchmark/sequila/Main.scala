@@ -1,4 +1,4 @@
-package me.kosik.interwalled.benchmark.interwalled
+package me.kosik.interwalled.benchmark.sequila
 
 import me.kosik.interwalled.benchmark.common.env.ApplicationEnv
 import me.kosik.interwalled.benchmark.common.results.{BenchmarkOutcomeCSVFormatter, CSVWriter}
