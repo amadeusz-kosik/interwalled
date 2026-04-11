@@ -1,11 +1,10 @@
 package me.kosik.interwalled.spark.join.implementation
 
-import me.kosik.interwalled.ailist.model.{AIListConfiguration, IntervalsPair}
+import me.kosik.interwalled.ailist.model.{AIListConfiguration, Interval, IntervalsPair}
 import me.kosik.interwalled.ailist.{AIList, AIListBuilder, AIListSplitter, IntervalColumns}
 import me.kosik.interwalled.model.BucketedInterval
 import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import me.kosik.interwalled.spark.join.implementation.RDDAIListIntervalJoin.Config
-import me.kosik.interwalled.spark.join.implementation.model.RDDAIListIntervalRow
 import me.kosik.interwalled.spark.join.preprocessor.generic.Preprocessor.PreprocessorConfig
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{Dataset, functions => F}
@@ -31,67 +30,51 @@ class RDDAIListIntervalJoin(override val config: Config) extends ExecutorInterva
         (input.rhsData, input.lhsData)
     }
 
-    val lhsRDD = lhsData
-      .repartition(F.col(IntervalColumns.KEY), F.col(IntervalColumns.BUCKET))
-      .sortWithinPartitions(F.col(IntervalColumns.FROM).asc, F.col(IntervalColumns.TO).asc)
-      .rdd
-
-    val aiListsLHS = createAILists(lhsRDD)
-    val aiListsRHS = rhsData
-      .repartition(F.col(IntervalColumns.KEY), F.col(IntervalColumns.BUCKET))
-      .rdd
-      .map(interval => (interval.bucket, interval.key) -> interval)
-
-    val groupedRDD = aiListsLHS
-      .cogroup(aiListsRHS)
-      .flatMap { case ((bucket, key), (aiLists, intervals)) =>
-        aiLists.map { aiList => (bucket, key) -> (aiList, intervals)}
+    val aiListsLHS = createAILists(lhsData.rdd)
+    val aiListsRHS = rhsData.rdd
+      .mapPartitions { partition =>
+        partition.toArray
+          .groupBy { interval => (interval.bucket, interval.key) }
+          .mapValues(_.map(_.withoutBucketing))
+          .toIterator
       }
 
-    val joinedRDD = groupedRDD
-      .flatMap { case ((bucket, _), (aiList, rhsIntervalsIterator)) =>
-        val rhsIntervals = rhsIntervalsIterator
-
-        val intervalsPairs: Iterable[IntervalsPair] = for {
-          rhsBucketedInterval <- rhsIntervals
-          rhsInterval          = rhsBucketedInterval.withoutBucketing
-          lhsInterval         <- aiList.overlapping(rhsInterval).asScala
-        } yield IntervalsPair(lhsInterval, rhsInterval)
-
-        logDebug(s"Intervals pairs computed for $bucket.")
-        intervalsPairs
+    val joinedRDD = aiListsLHS
+      .join(aiListsRHS)
+      .flatMap { case (_, (aiList, intervals)) =>
+        intervals.flatMap { interval =>
+          aiList
+            .overlapping(interval)
+            .asScala
+            .map(lhsInterval => IntervalsPair(lhsInterval, interval))
+        }
       }
 
-    val joined = joinedRDD
-      .toDF()
-      .drop(
-        input.lhsData.col(IntervalColumns.BUCKET),
-        input.rhsData.col(IntervalColumns.BUCKET)
-      )
-      .as[IntervalsPair]
-
-    joined
+    joinedRDD.toDS()
   }
 
   private def createAILists(inputRDD: RDD[BucketedInterval]): RDD[((String, String), AIList)] = {
-    val grouped = inputRDD.mapPartitions { partition =>
-      partition
-        .toList
-        .groupBy(bi => (bi.key, bi.bucket))
-        .iterator
-      }
+    val mapped = inputRDD.mapPartitions { partition =>
+      // Group intervals by keys, create map of (key, bucket) -> intervals
+      // FIXME: 2N memory usage, may be optimized
 
-    val mapped = grouped.mapPartitions { partition =>
       partition
-        .map { case ((key, _bucket), intervals) =>
-          val aiListBuilder: AIListBuilder = new AIListBuilder(config.aiListConfig)
-          intervals.foreach { bucketedInterval => aiListBuilder.put(bucketedInterval.withoutBucketing) }
+        .toArray
+        .groupBy { interval => (interval.bucket, interval.key) }
+        .map { case ((bucket, key), intervals) =>
+          val intervalsArrayList = new util.ArrayList[Interval](intervals.length)
 
+          intervals
+            .sortBy(i => (i.from, i.to))
+            .foreach(bucketedInterval => intervalsArrayList.add(bucketedInterval.withoutBucketing))
+
+          val aiListBuilder: AIListBuilder = new AIListBuilder(config.aiListConfig, intervalsArrayList)
           val aiList = aiListBuilder.build()
-          logInfo(s"Created AIList for $key: ${aiList.length} elements, in ${aiList.componentsLengths.toSeq} layout.")
 
-          ((_bucket, key), aiListBuilder.build())
+          logInfo(s"Created AIList for ($bucket, $key): ${aiList.length} elements.")
+          ((bucket, key), aiList)
         }
+        .toIterator
     }
 
     val split = mapped.flatMap { case (key, list) =>
