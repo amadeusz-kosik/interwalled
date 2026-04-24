@@ -4,7 +4,6 @@ package me.kosik.interwalled.spark.join.api.model
 import me.kosik.interwalled.ailist.IntervalColumns
 import me.kosik.interwalled.ailist.model.{Interval, IntervalsPair}
 import me.kosik.interwalled.model.BucketedInterval
-import me.kosik.interwalled.utility.stats.model.IntervalJoinRunStats
 import org.apache.spark.sql.{Dataset, functions => F}
 
 

@@ -8,8 +8,8 @@ import org.apache.spark.sql.{DataFrame, Dataset, functions => F}
 
 import scala.annotation.tailrec
 
-
-class CachedNativeAIListIntervalJoin(override val config: NativeAIListIntervalJoin.Config)
+@deprecated
+class CachedNativeAIListIntervalJoin(val config: NativeAIListIntervalJoin.Config)
   extends NativeAIListIntervalJoin(config) {
 
   protected def name: String =

@@ -6,8 +6,8 @@ import org.apache.spark.sql.{DataFrame, SaveMode, functions => F}
 
 import scala.annotation.tailrec
 
-
-class CheckpointedNativeAIListIntervalJoin(override val config: NativeAIListIntervalJoin.Config, checkpointDir: String)
+@deprecated
+class CheckpointedNativeAIListIntervalJoin(val config: NativeAIListIntervalJoin.Config, checkpointDir: String)
   extends NativeAIListIntervalJoin(config) {
 
   protected val name: String =

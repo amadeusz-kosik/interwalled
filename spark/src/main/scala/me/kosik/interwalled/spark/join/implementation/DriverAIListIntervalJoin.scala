@@ -2,22 +2,18 @@ package me.kosik.interwalled.spark.join.implementation
 
 import me.kosik.interwalled.ailist.model.{AIListConfiguration, IntervalsPair}
 import me.kosik.interwalled.ailist.{AIList, AIListBuilder, IntervalColumns}
-import me.kosik.interwalled.spark.join.api.IntervalJoin
-import me.kosik.interwalled.spark.join.api.model.IntervalJoin.{PreparedInput}
+import me.kosik.interwalled.spark.join.api.model.IntervalJoin.PreparedInput
 import org.apache.spark.sql.{functions => F, _}
 
 import scala.collection.JavaConverters._
 
 
-object DriverAIListIntervalJoin extends IntervalJoin {
+@deprecated
+object DriverAIListIntervalJoin {
 
-  override def toString: String = {
-    "driver-ailist"
-  }
+  protected def prepareInput(input: PreparedInput): PreparedInput = input
 
-  override protected def prepareInput(input: PreparedInput): PreparedInput = input
-
-  override protected def doJoin(input: PreparedInput): Dataset[IntervalsPair] = {
+  protected def doJoin(input: PreparedInput): Dataset[IntervalsPair] = {
     implicit val spark: SparkSession = input.lhsData.sparkSession
     import spark.implicits._
 
@@ -60,6 +56,6 @@ object DriverAIListIntervalJoin extends IntervalJoin {
       .as[IntervalsPair]
   }
 
-  override protected def finalizeResult(result: Dataset[IntervalsPair]): Dataset[IntervalsPair] =
+  protected def finalizeResult(result: Dataset[IntervalsPair]): Dataset[IntervalsPair] =
     result
 }

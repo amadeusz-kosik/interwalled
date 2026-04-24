@@ -4,6 +4,7 @@ ThisBuild / organization := "me.kosik.interwalled"
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
 
+val DefaultJavacOptions  = Seq("-source", "17", "-target", "17")
 val DefaultScalacOptions = Seq("-deprecation", "-unchecked", "-Xlint", "-Xdisable-assertions")
 
 // Deduplication (assemblyMergeStrategy) for sbt-assembly
@@ -32,62 +33,70 @@ val SequilaSparkVersion = "3.4.1"
 val SequilaSparkTestingBaseVersion = f"${SequilaSparkVersion}_1.4.4"
 
 
-lazy val ailist = (project in file("ailist"))
+lazy val ailistCore = (project in file("ailist-core"))
   .settings(
-    name := "ailist",
-    javacOptions ++= Seq("-source", "17", "-target", "17")
+    name := "ailist-core",
+    javacOptions ++= DefaultJavacOptions
   )
 
-lazy val spark = (project in file("spark")) // FIXME: rename to interwalled
-  .settings(name := "spark")
-  .dependsOn(ailist)
-
-lazy val benchmarkCommon = (project in file("benchmarks/common"))
+lazy val ailistCoreBenchmark = (project in file("ailist-core-benchmark"))
   .settings(
-    name := "benchmark-common",
-    scalacOptions ++= DefaultScalacOptions
+    name := "ailist-core-benchmark",
+    javacOptions ++= DefaultJavacOptions
   )
+  .dependsOn(ailistCore)
+  .enablePlugins(JmhPlugin)
 
-lazy val benchmarkSequila = (project in file("benchmarks/sequila"))
+lazy val ailistSpark = (project in file("ailist-spark"))
   .settings(
-    name := "benchmark-sequila",
-    scalacOptions ++= DefaultScalacOptions,
-    assembly / assemblyJarName := "benchmark-sequila.jar",
-    assembly / mainClass := Some("me.kosik.interwalled.benchmark.sequila.Main"),
-    assembly / assemblyMergeStrategy := sparkJobAssemblyMergeStrategy
+    name := "ailist-spark"
   )
-  .dependsOn(benchmarkCommon)
+  .dependsOn(ailistCore)
 
-lazy val benchmarkInterwalled = (project in file("benchmarks/interwalled"))
-  .settings(
-    name := "benchmark-interwalled",
-    scalacOptions ++= DefaultScalacOptions,
-    assembly / assemblyJarName := "benchmark-interwalled.jar",
-    assembly / mainClass := Some("me.kosik.interwalled.benchmark.interwalled.Main"),
-    assembly / assemblyMergeStrategy := sparkJobAssemblyMergeStrategy
-  )
-  .dependsOn(benchmarkCommon, spark)
+//lazy val benchmarkCommon = (project in file("benchmarks/common"))
+//  .settings(
+//    name := "benchmark-common",
+//    scalacOptions ++= DefaultScalacOptions
+//  )
+//
+//lazy val benchmarkSequila = (project in file("benchmarks/sequila"))
+//  .settings(
+//    name := "benchmark-sequila",
+//    scalacOptions ++= DefaultScalacOptions,
+//    assembly / assemblyJarName := "benchmark-sequila.jar",
+//    assembly / mainClass := Some("me.kosik.interwalled.benchmark.sequila.Main"),
+//    assembly / assemblyMergeStrategy := sparkJobAssemblyMergeStrategy
+//  )
+//  .dependsOn(benchmarkCommon)
+//
+//lazy val benchmarkInterwalled = (project in file("benchmarks/interwalled"))
+//  .settings(
+//    name := "benchmark-interwalled",
+//    scalacOptions ++= DefaultScalacOptions,
+//    assembly / assemblyJarName := "benchmark-interwalled.jar",
+//    assembly / mainClass := Some("me.kosik.interwalled.benchmark.interwalled.Main"),
+//    assembly / assemblyMergeStrategy := sparkJobAssemblyMergeStrategy
+//  )
+//  .dependsOn(benchmarkCommon, spark)
 
 lazy val root = (project in file("."))
-  .aggregate(ailist, spark, benchmarkSequila)
+  .aggregate(ailistCore, ailistSpark)
   .settings(name := "interwalled")
 
-// Necessary for sequila
+ailistCore  / libraryDependencies += "com.github.sbt.junit" %  "jupiter-interface"   % "0.16.0"                  % Test
 
-ailist / libraryDependencies += "com.github.sbt.junit" %  "jupiter-interface"   % "0.16.0"                  % Test
+ailistSpark / Test / parallelExecution := false
+ailistSpark / libraryDependencies += "org.apache.spark"  %% "spark-core"              % SparkVersion              % Provided
+ailistSpark / libraryDependencies += "org.apache.spark"  %% "spark-sql"               % SparkVersion              % Provided
+ailistSpark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"      % SparkTestingBaseVersion   % Test
 
-spark / Test / parallelExecution := false
-spark / libraryDependencies += "org.apache.spark"  %% "spark-core"              % SparkVersion              % Provided
-spark / libraryDependencies += "org.apache.spark"  %% "spark-sql"               % SparkVersion              % Provided
-spark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"      % SparkTestingBaseVersion   % Test
-
-benchmarkInterwalled / Test / parallelExecution := false
-benchmarkInterwalled / libraryDependencies += "org.apache.spark"      %% "spark-core"           % SparkVersion                    % Provided
-benchmarkInterwalled / libraryDependencies += "org.apache.spark"      %% "spark-sql"            % SparkVersion                    % Provided
-benchmarkInterwalled / libraryDependencies += "com.holdenkarau"       %% "spark-testing-base"   % SparkTestingBaseVersion         % Test
-
-benchmarkSequila / Test / parallelExecution := false
-benchmarkSequila / libraryDependencies += "org.apache.spark"          %% "spark-core"           % SequilaSparkVersion             % Provided
-benchmarkSequila / libraryDependencies += "org.apache.spark"          %% "spark-sql"            % SequilaSparkVersion             % Provided
-benchmarkSequila / libraryDependencies += "com.holdenkarau"           %% "spark-testing-base"   % SequilaSparkTestingBaseVersion  % Test
-benchmarkSequila / libraryDependencies += "org.biodatageeks"          %% "sequila"              % "local"
+//benchmarkInterwalled / Test / parallelExecution := false
+//benchmarkInterwalled / libraryDependencies += "org.apache.spark"      %% "spark-core"           % SparkVersion                    % Provided
+//benchmarkInterwalled / libraryDependencies += "org.apache.spark"      %% "spark-sql"            % SparkVersion                    % Provided
+//benchmarkInterwalled / libraryDependencies += "com.holdenkarau"       %% "spark-testing-base"   % SparkTestingBaseVersion         % Test
+//
+//benchmarkSequila / Test / parallelExecution := false
+//benchmarkSequila / libraryDependencies += "org.apache.spark"          %% "spark-core"           % SequilaSparkVersion             % Provided
+//benchmarkSequila / libraryDependencies += "org.apache.spark"          %% "spark-sql"            % SequilaSparkVersion             % Provided
+//benchmarkSequila / libraryDependencies += "com.holdenkarau"           %% "spark-testing-base"   % SequilaSparkTestingBaseVersion  % Test
+//benchmarkSequila / libraryDependencies += "org.biodatageeks"          %% "sequila"              % "local"

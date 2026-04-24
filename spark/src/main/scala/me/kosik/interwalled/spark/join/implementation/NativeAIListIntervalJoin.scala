@@ -11,9 +11,10 @@ import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession, functions => F}
 
 
-abstract class NativeAIListIntervalJoin(override val config: Config) extends ExecutorIntervalJoin {
+@deprecated
+abstract class NativeAIListIntervalJoin(config: Config) {
 
-  override protected def doJoin(input: PreparedInput): Dataset[IntervalsPair] = {
+  protected def doJoin(input: PreparedInput): Dataset[IntervalsPair] = {
     import IntervalColumns._
     val lhsInputPrepared = input.lhsData
     val rhsInputPrepared = input.rhsData
@@ -147,7 +148,7 @@ abstract class NativeAIListIntervalJoin(override val config: Config) extends Exe
   }
 }
 
+@deprecated
 object NativeAIListIntervalJoin {
-  case class Config(aiListConfig: AIListConfiguration, override val preprocessorConfig: PreprocessorConfig)
-    extends ExecutorConfig
+  case class Config(aiListConfig: AIListConfiguration, val preprocessorConfig: PreprocessorConfig)
 }
