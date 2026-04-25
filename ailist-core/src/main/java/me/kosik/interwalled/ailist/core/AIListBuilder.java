@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class AIListBuilder<T> implements Serializable {
+public class AIListBuilder implements Serializable {
 
     private final Configuration config;
 
@@ -17,45 +17,42 @@ public class AIListBuilder<T> implements Serializable {
         this.config = config;
     }
 
-    public List<AIList<T>> build(ArrayList<Interval<T>> intervals) {
+    public List<AIList> build(ArrayList<Interval> intervals) {
         assert config.intervalsCountToCheckLookahead() >= config.intervalsCountToTriggerExtraction();
-        assert config.maximumComponentsCount() == 1 || (config.intervalsCountToCheckLookahead() > 0);
+        assert config.intervalsCountToCheckLookahead() > 0;
+        assert config.maximumComponentSize() > 0;
 
-        // Edge case: at start of the algorithm assign everything to a single component.
-        if (intervals.size() <= config.maximumComponentSize() || config.maximumComponentsCount() == 1) {
-            AIList<T> result = new AIList<>(intervals);
-            return List.of(result);
-        }
+        List<AIList> results = new LinkedList<>();
 
-        List<AIList<T>> results = new LinkedList<>();
-
-        while(results.size() - 1 < config.maximumComponentsCount()) {
-            ArrayList<Interval<T>> newComponent = new ArrayList<>();
-            ArrayList<Interval<T>> leftovers = new ArrayList<>();
+        while(!intervals.isEmpty()) {
+            ArrayList<Interval> newComponent = new ArrayList<>();
+            ArrayList<Interval> leftovers = new ArrayList<>();
 
             while(!intervals.isEmpty() && newComponent.size() < config.maximumComponentSize()) {
-                Interval<T> nextInterval = intervals.get(0);
+                Interval nextInterval = intervals.get(0);
                 intervals.remove(0);
 
                 boolean coverage = computeCoverage(nextInterval.to(), intervals);
 
-                if(! coverage)
+                if(coverage)
                     newComponent.add(nextInterval);
                 else
                     leftovers.add(nextInterval);
             }
 
+            // Edge case: nothing went to the result - what now?
+
             if(!intervals.isEmpty())
                 leftovers.addAll(intervals);
 
             intervals = leftovers;
-            results.add(new AIList<>(newComponent));
+            results.add(new AIList(newComponent));
         }
 
         return results;
     }
 
-    private boolean computeCoverage(final long intervalTo, final ArrayList<Interval<T>> intervals) {
+    private boolean computeCoverage(final long intervalTo, final ArrayList<Interval> intervals) {
         int lookaheadCoverage = 0;
 
         // Count interval's coverage: how many further intervals are "covered" by the current one's length.
@@ -71,10 +68,10 @@ public class AIListBuilder<T> implements Serializable {
                 lookaheadCoverage ++;
 
             // If enough intervals are already covered, skip browsing the rest.
-            if (lookaheadCoverage >= config.intervalsCountToTriggerExtraction())
+            if (lookaheadCoverage > config.intervalsCountToTriggerExtraction())
                 break;
         }
 
-        return lookaheadCoverage < config.intervalsCountToTriggerExtraction();
+        return lookaheadCoverage <= config.intervalsCountToTriggerExtraction();
     }
 }
