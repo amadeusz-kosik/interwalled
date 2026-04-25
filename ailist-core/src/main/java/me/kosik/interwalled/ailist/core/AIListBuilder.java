@@ -2,6 +2,7 @@ package me.kosik.interwalled.ailist.core;
 
 import me.kosik.interwalled.ailist.core.model.Configuration;
 import me.kosik.interwalled.ailist.core.model.Interval;
+import me.kosik.interwalled.ailist.core.utils.IntervalComparator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public class AIListBuilder implements Serializable {
         assert config.intervalsCountToCheckLookahead() > 0;
         assert config.maximumComponentSize() > 0;
 
+        intervals.sort(new IntervalComparator());
+
         List<AIList> results = new LinkedList<>();
 
         while(!intervals.isEmpty()) {
@@ -39,8 +42,6 @@ public class AIListBuilder implements Serializable {
                 else
                     leftovers.add(nextInterval);
             }
-
-            // Edge case: nothing went to the result - what now?
 
             if(!intervals.isEmpty())
                 leftovers.addAll(intervals);

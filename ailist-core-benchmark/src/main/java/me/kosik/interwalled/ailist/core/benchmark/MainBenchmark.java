@@ -4,7 +4,7 @@ package me.kosik.interwalled.ailist.core.benchmark;
 import me.kosik.interwalled.ailist.core.AIList;
 import me.kosik.interwalled.ailist.core.AIListBuilder;
 import me.kosik.interwalled.ailist.core.AIListIterator;
-import me.kosik.interwalled.ailist.core.DataSources;
+import me.kosik.interwalled.ailist.core.BenchmarkData;
 import me.kosik.interwalled.ailist.core.model.Configuration;
 import me.kosik.interwalled.ailist.core.model.Interval;
 import org.openjdk.jmh.annotations.*;
@@ -17,11 +17,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
-@BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.SECONDS)
-@Warmup(iterations = 3, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
-@Fork(1)
+
 @State(Scope.Benchmark)
 public class MainBenchmark {
 
@@ -40,10 +36,10 @@ public class MainBenchmark {
     @Param({ "querySparse", "queryDense" })
     public String querySource;
 
-    @Param({ "1000000"  })
+    @Param({ "100000" })
     public int databaseRowsCount;
 
-    @Param({ "5000" })
+    @Param({ "100" })
     public int queryRowsCount;
 
     protected final Map<String, ArrayList<Interval>> dataSources = new HashMap<>();
@@ -51,21 +47,33 @@ public class MainBenchmark {
 
     @Setup
     public void setup() {
-        DataSources.initializeDatabaseSources(databaseRowsCount, dataSources);
-        DataSources.initializeQuerySources(databaseRowsCount, queryRowsCount, querySources);
+        BenchmarkData.initializeDatabaseSources(databaseRowsCount, dataSources);
+        BenchmarkData.initializeQuerySources(databaseRowsCount, queryRowsCount, querySources);
     }
 
-//    @Benchmark
-//    public void benchmarkJoin(final Blackhole blackhole) {
-//        AIListBuilder aiListBuilder = new AIListBuilder(Configuration.DEFAULT);
-//        List<AIList> aiLists = aiListBuilder.build(dataSources.get(dataSource));
-//
-//        for(AIList aiList: aiLists)
-//            for(Interval interval: querySources.get(querySource)) {
-//                for (AIListIterator it = aiList.overlapping(interval); it.hasNext(); ) {
-//                    Interval dbInterval = it.next();
-//                    blackhole.consume(dbInterval);
-//                }
-//            }
-//    }
+    @Benchmark
+    @BenchmarkMode(Mode.AverageTime)
+    @Fork(1)
+    @Warmup(        iterations =  3, time = 3, timeUnit = TimeUnit.SECONDS)
+    @Measurement(   iterations = 10, time = 3, timeUnit = TimeUnit.SECONDS)
+    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    public void intervalJoinBenchmark(final Blackhole blackhole) {
+        ArrayList<Interval> inputData = (ArrayList<Interval>) dataSources.get(dataSource).clone();
+
+        AIListBuilder aiListBuilder = new AIListBuilder(Configuration.DEFAULT);
+        List<AIList> aiLists = aiListBuilder.build(inputData);
+
+        for(AIList aiList: aiLists)
+            for(Interval interval: querySources.get(querySource)) {
+                for (AIListIterator it = aiList.overlapping(interval); it.hasNext(); ) {
+                    Interval dbInterval = it.next();
+                    blackhole.consume(dbInterval);
+                }
+            }
+    }
+
+    public static void main(String[] args) throws Exception {
+        String fullClassName = MainBenchmark.class.getName();
+        org.openjdk.jmh.Main.main(new String[] { fullClassName + ".intervalJoinBenchmark" });
+    }
 }

@@ -8,10 +8,7 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 
-@BenchmarkMode(Mode.Throughput)
 @State(Scope.Benchmark)
-@Warmup(iterations = 20, time = 1, timeUnit = TimeUnit.MILLISECONDS)
-@Measurement(iterations = 100, time = 1, timeUnit = TimeUnit.MILLISECONDS)
 public class SearchUtilsBenchmark {
 
     final static int INTERVALS_COUNT = 256000;
@@ -29,11 +26,17 @@ public class SearchUtilsBenchmark {
     }
 
     @Benchmark
+    @BenchmarkMode(Mode.Throughput)
+    @Fork(1)
+    @Warmup(        iterations =  3, time = 3, timeUnit = TimeUnit.SECONDS)
+    @Measurement(   iterations = 10, time = 3, timeUnit = TimeUnit.SECONDS)
+    @OutputTimeUnit(TimeUnit.MILLISECONDS)
     public void benchmark(Blackhole blackhole) {
         blackhole.consume(SearchUtils.findRightmost(intervals, 1000L, cutoff));
     }
 
     public static void main(String[] args) throws Exception {
-        org.openjdk.jmh.Main.main(args);
+        String fullClassName = SearchUtilsBenchmark.class.getName();
+        org.openjdk.jmh.Main.main(new String[] { fullClassName + ".benchmark" });
     }
 }
