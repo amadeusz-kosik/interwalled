@@ -1,13 +1,13 @@
-package me.kosik.interwalled.ailist.core.benchmark;
+package me.kosik.interwalled.ailist.core;
 
 import me.kosik.interwalled.ailist.core.model.Interval;
+import me.kosik.interwalled.ailist.core.utils.SearchUtils;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class SearchUtilsTest {
-
 
     @Test
     void returnsMinusOneWhenQueryIsBeforeAllIntervals() {
@@ -63,7 +63,7 @@ class SearchUtilsTest {
         ArrayList<Interval> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             long from = i * 10L;
-            list.add(new Interval(i, from, from + 5));
+            list.add(new Interval(from, from + 5));
         }
 
         assertEquals(13, SearchUtils.findRightmost(list, 135));
@@ -74,7 +74,7 @@ class SearchUtilsTest {
     private static ArrayList<Interval> intervals(long... fromValues) {
         ArrayList<Interval> result = new ArrayList<>();
         for (long from : fromValues) {
-            result.add(new Interval(result.size(), from, from + 5));
+            result.add(new Interval(from, from + 5));
         }
         return result;
     }

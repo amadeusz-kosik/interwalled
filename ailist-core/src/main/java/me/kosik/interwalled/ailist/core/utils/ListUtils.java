@@ -1,4 +1,4 @@
-package me.kosik.interwalled.ailist.core.benchmark;
+package me.kosik.interwalled.ailist.core.utils;
 
 import me.kosik.interwalled.ailist.core.AIList;
 

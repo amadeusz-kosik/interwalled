@@ -1,6 +1,7 @@
 package me.kosik.interwalled.ailist.core.benchmark;
 
 import me.kosik.interwalled.ailist.core.model.Interval;
+import me.kosik.interwalled.ailist.core.utils.SearchUtils;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
@@ -21,7 +22,7 @@ public class SearchUtilsBenchmark {
     @Setup
     public void setup() {
         for(int i = 0; i < INTERVALS_COUNT; ++ i) {
-            intervals.add(new Interval(i, i + 1, (long) i));
+            intervals.add(new Interval(i + 1, i));
         }
     }
 

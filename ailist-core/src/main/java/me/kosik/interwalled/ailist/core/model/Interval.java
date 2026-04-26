@@ -1,7 +1,6 @@
 package me.kosik.interwalled.ailist.core.model;
 
 public record Interval(
-    long id,
     long from,
     long to
 ) {

@@ -1,8 +1,8 @@
 package me.kosik.interwalled.ailist.core;
 
 import me.kosik.interwalled.ailist.core.model.Interval;
-import me.kosik.interwalled.ailist.core.benchmark.ArrayUtils;
-import me.kosik.interwalled.ailist.core.benchmark.SearchUtils;
+import me.kosik.interwalled.ailist.core.utils.ArrayUtils;
+import me.kosik.interwalled.ailist.core.utils.SearchUtils;
 
 import java.util.Iterator;
 
