@@ -33,10 +33,12 @@ val SequilaSparkVersion = "3.4.1"
 val SequilaSparkTestingBaseVersion = f"${SequilaSparkVersion}_1.4.4"
 
 
-lazy val ailistCore = (project in file("ailist-core"))
+lazy val `ailist-core` = (project in file("ailist-core"))
   .settings(
     name := "ailist-core",
-    javacOptions ++= DefaultJavacOptions
+    javacOptions ++= DefaultJavacOptions,
+    scalacOptions ++= DefaultScalacOptions,
+    libraryDependencies += "com.github.sbt.junit" %  "jupiter-interface"   % "0.16.0"                  % Test
   )
 
 lazy val ailistCoreBenchmark = (project in file("ailist-core-benchmark"))
@@ -44,14 +46,14 @@ lazy val ailistCoreBenchmark = (project in file("ailist-core-benchmark"))
     name := "ailist-core-benchmark",
     javacOptions ++= DefaultJavacOptions
   )
-  .dependsOn(ailistCore)
+  .dependsOn(`ailist-core`)
   .enablePlugins(JmhPlugin)
 
 lazy val ailistSpark = (project in file("ailist-spark"))
   .settings(
     name := "ailist-spark"
   )
-  .dependsOn(ailistCore)
+  .dependsOn(`ailist-core`)
 
 //lazy val benchmarkCommon = (project in file("benchmarks/common"))
 //  .settings(
@@ -80,10 +82,8 @@ lazy val ailistSpark = (project in file("ailist-spark"))
 //  .dependsOn(benchmarkCommon, spark)
 
 lazy val root = (project in file("."))
-  .aggregate(ailistCore, ailistSpark)
+  .aggregate(`ailist-core`, ailistSpark)
   .settings(name := "interwalled")
-
-ailistCore  / libraryDependencies += "com.github.sbt.junit" %  "jupiter-interface"   % "0.16.0"                  % Test
 
 ailistSpark / Test / parallelExecution := false
 ailistSpark / libraryDependencies += "org.apache.spark"  %% "spark-core"              % SparkVersion              % Provided

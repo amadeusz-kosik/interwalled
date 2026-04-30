@@ -14,7 +14,7 @@ import java.util.List;
 public class ListBuilder {
 
     public static List<AIList> buildAILists(final List<Interval> list) {
-        return buildAILists(Configuration.DEFAULT, list);
+        return buildAILists(Configuration.apply(), list);
     }
 
     public static List<AIList> buildAILists(final Configuration configuration, final List<Interval> list) {

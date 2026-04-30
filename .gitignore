@@ -16,7 +16,10 @@ out/
 !**/src/test/**/out/
 
 ### VS Code ###
+.bloop/
+.metals/
 .vscode/
+project/.bloop
 
 ### Mac OS ###
 .DS_Store
@@ -28,3 +31,7 @@ out/
 
 ### Jupyter Notebook ###
 .ipynb_checkpoints/
+
+
+# Temporary changes
+results/
