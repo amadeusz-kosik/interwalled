@@ -47,7 +47,7 @@ public class AIListBuilder implements Serializable {
                 leftovers.addAll(intervals);
 
             intervals = leftovers;
-            results.add(new AIList(newComponent));
+            results.add(AIList.apply(newComponent));
         }
 
         return results;

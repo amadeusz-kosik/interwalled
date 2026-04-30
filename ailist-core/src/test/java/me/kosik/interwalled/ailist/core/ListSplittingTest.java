@@ -90,7 +90,7 @@ public class ListSplittingTest {
 
         assertEquals(12, ListUtils.sum(aiLists));
         assertEquals( 2, aiLists.size(), "Outliers should be in a separate group.");
-        assertEquals( 9, aiLists.get(0).size(), "First component should contain most elements.");
-        assertEquals( 3, aiLists.get(1).size(), "Last component should store the outliers.");
+        assertEquals( 9, aiLists.get(0).intervals().length, "First component should contain most elements.");
+        assertEquals( 3, aiLists.get(1).intervals().length, "Last component should store the outliers.");
     }
 }
