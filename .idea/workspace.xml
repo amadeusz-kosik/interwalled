@@ -4,26 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="226647b2-2677-4574-8db4-16fbf2bab218" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ailist-core/src/main/scala/me/kosik/interwalled/ailist/core/AIListBuilder.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ailist-core/src/main/scala/me/kosik/interwalled/ailist/core/SearchUtils.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ailist-core/src/test/scala/me/kosik/interwalled/ailist/core/CorrectnessTest.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ailist-core/src/test/scala/me/kosik/interwalled/ailist/core/ListSplittingTest.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ailist-core/src/test/scala/me/kosik/interwalled/ailist/core/TestDataGenerator.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ailist-core/src/main/java/me/kosik/interwalled/ailist/core/AIListBuilder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ailist-core/src/main/java/me/kosik/interwalled/ailist/core/utils/IntervalComparator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ailist-core/src/main/java/me/kosik/interwalled/ailist/core/utils/ListUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ailist-core/src/main/scala/me/kosik/interwalled/ailist/core/AIList.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ailist-core/src/main/scala/me/kosik/interwalled/ailist/core/AIList.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ailist-core/src/main/scala/me/kosik/interwalled/ailist/core/model/Configuration.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ailist-core/src/main/scala/me/kosik/interwalled/ailist/core/Configuration.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ailist-core/src/main/scala/me/kosik/interwalled/ailist/core/model/Interval.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ailist-core/src/main/scala/me/kosik/interwalled/ailist/core/Interval.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ailist-core/src/test/java/me/kosik/interwalled/ailist/core/ConfigurationTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ailist-core/src/test/java/me/kosik/interwalled/ailist/core/CorrectnessTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ailist-core/src/test/java/me/kosik/interwalled/ailist/core/ListSplittingTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ailist-core/src/test/java/me/kosik/interwalled/ailist/core/benchmark/ListBuilder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ailist-core/src/test/java/me/kosik/interwalled/ailist/core/generator/DataGenerator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ailist-core/src/test/java/me/kosik/interwalled/ailist/core/generator/DataGenerators.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ailist-core/src/test/java/me/kosik/interwalled/ailist/core/model/IntervalsPair.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
+    <list default="true" id="226647b2-2677-4574-8db4-16fbf2bab218" name="Changes" comment="# &lt;type&gt;: (If applied, this commit will...) &lt;subject&gt; (Max 50 char)&#10;# |&lt;----  Using a Maximum Of 50 Characters  ----&gt;|&#10;Delete benchmark for AIList core.&#10;Add ArrayDeque implementation.&#10;&#10;# Explain why this change is being made&#10;# |&lt;----   Try To Limit Each Line to a Maximum Of 72 Characters   ----&gt;|&#10;&#10;# Provide links or keys to any relevant tickets, articles or other resources&#10;# Example: Github issue #23&#10;&#10;# --- COMMIT END ---&#10;# Type can be &#10;#    feature  (new feature)&#10;#    fix      (bug fix)&#10;#    refactor (refactoring production code)&#10;#    style    (formatting, missing semi colons, etc; no code change)&#10;#    docs     (changes to documentation)&#10;#    test     (adding or refactoring tests; no production code change)&#10;#    chore    (updating grunt tasks etc; no production code change)&#10;# --------------------&#10;# Remember to&#10;#   - Capitalize the subject line&#10;#   - Use the imperative mood in the subject line&#10;#   - Do end the subject line with a period&#10;#   - Separate subject from body with a blank line&#10;#   - Use the body to explain what and why vs. how&#10;#   - Can use multiple lines with &quot;-&quot; for bullet points in body&#10;# --------------------&#10;# Based on:&#10;# https://gist.github.com/adeekshith/cd4c95a064977cdc6c50">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/code_quality.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/code_quality.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -209,12 +191,25 @@
       <workItem from="1777735375014" duration="415000" />
       <workItem from="1777735799855" duration="1347000" />
       <workItem from="1777798370379" duration="10367000" />
-      <workItem from="1777888446239" duration="14162000" />
+      <workItem from="1777888446239" duration="14339000" />
     </task>
+    <task id="LOCAL-00001" summary="# &lt;type&gt;: (If applied, this commit will...) &lt;subject&gt; (Max 50 char)&#10;# |&lt;----  Using a Maximum Of 50 Characters  ----&gt;|&#10;Delete benchmark for AIList core.&#10;Add ArrayDeque implementation.&#10;&#10;# Explain why this change is being made&#10;# |&lt;----   Try To Limit Each Line to a Maximum Of 72 Characters   ----&gt;|&#10;&#10;# Provide links or keys to any relevant tickets, articles or other resources&#10;# Example: Github issue #23&#10;&#10;# --- COMMIT END ---&#10;# Type can be &#10;#    feature  (new feature)&#10;#    fix      (bug fix)&#10;#    refactor (refactoring production code)&#10;#    style    (formatting, missing semi colons, etc; no code change)&#10;#    docs     (changes to documentation)&#10;#    test     (adding or refactoring tests; no production code change)&#10;#    chore    (updating grunt tasks etc; no production code change)&#10;# --------------------&#10;# Remember to&#10;#   - Capitalize the subject line&#10;#   - Use the imperative mood in the subject line&#10;#   - Do end the subject line with a period&#10;#   - Separate subject from body with a blank line&#10;#   - Use the body to explain what and why vs. how&#10;#   - Can use multiple lines with &quot;-&quot; for bullet points in body&#10;# --------------------&#10;# Based on:&#10;# https://gist.github.com/adeekshith/cd4c95a064977cdc6c50">
+      <option name="closed" value="true" />
+      <created>1777932237513</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1777932237513</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="# &lt;type&gt;: (If applied, this commit will...) &lt;subject&gt; (Max 50 char)&#10;# |&lt;----  Using a Maximum Of 50 Characters  ----&gt;|&#10;Delete benchmark for AIList core.&#10;Add ArrayDeque implementation.&#10;&#10;# Explain why this change is being made&#10;# |&lt;----   Try To Limit Each Line to a Maximum Of 72 Characters   ----&gt;|&#10;&#10;# Provide links or keys to any relevant tickets, articles or other resources&#10;# Example: Github issue #23&#10;&#10;# --- COMMIT END ---&#10;# Type can be &#10;#    feature  (new feature)&#10;#    fix      (bug fix)&#10;#    refactor (refactoring production code)&#10;#    style    (formatting, missing semi colons, etc; no code change)&#10;#    docs     (changes to documentation)&#10;#    test     (adding or refactoring tests; no production code change)&#10;#    chore    (updating grunt tasks etc; no production code change)&#10;# --------------------&#10;# Remember to&#10;#   - Capitalize the subject line&#10;#   - Use the imperative mood in the subject line&#10;#   - Do end the subject line with a period&#10;#   - Separate subject from body with a blank line&#10;#   - Use the body to explain what and why vs. how&#10;#   - Can use multiple lines with &quot;-&quot; for bullet points in body&#10;# --------------------&#10;# Based on:&#10;# https://gist.github.com/adeekshith/cd4c95a064977cdc6c50" />
+    <option name="LAST_COMMIT_MESSAGE" value="# &lt;type&gt;: (If applied, this commit will...) &lt;subject&gt; (Max 50 char)&#10;# |&lt;----  Using a Maximum Of 50 Characters  ----&gt;|&#10;Delete benchmark for AIList core.&#10;Add ArrayDeque implementation.&#10;&#10;# Explain why this change is being made&#10;# |&lt;----   Try To Limit Each Line to a Maximum Of 72 Characters   ----&gt;|&#10;&#10;# Provide links or keys to any relevant tickets, articles or other resources&#10;# Example: Github issue #23&#10;&#10;# --- COMMIT END ---&#10;# Type can be &#10;#    feature  (new feature)&#10;#    fix      (bug fix)&#10;#    refactor (refactoring production code)&#10;#    style    (formatting, missing semi colons, etc; no code change)&#10;#    docs     (changes to documentation)&#10;#    test     (adding or refactoring tests; no production code change)&#10;#    chore    (updating grunt tasks etc; no production code change)&#10;# --------------------&#10;# Remember to&#10;#   - Capitalize the subject line&#10;#   - Use the imperative mood in the subject line&#10;#   - Do end the subject line with a period&#10;#   - Separate subject from body with a blank line&#10;#   - Use the body to explain what and why vs. how&#10;#   - Can use multiple lines with &quot;-&quot; for bullet points in body&#10;# --------------------&#10;# Based on:&#10;# https://gist.github.com/adeekshith/cd4c95a064977cdc6c50" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

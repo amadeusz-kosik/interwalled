@@ -27,8 +27,5 @@ jobs:
       - name: Setup SBT
         uses: sbt/setup-sbt@v1
 
-      - name: Run tests for 'spark' module
-        run: sbt "spark/test"
-
-      - name: Run tests for Sequila benchmark module
-        run: sbt "benchmark/test"
+      - name: Run tests
+        run: sbt test
