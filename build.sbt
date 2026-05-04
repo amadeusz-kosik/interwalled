@@ -1,11 +1,9 @@
-ThisBuild / scalaVersion := "2.12.20"
+ThisBuild / scalaVersion := "2.13.18"
 
 ThisBuild / organization := "me.kosik.interwalled"
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
-
-val DefaultJavacOptions  = Seq("-source", "17", "-target", "17")
-val DefaultScalacOptions = Seq("-deprecation", "-unchecked", "-Xlint", "-Xdisable-assertions")
+val defaultScalacOptions = Seq("-deprecation", "-unchecked", "-Xlint", "-Xdisable-assertions")
 
 // Deduplication (assemblyMergeStrategy) for sbt-assembly
 val sparkJobAssemblyMergeStrategy: String => sbtassembly.MergeStrategy = {
@@ -36,24 +34,24 @@ val SequilaSparkTestingBaseVersion = f"${SequilaSparkVersion}_1.4.4"
 lazy val `ailist-core` = (project in file("ailist-core"))
   .settings(
     name := "ailist-core",
-    javacOptions ++= DefaultJavacOptions,
-    scalacOptions ++= DefaultScalacOptions,
-    libraryDependencies += "com.github.sbt.junit" %  "jupiter-interface"   % "0.16.0"                  % Test
+    scalacOptions ++= defaultScalacOptions,
+    libraryDependencies ++= Seq(
+      "org.scalatest"   %% "scalatest" % "3.2.20" % Test,
+    )
   )
 
-lazy val ailistCoreBenchmark = (project in file("ailist-core-benchmark"))
-  .settings(
-    name := "ailist-core-benchmark",
-    javacOptions ++= DefaultJavacOptions
-  )
-  .dependsOn(`ailist-core`)
-  .enablePlugins(JmhPlugin)
+//lazy val ailistCoreBenchmark = (project in file("ailist-core-benchmark"))
+//  .settings(
+//    name := "ailist-core-benchmark"
+//  )
+//  .dependsOn(`ailist-core`)
+//  .enablePlugins(JmhPlugin)
 
-lazy val ailistSpark = (project in file("ailist-spark"))
-  .settings(
-    name := "ailist-spark"
-  )
-  .dependsOn(`ailist-core`)
+//lazy val ailistSpark = (project in file("ailist-spark"))
+//  .settings(
+//    name := "ailist-spark"
+//  )
+//  .dependsOn(`ailist-core`)
 
 //lazy val benchmarkCommon = (project in file("benchmarks/common"))
 //  .settings(
@@ -82,13 +80,13 @@ lazy val ailistSpark = (project in file("ailist-spark"))
 //  .dependsOn(benchmarkCommon, spark)
 
 lazy val root = (project in file("."))
-  .aggregate(`ailist-core`, ailistSpark)
+  .aggregate(`ailist-core`)
   .settings(name := "interwalled")
 
-ailistSpark / Test / parallelExecution := false
-ailistSpark / libraryDependencies += "org.apache.spark"  %% "spark-core"              % SparkVersion              % Provided
-ailistSpark / libraryDependencies += "org.apache.spark"  %% "spark-sql"               % SparkVersion              % Provided
-ailistSpark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"      % SparkTestingBaseVersion   % Test
+//ailistSpark / Test / parallelExecution := false
+//ailistSpark / libraryDependencies += "org.apache.spark"  %% "spark-core"              % SparkVersion              % Provided
+//ailistSpark / libraryDependencies += "org.apache.spark"  %% "spark-sql"               % SparkVersion              % Provided
+//ailistSpark / libraryDependencies += "com.holdenkarau"   %% "spark-testing-base"      % SparkTestingBaseVersion   % Test
 
 //benchmarkInterwalled / Test / parallelExecution := false
 //benchmarkInterwalled / libraryDependencies += "org.apache.spark"      %% "spark-core"           % SparkVersion                    % Provided

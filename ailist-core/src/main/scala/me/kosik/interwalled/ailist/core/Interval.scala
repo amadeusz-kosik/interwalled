@@ -1,5 +1,4 @@
-package me.kosik.interwalled.ailist.core.model
-
+package me.kosik.interwalled.ailist.core
 
 final case class Interval(
     from: Long,
