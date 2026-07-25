@@ -1,0 +1,3 @@
+[submodule "interwalled-library"]
+	path = interwalled-library
+	url = git@github.com:amadeusz-kosik/interwalled-library.git
