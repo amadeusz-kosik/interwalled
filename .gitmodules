@@ -1,3 +1,6 @@
 [submodule "interwalled-library"]
 	path = interwalled-library
 	url = git@github.com:amadeusz-kosik/interwalled-library.git
+[submodule "benchmarks/benchmark-ailist"]
+	path = benchmarks/benchmark-ailist
+	url = git@github.com:amadeusz-kosik/benchmark-ailist.git
