@@ -4,3 +4,9 @@
 [submodule "benchmarks/benchmark-ailist"]
 	path = benchmarks/benchmark-ailist
 	url = git@github.com:amadeusz-kosik/benchmark-ailist.git
+[submodule "benchmarks/benchmark-interwalled"]
+	path = benchmarks/benchmark-interwalled
+	url = git@github.com:amadeusz-kosik/benchmark-interwalled.git
+[submodule "benchmarks/benchmark-sequila"]
+	path = benchmarks/benchmark-sequila
+	url = git@github.com:amadeusz-kosik/benchmark-sequila.git
